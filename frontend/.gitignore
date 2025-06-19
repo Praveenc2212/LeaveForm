@@ -1,1 +1,27 @@
+# Node modules (for both frontend and backend)
 node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+
+# Tailwind generated files (optional, if you don't want to track them)
+*.css
+
+# Environment variables
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tailwind config (optional, usually you want to keep this in git)
+# Uncomment if you do NOT want to track tailwind.config.js
+# tailwind.config.js

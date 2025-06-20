@@ -1,14 +1,20 @@
-import React from 'react';
+// ProgressCard.jsx
+import React, { useRef } from 'react';
 import { FaDownload } from 'react-icons/fa';
+import LeaveFormDownload from './LeaveFormDownload';
 
 function ProgressCard({ applied, staffAccepted, hodAccepted }) {
   const isCompleted = hodAccepted;
+  const downloadRef = useRef();
+
+  const handleDownload = () => {
+    if (downloadRef.current) {
+      downloadRef.current(); // triggers PDF download
+    }
+  };
 
   return (
-    <div className="shadow-md rounded-2xl p-4 mb-4  bg-white/20 
-                    backdrop-blur-md 
-                    border border-white/30 
-                    ">
+    <div className="shadow-md rounded-2xl p-4 mb-4 bg-white/20 backdrop-blur-md border border-white/30">
       <h2 className="text-lg font-semibold text-gray-800 mb-3">Leave Progress</h2>
 
       <div className="flex items-center space-x-4">
@@ -36,16 +42,28 @@ function ProgressCard({ applied, staffAccepted, hodAccepted }) {
           <span className="text-xs mt-1 text-center">HOD Accepted</span>
         </div>
 
-        {/* Download Icon */}
+        {/* Download Button */}
         {isCompleted && (
           <button
             title="Download"
+            onClick={handleDownload}
             className="ml-4 text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-50 transition"
           >
             <FaDownload size={20} />
           </button>
         )}
       </div>
+
+      {/* Hidden LeaveFormDownload component (used for generating the PDF) */}
+      <LeaveFormDownload
+        name="Praveen"
+        rollNumber="CSE123"
+        department="CSE"
+        reason="Personal emergency"
+        startDate="2025-06-21"
+        endDate="2025-06-23"
+        ref={downloadRef}
+      />
     </div>
   );
 }

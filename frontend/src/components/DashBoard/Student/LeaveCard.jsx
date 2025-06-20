@@ -3,9 +3,6 @@ import ProgressCard from './ProgressCard';
 import RecentLeaveCard from './RecentLeaveCard';
 
 function LeaveCard({ Reason, StartDate, EndDate }) {
-
-
-  
   return (
     <div className="max-w-2xl mx-auto p-6 
                     bg-white/20 
@@ -25,7 +22,19 @@ function LeaveCard({ Reason, StartDate, EndDate }) {
 
       {/* Progress Card */}
       <div className="mb-6">
-        <ProgressCard applied={true} staffAccepted={true} hodAccepted={true} />
+        <ProgressCard 
+          applied={true}
+          staffAccepted={true}
+          hodAccepted={true}
+          leaveData={{
+            name: "John Doe",
+            rollNumber: "12345",
+            department: "Computer Science",
+            reason: "Family function",
+            startDate: "2023-06-15",
+            endDate: "2023-06-18"
+          }}
+        />
       </div>
 
       {/* Recent Leave Card */}

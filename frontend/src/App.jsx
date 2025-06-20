@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 import { useState } from 'react'
-// import StudentDashBoard from './components/DashBoard/Student/StudentDashBoard'
-import Studentfrom from './components/Studentfrom';
+import StudentDashBoard from './components/DashBoard/Student/StudentDashBoard'
+// import Studentfrom from './components/Studentfrom';
 // import Home from './Home';
 
 function App() {

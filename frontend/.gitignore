@@ -1,4 +1,21 @@
-node_modules
-*.config.js
-
 *.json
+use this code on your gitignore file
+
+
+# Node.js
+node_modules/
+.env
+
+# Tailwind
+tailwind.config.js
+postcss.config.js
+
+# OS
+.DS_Store
+
+# Logs
+npm-debug.log*
+
+# Build files
+dist/
+build/

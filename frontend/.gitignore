@@ -1,3 +1,4 @@
+
 *.json
 use this code on your gitignore file
 
@@ -19,3 +20,4 @@ npm-debug.log*
 # Build files
 dist/
 build/
+node_modules/

@@ -1,1 +1,17 @@
+# Node.js
 node_modules/
+.env
+
+# Tailwind
+tailwind.config.js
+postcss.config.js
+
+# OS
+.DS_Store
+
+# Logs
+npm-debug.log*
+
+# Build files
+dist/
+build/

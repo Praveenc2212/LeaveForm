@@ -26,7 +26,7 @@ function RecentLeaveCard({ Reason, StartDate, EndDate }) {
         <h2 className="text-lg font-semibold text-gray-800">{Reason}</h2>
         <p className="text-sm text-gray-600">From: {StartDate}</p>
         <p className="text-sm text-gray-600">To: {EndDate}</p>
-      </div>
+      </div> 
       <button
         onClick={handleDownload}
         className="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-50 transition"

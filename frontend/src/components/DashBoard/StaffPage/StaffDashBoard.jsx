@@ -2,21 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../../assets/logo.png"; // Update path as needed
 import profilePic from "../../../assets/Profile.png"; // Update path as needed
-import Header from './Header'
+import Header from './../Header'
 const leaveRequests = [
   { id: 1, studentName: 'John Doe', days: 3, startDate: '2025-06-20', endDate: '2025-06-22' },
   { id: 2, studentName: 'Jane Smith', days: 2, startDate: '2025-06-25', endDate: '2025-06-26' },
 ];
-
 function Staffpage() {
   const navigate = useNavigate();
+  const handleRequest= ()=>{
+    navigate("/requests")
+  }
   return (
     <>
-    <div className='p-10  bg-green-500'>
-        <Header />
-    </div>
+   <div className='p-5'>
+  <Header />
+
+</div>
+
     {/* ... */}
-    <div style={{ padding: '2rem', minHeight: '100vh', background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)' }}>
+    <center>
+    <div onClick={handleRequest}  style={{ padding: '2rem', minHeight: '100vh', background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)' }}>
       <h2 style={{ color: '#1976d2', marginBottom: '2rem', fontWeight: 700, letterSpacing: 1 }}>Leave Requests</h2>
       <div
         style={{
@@ -83,6 +88,7 @@ function Staffpage() {
         </span>
       </div>
     </div>
+          </center>
           </>
   );
 }

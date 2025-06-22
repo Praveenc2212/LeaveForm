@@ -1,8 +1,10 @@
-import React from 'react';
 import ProgressCard from './ProgressCard';
 import RecentLeaveCard from './RecentLeaveCard';
 
 function LeaveCard({ Reason, StartDate, EndDate }) {
+
+
+  
   return (
     <div className="max-w-2xl mx-auto p-6 
                     bg-white/20 

@@ -6,5 +6,9 @@ postcss.config.js
 .DS_Store
 npm-debug.log*
 dist/
+<<<<<<< HEAD
+build/
+=======
 build/
 node_modules/
+>>>>>>> fd056c1421afc53d9589c4b5310ea26e1b7bfd45

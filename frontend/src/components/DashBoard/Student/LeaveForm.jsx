@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../Header"
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    name: "Praveen",
     department: "",
     section: "",
     year: "",
@@ -39,9 +39,11 @@ const LeaveForm = () => {
         <div className="mb-4">
           <label className="block font-medium mb-1">Name</label>
           <input
+          
             type="text"
             name="name"
             required
+            readOnly
             value={formData.name}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded-md"
@@ -80,7 +82,7 @@ const LeaveForm = () => {
             required
             value={formData.year}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded-md"
+            className="w-full border px-3 py-2 rounded-md" 
           />
         </div>
 

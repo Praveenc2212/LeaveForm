@@ -5,13 +5,11 @@ import AuthHeader from "./AuthHeader";
 function Signup() {
   const [designation, setDesignation] = useState("");
   const [department, setDepartment] = useState("");
-<<<<<<< HEAD
+
   const [year, setYear] = useState("");
 
-  const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL", "AIDS", "CD", "CY", "CT", "IT"];
-=======
+  
   const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL","AIDS","CD","CY","CT","IT"];
->>>>>>> 630be0f57db3efe1788539f1fdf18f08bc947aba
   const sections = {
     CSE: ["A", "B", "C"],
     ECE: ["A", "B", "C"],

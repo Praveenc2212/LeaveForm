@@ -1,17 +1,20 @@
+
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from './components/LoginSignUp/Login';
-import Signup from './components/LoginSignUp/Signup';
+// import Login from './components/LoginSignUp/Login';
+// import Signup from './components/LoginSignUp/Signup';
+
+// import StudentDashBoard from './components/DashBoard/Student/StudentDashBoard'
+// import Login from './components/LoginSignUp/Login'
+import Home from "./Home";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
-  );
-}
+        <>
+        <Home />
+        </>
 
+
+  );}
 
 export default App;

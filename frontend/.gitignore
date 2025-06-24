@@ -1,4 +1,21 @@
+<<<<<<< HEAD
 node_modules
 *.config.js
 
 *.json
+=======
+*.json
+node_modules/
+.env
+tailwind.config.js
+postcss.config.js
+.DS_Store
+npm-debug.log*
+dist/
+<<<<<<< HEAD
+build/
+=======
+build/
+node_modules/
+>>>>>>> fd056c1421afc53d9589c4b5310ea26e1b7bfd45
+>>>>>>> 630be0f57db3efe1788539f1fdf18f08bc947aba

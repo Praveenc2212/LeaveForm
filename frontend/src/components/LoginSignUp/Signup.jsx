@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
-
+import AuthHeader from "./AuthHeader";
 function Signup() {
   const [designation, setDesignation] = useState("");
   const [department, setDepartment] = useState("");
 
+  const [year, setYear] = useState("");
+
+  
   const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL","AIDS","CD","CY","CT","IT"];
   const sections = {
     CSE: ["A", "B", "C"],
@@ -20,15 +23,23 @@ function Signup() {
     IT: ["A", "B"],
   };
   const hostelBlocks = ["Block H", "Block J", "Block C"];
+  const years = ["I", "II", "III", "IV"];
 
   return (
+
+
     <div className="min-h-screen bg-gradient-to-br from-orange-300 to-white-300 font-sans p-4">
-      <img
+      {/* <img
         src={logo}
         alt="Logo"
         className="absolute top-4 left-4 w-80 h-25 border-4 border-white rounded-xl shadow-lg"
-      />
-      <div className="flex justify-center items-center min-h-screen">
+        /> */}
+      
+       <div className='p-0'>
+      <AuthHeader />
+      </div>
+
+      <div className="flex justify-center mt-10 mb-6 relative z-10">
         <div className="bg-white/20 backdrop-blur-md border border-white p-6 shadow-lg rounded-2xl w-full max-w-md">
           <h1 className="text-center text-black text-2xl font-bold mb-6">Register</h1>
 
@@ -57,7 +68,8 @@ function Signup() {
                 value={designation}
                 onChange={(e) => {
                   setDesignation(e.target.value);
-                  setDepartment(""); 
+                  setDepartment("");
+                  setYear("");
                 }}
                 className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               >
@@ -92,19 +104,42 @@ function Signup() {
             )}
 
             {(designation === "Student" || designation === "Tutor") && department && (
-              <div className="mb-4">
-                <label htmlFor="section" className="block text-black font-semibold mb-1 text-lg">
-                  Section:
-                </label>
-                <select
-                  id="section"
-                  name="section"
-                  className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
-                >
-                  {sections[department].map((sec) => (
-                    <option key={sec} value={sec} className="text-black">{sec}</option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                
+                <div>
+                  <label htmlFor="year" className="block text-black font-semibold mb-1 text-lg">
+                    Year:
+                  </label>
+                  <select
+                    id="year"
+                    name="year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  >
+                    <option value="">-- Select Year --</option>
+                    {years.map((y) => (
+                      <option key={y} value={y} className="text-black">{y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="section" className="block text-black font-semibold mb-1 text-lg">
+                    Section:
+                  </label>
+                  <select
+                    id="section"
+                    name="section"
+                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  >
+                    <option value="">-- Select Section --</option>
+                    {sections[department].map((sec) => (
+                      <option key={sec} value={sec} className="text-black">{sec}</option>
+                    ))}
+                  </select>
+                </div>
+
               </div>
             )}
 
@@ -118,6 +153,7 @@ function Signup() {
                   name="hostel"
                   className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                 >
+                  <option value="">-- Select Hostel --</option>
                   {hostelBlocks.map((block) => (
                     <option key={block} value={block} className="text-black">{block}</option>
                   ))}
@@ -163,10 +199,10 @@ function Signup() {
             <p className="text-center mt-4 text-black text-lg">
               Already have an account?{" "}
               <Link
-                to="/login"
+                to="/"
                 className="text-pink-500 hover:text-purple-700 underline transition-colors duration-300 hover:drop-shadow-md"
               >
-                Sign in here
+                Login in here
               </Link>
             </p>
           </form>

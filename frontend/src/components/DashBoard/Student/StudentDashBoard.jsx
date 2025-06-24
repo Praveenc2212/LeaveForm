@@ -1,4 +1,3 @@
-import React from 'react';
 import LeaveCard from "../../DashBoard/Student/LeaveCard";
 import Header from "../Header"
 

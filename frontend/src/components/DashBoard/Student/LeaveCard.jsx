@@ -1,8 +1,8 @@
 import ProgressCard from './ProgressCard';
 import RecentLeaveCard from './RecentLeaveCard';
-
+import { useNavigate } from 'react-router-dom';
 function LeaveCard({ Reason, StartDate, EndDate }) {
-
+const navigate = useNavigate();
 
   
   return (
@@ -13,11 +13,13 @@ function LeaveCard({ Reason, StartDate, EndDate }) {
                     rounded-2xl 
                     shadow-xl 
                     transition-all duration-300">
-      
       {/* Header / Action */}
       <div className="flex justify-between items-center mb-6 " >
         <h1 className="text-2xl font-bold text-white drop-shadow">Your Leave Status</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all shadow">
+        <button 
+          
+          onClick={() => navigate("/leaveform")}
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all shadow">
           New Leave Form
         </button>
       </div>

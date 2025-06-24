@@ -5,8 +5,9 @@ import logo from "../../assets/logo.png";
 function Signup() {
   const [designation, setDesignation] = useState("");
   const [department, setDepartment] = useState("");
+  const [year, setYear] = useState("");
 
-  const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL","AIDS","CD","CY","CT","IT"];
+  const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL", "AIDS", "CD", "CY", "CT", "IT"];
   const sections = {
     CSE: ["A", "B", "C"],
     ECE: ["A", "B", "C"],
@@ -20,6 +21,7 @@ function Signup() {
     IT: ["A", "B"],
   };
   const hostelBlocks = ["Block H", "Block J", "Block C"];
+  const years = ["I", "II", "III", "IV"];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-300 to-white-300 font-sans p-4">
@@ -57,7 +59,8 @@ function Signup() {
                 value={designation}
                 onChange={(e) => {
                   setDesignation(e.target.value);
-                  setDepartment(""); 
+                  setDepartment("");
+                  setYear("");
                 }}
                 className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               >
@@ -92,19 +95,42 @@ function Signup() {
             )}
 
             {(designation === "Student" || designation === "Tutor") && department && (
-              <div className="mb-4">
-                <label htmlFor="section" className="block text-black font-semibold mb-1 text-lg">
-                  Section:
-                </label>
-                <select
-                  id="section"
-                  name="section"
-                  className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
-                >
-                  {sections[department].map((sec) => (
-                    <option key={sec} value={sec} className="text-black">{sec}</option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                
+                <div>
+                  <label htmlFor="year" className="block text-black font-semibold mb-1 text-lg">
+                    Year:
+                  </label>
+                  <select
+                    id="year"
+                    name="year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  >
+                    <option value="">-- Select Year --</option>
+                    {years.map((y) => (
+                      <option key={y} value={y} className="text-black">{y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="section" className="block text-black font-semibold mb-1 text-lg">
+                    Section:
+                  </label>
+                  <select
+                    id="section"
+                    name="section"
+                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  >
+                    <option value="">-- Select Section --</option>
+                    {sections[department].map((sec) => (
+                      <option key={sec} value={sec} className="text-black">{sec}</option>
+                    ))}
+                  </select>
+                </div>
+
               </div>
             )}
 
@@ -118,6 +144,7 @@ function Signup() {
                   name="hostel"
                   className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                 >
+                  <option value="">-- Select Hostel --</option>
                   {hostelBlocks.map((block) => (
                     <option key={block} value={block} className="text-black">{block}</option>
                   ))}

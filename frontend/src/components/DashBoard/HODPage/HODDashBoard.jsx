@@ -6,7 +6,7 @@ import PraveenM from '../../../assets/Praveen M.jpg';
 import PraveenC from '../../../assets/Praveen C.jpg';
 import PraveenR from '../../../assets/Praveenkumar R.png';
 
-function Staffpage() {
+function HODpage() {
   const navigate = useNavigate();
 
   const leaveRequests = [
@@ -41,4 +41,4 @@ function Staffpage() {
   );
 }
 
-export default Staffpage;
+export default HODpage;

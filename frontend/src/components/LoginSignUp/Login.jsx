@@ -3,7 +3,7 @@ import React ,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 // import logo from "../../assets/logo.png";
 import {Link} from "react-router-dom";
-// import AuthHeader from './AuthHeader';
+import AuthHeader from './AuthHeader';
 function Login() {
   const [email , setEmail ] = useState("");
   const [password , setPassword] = useState("");
@@ -20,12 +20,16 @@ function Login() {
       navigate("/staff");
 
     }
+    if((email==="hod@kce.ac.in") &&(passkey === password) ){
+      navigate("/hod");
+
+    }
   }
 
   return (
       <div className="min-h-screen bg-gradient-to-br from-orange-300 to-white-300 font-sans p-4">
       <div className='p-0'>
-      {/* <AuthHeader /> */}
+      <AuthHeader />
 
       </div>
       <div className="flex justify-center mt-10 mb-6 relative z-10">
@@ -75,7 +79,7 @@ function Login() {
                 to="/signup"
                 className="text-pink-500 hover:text-purple-700 underline transition-colors duration-300 hover:drop-shadow-md"
               >
-                signup in here
+                SignUp 
               </Link>
             </p>
             </form>

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
+// import { FaUpload } from "react-icons/fa";
 import AuthHeader from "./AuthHeader";
+import ProfileSelector from "./ProfileSelector";
 function Signup() {
   const [designation, setDesignation] = useState("");
   const [department, setDepartment] = useState("");
-
   const [year, setYear] = useState("");
+  const [profile, setProfile] = useState(null);
 
-  
-  const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL","AIDS","CD","CY","CT","IT"];
+  const departments = ["CSE", "ECE", "EEE", "MECH", "CIVIL", "AIDS", "CD", "CY", "CT", "IT"];
   const sections = {
     CSE: ["A", "B", "C"],
     ECE: ["A", "B", "C"],
@@ -25,25 +25,31 @@ function Signup() {
   const hostelBlocks = ["Block H", "Block J", "Block C"];
   const years = ["I", "II", "III", "IV"];
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(URL.createObjectURL(file));
+    }
+  };
+
   return (
-
-
     <div className="min-h-screen bg-gradient-to-br from-orange-300 to-white-300 font-sans p-4">
-      {/* <img
-        src={logo}
-        alt="Logo"
-        className="absolute top-4 left-4 w-80 h-25 border-4 border-white rounded-xl shadow-lg"
-        /> */}
-      
-       <div className='p-0'>
       <AuthHeader />
-      </div>
 
       <div className="flex justify-center mt-10 mb-6 relative z-10">
         <div className="bg-white/20 backdrop-blur-md border border-white p-6 shadow-lg rounded-2xl w-full max-w-md">
           <h1 className="text-center text-black text-2xl font-bold mb-6">Register</h1>
 
           <form>
+
+            {/* Upload Image */}
+          
+            <div className="flex items-center justify-center">
+              <ProfileSelector image={profile} setImage={setProfile} />
+            </div>
+
+
+            {/* Name */}
             <div className="mb-4">
               <label htmlFor="name" className="block text-black font-semibold mb-1 text-lg">
                 Name:
@@ -54,10 +60,11 @@ function Signup() {
                 name="name"
                 autoComplete="off"
                 placeholder="Enter Name"
-                className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               />
             </div>
 
+            {/* Designation */}
             <div className="mb-4">
               <label htmlFor="designation" className="block text-black font-semibold mb-1 text-lg">
                 Designation:
@@ -71,18 +78,19 @@ function Signup() {
                   setDepartment("");
                   setYear("");
                 }}
-                className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               >
                 <option value="">-- Select --</option>
-                <option value="Student" className="text-black">Student</option>
-                <option value="Tutor" className="text-black">Tutor</option>
-                <option value="HOD" className="text-black">HOD</option>
-                <option value="Principal" className="text-black">Principal</option>
-                <option value="Warden" className="text-black">Warden</option>
-                <option value="Transport" className="text-black">Transport Officer</option>
+                <option value="Student">Student</option>
+                <option value="Tutor">Tutor</option>
+                <option value="HOD">HOD</option>
+                <option value="Principal">Principal</option>
+                <option value="Warden">Warden</option>
+                <option value="Transport">Transport Officer</option>
               </select>
             </div>
 
+            {/* Department */}
             {(designation === "Student" || designation === "Tutor" || designation === "HOD") && (
               <div className="mb-4">
                 <label htmlFor="department" className="block text-black font-semibold mb-1 text-lg">
@@ -93,19 +101,19 @@ function Signup() {
                   name="department"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                 >
                   <option value="">-- Select Department --</option>
                   {departments.map((dept) => (
-                    <option key={dept} value={dept} className="text-black">{dept}</option>
+                    <option key={dept} value={dept}>{dept}</option>
                   ))}
                 </select>
               </div>
             )}
 
+            {/* Year & Section */}
             {(designation === "Student" || designation === "Tutor") && department && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                
                 <div>
                   <label htmlFor="year" className="block text-black font-semibold mb-1 text-lg">
                     Year:
@@ -115,11 +123,11 @@ function Signup() {
                     name="year"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                    className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                   >
                     <option value="">-- Select Year --</option>
                     {years.map((y) => (
-                      <option key={y} value={y} className="text-black">{y}</option>
+                      <option key={y} value={y}>{y}</option>
                     ))}
                   </select>
                 </div>
@@ -131,18 +139,18 @@ function Signup() {
                   <select
                     id="section"
                     name="section"
-                    className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                    className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                   >
                     <option value="">-- Select Section --</option>
                     {sections[department].map((sec) => (
-                      <option key={sec} value={sec} className="text-black">{sec}</option>
+                      <option key={sec} value={sec}>{sec}</option>
                     ))}
                   </select>
                 </div>
-
               </div>
             )}
 
+            {/* Hostel Block */}
             {designation === "Warden" && (
               <div className="mb-4">
                 <label htmlFor="hostel" className="block text-black font-semibold mb-1 text-lg">
@@ -151,16 +159,17 @@ function Signup() {
                 <select
                   id="hostel"
                   name="hostel"
-                  className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                  className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
                 >
                   <option value="">-- Select Hostel --</option>
                   {hostelBlocks.map((block) => (
-                    <option key={block} value={block} className="text-black">{block}</option>
+                    <option key={block} value={block}>{block}</option>
                   ))}
                 </select>
               </div>
             )}
 
+            {/* Email */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-black font-semibold mb-1 text-lg">
                 E-Mail:
@@ -171,10 +180,11 @@ function Signup() {
                 name="email"
                 autoComplete="off"
                 placeholder="Enter E-Mail"
-                className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               />
             </div>
 
+            {/* Password */}
             <div className="mb-6">
               <label htmlFor="password" className="block text-black font-semibold mb-1 text-lg">
                 Password:
@@ -185,10 +195,11 @@ function Signup() {
                 name="password"
                 autoComplete="off"
                 placeholder="Enter Password"
-                className="w-full px-4 py-2 bg-transparent border border-gray/60 text-gray rounded focus:outline-none focus:ring-2 focus:ring-white/70"
+                className="w-full px-4 py-2 bg-transparent border border-gray-400 text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-white/70"
               />
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-700 transition-colors duration-300"
@@ -196,13 +207,14 @@ function Signup() {
               Register
             </button>
 
+            {/* Link to Login */}
             <p className="text-center mt-4 text-black text-lg">
               Already have an account?{" "}
               <Link
                 to="/"
-                className="text-pink-500 hover:text-purple-700 underline transition-colors duration-300 hover:drop-shadow-md"
+                className="text-pink-500 hover:text-purple-700 underline transition-colors duration-300"
               >
-                Login in here
+                Log In
               </Link>
             </p>
           </form>

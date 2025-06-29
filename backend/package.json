@@ -1,7 +1,7 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "description": "\"project\"",
+    "description": "project",
     "main": "index.js",
     "type": "module",
     "scripts": {

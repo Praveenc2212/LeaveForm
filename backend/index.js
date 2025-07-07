@@ -19,11 +19,11 @@ import csurf from "csurf";
 import AuthRouter from "./server/routers/auth.routers.js";
 import DB from "./server/connections/DB.connections.js";
 
-// Connections...
-DB.connect(process.env.MONGO_DB_URL);
-
 // Configurations...
 configDotenv();
+
+// Connections...
+DB.connect(process.env.MONGO_DB_URL);
 
 const app = express();
 const PORT = process.env.PORT || 3000;

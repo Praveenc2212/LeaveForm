@@ -11,11 +11,11 @@
         },
         studentPhoneNo: {
             type: String,
-            required: true,
+            // required: true,
         },
         parantPhoneNo: {
             type: String,
-            required: true,
+            // required: true,
         },
         email: {
             type: String,

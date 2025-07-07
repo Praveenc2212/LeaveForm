@@ -1,0 +1,5 @@
+* Auto Fills (eg: on frontend - name , rollno, etc.. , are fetched through login info, and No need to enter the whole part)
+
+* wardern Page
+
+* Google-OAuth authorisation

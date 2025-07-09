@@ -6,13 +6,13 @@ import { LoginOut } from "../controllers/Auth/logout.controller.js";
 const router = express.Router();
 
 // Temporary route for testing purposes...
-router.get("/signup", SignUp);
+router.post("/signup", SignUp);
 
 // Route to handle user login...
-router.get("/login", Login);
+router.post("/login", Login);
 
 // Route to handle user logout...
-router.get("/logout", LoginOut)
+router.post("/logout", LoginOut);
 
 
 export default router;

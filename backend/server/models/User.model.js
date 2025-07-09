@@ -12,8 +12,24 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        minlength: 6,
-        maxlength: 8,
+        required: true,
+    },
+    department: {
+        type: String,
+        required: true,
+    },
+    rollno: {
+        type: String,       
+        required: true,
+        unique: true,
+    },
+    year: {
+        type: String,
+        enum: ["I", "II", "III", "IV"],
+        required: true,
+    },
+    section: {
+        type: String,
         required: true,
     },
     designation: {

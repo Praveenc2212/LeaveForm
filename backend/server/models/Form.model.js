@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const FormSchema = new mongoose.Schema({
+    applicant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     fullname: {
         type: String,
         required: true,
@@ -32,9 +37,19 @@ const FormSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "Pending",
-        enum: ["Pending", "Approved", "Succeeded", "Rejected"],
+        enum: [
+            "Pending",
+            "Tutor Approved",
+            "HOD Approved",
+            "Tutor Rejected",
+            "HOD Rejected",
+        ],
     },
     appliedAt: { type: Date, default: Date.now },
 });
+
+FormSchema.index({ tutor: 1, status: 1 });
+FormSchema.index({ applicant: 1 });
+FormSchema.index({ status: 1 });
 
 export const FormModel = mongoose.model("Form", FormSchema);

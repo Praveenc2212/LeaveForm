@@ -10,6 +10,18 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    rollno: {
+        type: String,
+        required: function () {
+            return this.designation === "STUDENT";
+        },
+    },
+    staffId: {
+        type: String,
+        required: function () {
+            return this.designation === "STAFF";
+        },
+    },
     password: {
         type: String,
         required: true,
@@ -18,19 +30,18 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    rollno: {
-        type: String,       
-        required: true,
-        unique: true,
-    },
     year: {
         type: String,
         enum: ["I", "II", "III", "IV"],
-        required: true,
+        required: function () {
+            return this.designation === "STUDENT";
+        },
     },
     section: {
         type: String,
-        required: true,
+        required: function () {
+            return this.designation === "STUDENT";
+        },
     },
     designation: {
         type: String,

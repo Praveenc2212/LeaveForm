@@ -1,43 +1,86 @@
-import { UserModel } from "../../models/User.model.js";
 import bcrypt from "bcryptjs";
+import { getUserByEmail, registerUser } from "../../services/user.service.js";
 
 export const SignUp = async (req, res) => {
     try {
-        const { name, email, password, designation } = req.body;
+        const {
+            name,
+            email,
+            password,
+            department,
+            designation,
+            rollno,
+            staffId,
+            year,
+            section,
+        } = req.body;
 
-        if (!name || !email || !password || !designation) {
+        // Check required fields for all users
+        if (!name || !email || !password || !department) {
             return res.status(400).json({
                 success: false,
-                message: "Name, email, password, and designation are required.",
+                message: "Name, email, password, and department are required.",
             });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        // Additional checks for STUDENT
+        if (designation === "STUDENT") {
+            if (!rollno || !year || !section) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "For STUDENT, rollno, year, and section are required.",
+                });
+            }
+        }
 
-        const newUser = new UserModel({
+        // Check for existing email
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                message: "Email already in use.",
+            });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Prepare user data
+        const userData = {
             name,
             email,
             password: hashedPassword,
-            designation: designation.toUpperCase(),
-        });
+            department,
+            designation,
+            ...(designation === "STUDENT" && { rollno, year, section }),
+            ...(designation === "STAFF" && { staffId }),
+        };
 
-        await newUser.save();
+        // Create user via service
+        const user = await registerUser(userData);
 
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
-            message: "Account created successfully.",
+            message: "User registered successfully.",
             user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
-                designation: newUser.designation,
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                department: user.department,
+                designation: user.designation,
+                ...(designation === "STUDENT" && {
+                    rollno: user.rollno,
+                    year: user.year,
+                    section: user.section,
+                }),
             },
         });
-    } catch (err) {
-        console.error("Signup error:", err);
-        return res
-            .status(500)
-            .json({ success: false, message: "Server error." });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Registration failed.",
+            error: error.message,
+        });
     }
 };

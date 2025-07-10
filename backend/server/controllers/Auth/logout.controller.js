@@ -1,4 +1,4 @@
-export const LoginOut = (req, res) => {
+export const LogOut = (req, res) => {
     try {
         // Clear the cookie...
         res.clearCookie("Leave_Form_JWT_Token", {

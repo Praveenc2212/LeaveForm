@@ -153,17 +153,9 @@ function Login() {
 
   const HandleLogin = (e) => {
     e.preventDefault();
-    // if (email === admin && passkey === password) {
-    //   navigate("/student");
-    // }
-    // if (email === "sss@kce.ac.in" && passkey === password) {
-    //   navigate("/staff");
-    // }
-    // if (email === "hod@kce.ac.in" && passkey === password) {
-    //   navigate("/hod");
-    // }
+    
   };
-  
+
   return (
     <div className="min-h-screen bg-orange-50/30 font-sans p-4">
       <div className="flex justify-center mt-10 mb-6 relative z-10">

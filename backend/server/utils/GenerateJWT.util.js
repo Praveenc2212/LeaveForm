@@ -9,7 +9,6 @@ export const GenerateJwtTokens = (userId, res) => {
         const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY, {
             expiresIn: "7d",
         });
-
         // Cookie...
         res.cookie("Leave_Form_JWT_Token", token, {
             maxAge: 7 * 24 * 60 * 60 * 1000, // weeks * days * hours * mins * secs * millis ...

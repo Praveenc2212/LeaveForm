@@ -1,7 +1,7 @@
 import express from "express";
 import { Login } from "../controllers/Auth/login.controller.js";
 import { SignUp } from "../controllers/Auth/signup.controller.js";
-import { LoginOut } from "../controllers/Auth/logout.controller.js";
+import { LogOut } from "../controllers/Auth/logout.controller.js";
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.post("/signup", SignUp);
 router.post("/login", Login);
 
 // Route to handle user logout...
-router.post("/logout", LoginOut);
+router.post("/logout", LogOut);
 
 
 export default router;

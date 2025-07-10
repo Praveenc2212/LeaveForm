@@ -11,7 +11,6 @@ export const userAuth = async (req, res, next) => {
                 message: "Authentication token not provided.",
             });
         }
-
         let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
         const user = await UserModel.findById(decoded.id).select("-password");
@@ -20,9 +19,7 @@ export const userAuth = async (req, res, next) => {
                 .status(401)
                 .json({ success: false, message: "User not found." });
         }
-
         req.user = user; // Attach user info to req
-
         next(); // Proceed to the next middleware/route
     } catch (error) {
         console.error("User Authentication Error:", error);

@@ -1,3 +1,4 @@
+
 import express from "express";
 import { Login } from "../controllers/Auth/login.controller.js";
 import { SignUp } from "../controllers/Auth/signup.controller.js";
@@ -16,3 +17,4 @@ router.post("/logout", LogOut);
 
 
 export default router;
+

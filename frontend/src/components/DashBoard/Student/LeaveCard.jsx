@@ -5,9 +5,8 @@ function LeaveCard({ Reason, StartDate, EndDate }) {
 const navigate = useNavigate();
 
   
-  return (
-    <div className="max-w-2xl mx-auto p-6 
-                    bg-white/20 
+  return ( //bg-white/20 
+    <div className="max-w-2xl mx-auto p-6 bg-orange-50 
                     backdrop-blur-md 
                     border border-black/30 
                     rounded-2xl 
@@ -15,9 +14,8 @@ const navigate = useNavigate();
                     transition-all duration-300">
       {/* Header / Action */}
       <div className="flex justify-between items-center mb-6 " >
-        <h1 className="text-2xl font-bold text-white drop-shadow">Your Leave Status</h1>
+        <h1 className="text-2xl font-bold text-black drop-shadow">Your Leave Status</h1>
         <button 
-          
           onClick={() => navigate("/leaveform")}
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all shadow">
           New Leave Form

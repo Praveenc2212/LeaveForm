@@ -19,17 +19,16 @@ function LeaveRequests() {
     alert(`Rejected leave request with ID: ${id}`);
     // Implement logic to update backend/state here
   };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-300 to-blue-300 font-sans p-4">
-      <Header />
-
+    <div className="min-h-screen bg-gradient-to-br bg-white font-sans p-4">
+      {/* <Header /> */}
+      <div className=''>
       <button
         onClick={() => navigate('/staff')}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition mb-6"
+        className="bg-blue-500  text-white px-4 py-2 sticky-20% rounded-md hover:bg-blue-600 transition mb-6"
       >
         Back to Dashboard
-      </button>
+      </button></div>
 
       <div className="flex flex-col gap-4">
         {leaveRequests.length === 0 ? (

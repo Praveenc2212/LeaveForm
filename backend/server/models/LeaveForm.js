@@ -36,5 +36,4 @@ const FormSchema = new mongoose.Schema({
     },
     appliedAt: { type: Date, default: Date.now },
 });
-
-export const FormModel = mongoose.model("Form", FormSchema);
+export const FormModel = mongoose.model("LeaveForm", FormSchema);

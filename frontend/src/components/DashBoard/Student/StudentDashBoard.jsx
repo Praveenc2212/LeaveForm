@@ -2,12 +2,12 @@ import LeaveCard from "../../DashBoard/Student/LeaveCard";
 import Header from "../Header"
 
 function StudentDashBoard() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-300  to-blue-300 font-sans p-4">
+  return (//from-orange-100
+    <div className="min-h-screen bg-gradient-to-br bg-white  font-sans p-4">
       {/* Header with Logo and Profile */}
-      <Header/>
+      {/* <Header/> */}
       {/* Dashboard Content */}
-      <div className="gap-6">
+      <div className="gap-6 ">
         <LeaveCard Reason={"Sick"} StartDate={"22/06/2025"} EndDate={"24/06/2025"} />
         {/* Add more LeaveCard or other components here */}
       </div>

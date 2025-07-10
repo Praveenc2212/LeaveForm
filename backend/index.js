@@ -11,7 +11,7 @@ import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-
+import  "./server/controllers/LeaveForm/ApplyLeaveform.controller.js"
 // Custom Functions & Routers...
 import AuthRouter from "./server/routers/auth.routers.js";
 import DB from "./server/connections/DB.connections.js";
@@ -64,7 +64,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes...
 app.get("/", (req, res) => res.send("Hello, World! From Backend"));
-
+app.post("/apply-leave",ApplyLeavefrorm )
 // Authentication Routes...
 app.use("/auth", AuthRouter);
 

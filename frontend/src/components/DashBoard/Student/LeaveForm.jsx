@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import Header from "../Header";
 
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    department: "",
-    section: "",
-    year: "",
     reason: "",
     startDate: "",
     endDate: "",
@@ -27,105 +22,64 @@ const LeaveForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-300  to-blue-300 font-sans p-4">
-      {/* Header at the top */}
-      <Header />
-
-      {/* Centered Form */}
-      <div className="flex items-center justify-center px-4 py-12 text-black">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white/20 text-black backdrop-blur-md rounded-xl shadow-md p-8 border border-white/30 w-full max-w-md"
-        >
-          <h2 className="text-2xl font-bold mb-6 text-center ">Leave Form</h2>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Department</label>
-            <input
-              type="text"
-              name="department"
-              required
-              value={formData.department}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Section</label>
-            <input
-              type="text"
-              name="section"
-              required
-              value={formData.section}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1 ">Year</label>
-            <input
-              type="text"
-              name="year"
-              required
-              value={formData.year}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Reason</label>
+    <div className="min-h-screen bg-[#FFF9F4] flex items-center justify-center py-8 px-2">
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white rounded-xl shadow-2xl mx-auto p-6 sm:p-8 flex flex-col items-center">
+        <div className="flex flex-col items-center mb-6">
+          
+          <h2 className="text-3xl font-bold text-black mb-2 text-center">
+            Leave Form
+          </h2>
+        </div>
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+          <div>
+            <label className="block font-semibold mb-1  text-black ">
+              Reason
+            </label>
             <textarea
               name="reason"
               required
               value={formData.reason}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
+              className="w-full border border-[#FFB066] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFB066] placeholder-gray-400 transition bg-white"
               rows="3"
+              placeholder="Reason For Leave"
             ></textarea>
           </div>
-
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Start Date</label>
-            <input
-              type="date"
-              name="startDate"
-              required
-              value={formData.startDate}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <label className="block font-semibold mb-1  text-black ">
+                Start Date
+              </label>
+              <input
+                type="date"
+                name="startDate"
+                required
+                value={formData.startDate}
+                onChange={handleChange}
+                className="w-full border border-[#FFB066] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFB066] transition bg-white"
+                placeholder="dd-mm-yyyy"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block font-semibold mb-1  text-black ">
+                End Date
+              </label>
+              <input
+                type="date"
+                name="endDate"
+                required
+                value={formData.endDate}
+                onChange={handleChange}
+                className="w-full border border-[#FFB066] px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FFB066] transition bg-white"
+                placeholder="dd-mm-yyyy"
+              />
+            </div>
           </div>
-
-          <div className="mb-6">
-            <label className="block font-medium mb-1 ">End Date</label>
-            <input
-              type="date"
-              name="endDate"
-              required
-              value={formData.endDate}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-md"
-            />
-          </div>
-
-          <button
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
-          >
+          
+            <button
+              type="submit"
+              className="w-full bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium py-3 cursor-pointer rounded-md transition"
+            > 
             Submit Leave Form
           </button>
         </form>

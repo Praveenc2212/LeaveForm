@@ -1,27 +1,19 @@
 import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
-import AuthHeader from './AuthHeader';
 import { useNavigate } from "react-router-dom";
+import AuthHeader from './AuthHeader';
+// import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const HandleLogin = (e) => {
     e.preventDefault();
-    // if (email === admin && passkey === password) {
-    //   navigate("/student");
-    // }
-    if (email === "sss@kce.ac.in" && "123" === password) {
-      navigate("/staff");
-    }
-    if (email === "ppp@kce.ac.in" && "123" === password) {
-      navigate("/student");
-    }
   };
-  return ( // flex items-center justify-center
+
+  return ( 
     <div className="min-h-screen bg-orange-50/30 font-sans pt-7 pr-5 pl-5 ">
       <div className="flex justify-center mt-10 mb-6 relative z-10">
         <div className="bg-white rounded-xl shadow-2xl p-10 w-full max-w-md">
@@ -41,6 +33,7 @@ function Login() {
               placeholder="Enter E-Mail"
               className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-200"
             />
+
              <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}

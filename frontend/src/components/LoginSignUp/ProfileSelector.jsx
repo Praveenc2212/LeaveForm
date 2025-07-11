@@ -24,7 +24,7 @@ const ProfileSelector = ({ image, setImage }) => {
   };
 
   return (
-    <div className="flex justify-center mb-6">
+    <div className="flex justify-center items-center mb-6">
       <input
         type="file"
         accept="image/*"
@@ -34,15 +34,14 @@ const ProfileSelector = ({ image, setImage }) => {
       />
 
       {!image ? (
-        <div className="w-20 h-20 flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/30 rounded-full relative">
-          <LuUser className="text-primary text-4xl" />
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 flex items-center justify-center bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
+          <LuUser className="text-gray-300 text-5xl sm:text-6xl" />
           <button
             type="button"
-            className="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 -right-1"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full absolute -bottom-2 -right-2 shadow-md transition-colors duration-300"
             onClick={onChooseFile}
           >
-            <LuUpload className="bg-violet-400 text-primary rounded-full p-1 w-8 h-8" />
-
+            <LuUpload className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       ) : (
@@ -50,14 +49,14 @@ const ProfileSelector = ({ image, setImage }) => {
           <img
             src={previewUrl}
             alt="profile preview"
-            className="w-20 h-20 object-cover rounded-full"
+            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover rounded-full border border-gray-200 shadow-md hover:shadow-lg transition-shadow duration-300"
           />
           <button
             type="button"
-            className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1"
+            className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full absolute -bottom-2 -right-2 shadow-md transition-colors duration-300"
             onClick={handleRemoveImage}
           >
-            <LuTrash />
+            <LuTrash className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       )}

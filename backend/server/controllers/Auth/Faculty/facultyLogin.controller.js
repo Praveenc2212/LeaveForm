@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
-import { GenerateJwtTokens } from "../../utils/GenerateJWT.util.js";
-import { getUserByEmail } from "../../services/user.service.js";
-import { getFormsByApplicant } from "../../services/form.service.js";
+import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
+import { getUserByEmail } from "../../../services/user.service.js";
+import { getFormsByApplicant } from "../../../services/form.service.js";
 
-export const Login = async (req, res) => {
+export const FacultyLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
 

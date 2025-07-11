@@ -1,7 +1,8 @@
-export const LogOut = (req, res) => {
+
+export const Logout = (req, res) => {
     try {
         // Clear the cookie...
-        res.clearCookie("Leave_Form_JWT_Token", {
+        res.clearCookie("CSE Leave Portal Auth Token", {
             httpOnly: true,
             sameSite: "strict",
             secure: process.env.STATUS != 'development',

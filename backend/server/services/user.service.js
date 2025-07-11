@@ -1,17 +1,42 @@
-import { UserModel } from "../models/User.model.js"; // Adjust path as needed
 
-// Register a new user
-export async function registerUser(data) {
-    const user = new UserModel(data);
-    return await user.save();
+import { StudentModel } from "../models/student.model.js";
+import { FacultyModel } from "../models/faculty.model.js";
+import { ClassModel } from "../models/class.model.js";
+
+// --- Student Services ---
+// Register a new Student...
+export async function createStudent(data) {
+    const student = new StudentModel(data);
+    return await student.save();
 }
 
-// Find user by email
-export async function getUserByEmail(email) {
-    return await UserModel.findOne({ email });
+// Find Student by email...
+export async function getStudentByEmail(email) {
+    return await StudentModel.findOne({ email });
 }
 
-// Find user by ID
-export async function getUserById(userId) {
-    return await UserModel.findById(userId);
+
+// --- Faculty Services ---
+// Register a new Faculty...
+export async function createFaculty(data) {
+    const faculty = new FacultyModel(data);
+    return await faculty.save();
+}
+
+// Find faculty by email...
+export async function getFacultyByEmail(email) {
+    return await FacultyModel.findOne({ email });
+}
+
+
+// --- Class Services ---
+// Create a new Class document
+export async function createClass(data) {
+    const newClass = new ClassModel(data);
+    return await newClass.save();
+}
+
+// Find class by department, year, and section...
+export async function getClassByDetails(department, year, section) {
+    return await ClassModel.findOne({ department, year, section });
 }

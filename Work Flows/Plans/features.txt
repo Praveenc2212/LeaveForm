@@ -3,3 +3,5 @@
 * wardern Page
 
 * Google-OAuth authorisation
+
+* add a button that accept all applicants in hod and staff,

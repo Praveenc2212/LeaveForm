@@ -64,9 +64,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes...
 app.get("/", (req, res) => res.send("Hello, World! From Backend"));
-app.post("/apply-leave",ApplyLeavefrorm )
+
 // Authentication Routes...
 app.use("/auth", AuthRouter);
+
+// Form Routes...
+// app.use("/form", (req, res, next) => {
+//     next();
+// });
 
 // 404 Page Not Found...
 app.use((req, res) => {

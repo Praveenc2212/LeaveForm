@@ -1,20 +1,28 @@
 
 import express from "express";
-import { Login } from "../controllers/Auth/login.controller.js";
-import { SignUp } from "../controllers/Auth/signup.controller.js";
-import { LogOut } from "../controllers/Auth/logout.controller.js";
+import { Logout } from "../controllers/Auth/logout.controller.js";
+import { StudentLogin } from "../controllers/Auth/Student/studentLogin.controller.js";
+import { FacultyLogin } from "../controllers/Auth/Faculty/facultyLogin.controller.js";
+import { StudentSignUp } from "../controllers/Auth/Student/studentSingup.controller.js";
+import { FacultySignUp } from "../controllers/Auth/Faculty/facultySingup.controller.js";
+import { createClass } from "../controllers/Auth/class.controller.js";
 
 const router = express.Router();
 
 // Temporary route for testing purposes...
-router.post("/signup", SignUp);
+router.post("/admin/student/signup", StudentSignUp);
+router.post("/admin/faculty/signup", FacultySignUp);
+router.post("/admin/class", createClass);
 
-// Route to handle user login...
-router.post("/login", Login);
+// Checking Authentication...
+router.get("/checkAuthenticated", checkAuthenticated);
+// Route to handle Student login...
+router.post("/student/login", StudentLogin);
+
+// Route to handle Faculty login...
+router.post("/faculty/login", FacultyLogin);
 
 // Route to handle user logout...
-router.post("/logout", LogOut);
-
+router.post("/logout", Logout);
 
 export default router;
-

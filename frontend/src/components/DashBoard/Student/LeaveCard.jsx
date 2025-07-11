@@ -1,47 +1,197 @@
-import ProgressCard from './ProgressCard';
-import RecentLeaveCard from './RecentLeaveCard';
-import { useNavigate } from 'react-router-dom';
-function LeaveCard({ Reason, StartDate, EndDate }) {
-const navigate = useNavigate();
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-  
-  return ( //bg-white/20 
-    <div className="max-w-2xl mx-auto p-6 bg-orange-50 
-                    backdrop-blur-md 
-                    border border-black/30 
-                    rounded-2xl 
-                    shadow-xl 
-                    transition-all duration-300">
-      {/* Header / Action */}
-      <div className="flex justify-between items-center mb-6 " >
-        <h1 className="text-2xl font-bold text-black drop-shadow">Your Leave Status</h1>
-        <button 
+function LeaveCard() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen w-full bg-white flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center gap-10 py-10 w-full px-4 max-w-screen-md">
+        {/* Apply Leave */}
+        <button
+          className="w-full max-w-[180px] aspect-square rounded-2xl bg-white shadow-md hover:shadow-2xl hover:shadow-orange-200 transition duration-300 flex flex-col items-center justify-center gap-2"
           onClick={() => navigate("/leaveform")}
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all shadow">
-          New Leave Form
+        >
+          {/* SVG icon for Apply Leave with orange accent */}
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="12"
+              y="8"
+              width="24"
+              height="32"
+              rx="3"
+              fill="#FFF7ED"
+              stroke="#FB923C"
+              strokeWidth="2"
+            />
+            <line
+              x1="16"
+              y1="16"
+              x2="32"
+              y2="16"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="16"
+              y1="22"
+              x2="32"
+              y2="22"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="16"
+              y1="28"
+              x2="32"
+              y2="28"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="16"
+              y1="34"
+              x2="32"
+              y2="34"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="36"
+              cy="36"
+              r="6"
+              fill="#FFF7ED"
+              stroke="#FB923C"
+              strokeWidth="2"
+            />
+            <line
+              x1="36"
+              y1="33"
+              x2="36"
+              y2="39"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <line
+              x1="33"
+              y1="36"
+              x2="39"
+              y2="36"
+              stroke="#FB923C"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span className="text-sm text-black">Apply Leave</span>
         </button>
-      </div>
 
-      {/* Progress Card */}
-      <div className="mb-6">
-        <ProgressCard 
-          applied={true}
-          staffAccepted={true}
-          hodAccepted={true}
-          leaveData={{
-            name: "John Doe",
-            rollNumber: "12345",
-            department: "Computer Science",
-            reason: "Family function",
-            startDate: "2023-06-15",
-            endDate: "2023-06-18"
-          }}
-        />
-      </div>
+        {/* Status + History */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full">
+          <button
+            className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
+            onClick={() => navigate("/recentleave")}
+          >
+            <img
+              src="/status.png"
+              alt="Leave Status"
+              className="w-12 h-12 object-contain"
+            />
+            <span className="text-sm text-black">Leave Status</span>
+          </button>
 
-      {/* Recent Leave Card */}
-      <div>
-        <RecentLeaveCard Reason={Reason} StartDate={StartDate} EndDate={EndDate} />
+          <button
+            className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
+            onClick={() => navigate("/history")}
+          >
+            {/* SVG icon for Leave History with orange accent and aligned lines */}
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="8"
+                y="10"
+                width="24"
+                height="32"
+                rx="3"
+                fill="#FFF7ED"
+                stroke="#FB923C"
+                strokeWidth="2"
+              />
+              <rect
+                x="14"
+                y="6"
+                width="24"
+                height="32"
+                rx="3"
+                fill="#FFF7ED"
+                stroke="#FB923C"
+                strokeWidth="2"
+              />
+              <rect
+                x="20"
+                y="2"
+                width="24"
+                height="32"
+                rx="3"
+                fill="#FFF7ED"
+                stroke="#FB923C"
+                strokeWidth="2"
+              />
+              <line
+                x1="26"
+                y1="12"
+                x2="38"
+                y2="12"
+                stroke="#FB923C"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <line
+                x1="26"
+                y1="18"
+                x2="38"
+                y2="18"
+                stroke="#FB923C"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <line
+                x1="26"
+                y1="24"
+                x2="38"
+                y2="24"
+                stroke="#FB923C"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <line
+                x1="26"
+                y1="30"
+                x2="38"
+                y2="30"
+                stroke="#FB923C"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className="text-sm text-black">Leave History</span>
+          </button>
+        </div>
       </div>
     </div>
   );

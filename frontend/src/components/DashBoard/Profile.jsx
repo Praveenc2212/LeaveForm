@@ -3,7 +3,6 @@ import Header from './Header';
 function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-300 to-blue-300 font-sans p-6">
-      <Header />
       <div className="max-w-3xl mx-auto bg-white/40 backdrop-blur-md rounded-2xl shadow-xl p-6 mt-10 flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-10">
         
         {/* Profile Image */}

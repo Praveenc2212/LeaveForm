@@ -1,33 +1,47 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import ProgressCard from './ProgressCard';
+import RecentLeaveCard from './RecentLeaveCard';
+import { useNavigate } from 'react-router-dom';
+function LeaveCard({ Reason, StartDate, EndDate }) {
+const navigate = useNavigate();
 
-function LeaveCard() {
-  const navigate = useNavigate();
+  
+  return ( //bg-white/20 
+    <div className="max-w-2xl mx-auto p-6 bg-orange-50 
+                    backdrop-blur-md 
+                    border border-black/30 
+                    rounded-2xl 
+                    shadow-xl 
+                    transition-all duration-300">
+      {/* Header / Action */}
+      <div className="flex justify-between items-center mb-6 " >
+        <h1 className="text-2xl font-bold text-black drop-shadow">Your Leave Status</h1>
+        <button 
+          onClick={() => navigate("/leaveform")}
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all shadow">
+          New Leave Form
+        </button>
+      </div>
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-orange-100 to-blue-100 p-4 font-sans">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col gap-6 items-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Leave Form</h2>
-        <div className="flex flex-col gap-4 w-full">
-          <button
-            className="w-full py-3 rounded-md bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium transition"
-            onClick={() => navigate("/leaveform")}
-          >
-            Apply Leave
-          </button>
-          <button
-            className="w-full py-3 rounded-md bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium transition"
-            onClick={() => navigate("/recentleave")}
-          >
-            Status
-          </button>
-          <button
-            className="w-full py-3 rounded-md bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium transition"
-            onClick={() => navigate("/history")}
-          >
-            History
-          </button>
-        </div>
+      {/* Progress Card */}
+      <div className="mb-6">
+        <ProgressCard 
+          applied={true}
+          staffAccepted={true}
+          hodAccepted={true}
+          leaveData={{
+            name: "John Doe",
+            rollNumber: "12345",
+            department: "Computer Science",
+            reason: "Family function",
+            startDate: "2023-06-15",
+            endDate: "2023-06-18"
+          }}
+        />
+      </div>
+
+      {/* Recent Leave Card */}
+      <div>
+        <RecentLeaveCard Reason={Reason} StartDate={StartDate} EndDate={EndDate} />
       </div>
     </div>
   );

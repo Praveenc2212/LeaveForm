@@ -16,18 +16,18 @@ function HODpage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-300 to-blue-300 font-sans p-3">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br bg-white font-sans p-3">
+
 
       <div className="flex justify-center h-[25%]">
         <div
-          className="w-[40%] shadow-md rounded-2xl p-3 mb-4 bg-white/20 backdrop-blur-md border border-white/30 relative cursor-pointer"
+          className="w-[90%] shadow-md rounded-2xl p-3 mb-4 bg-orange-100  backdrop-blur-md border border-white/30 relative cursor-pointer"
           onClick={() => navigate('/leaverequests', { state: { leaveRequests } })}
         >
           <h3 className="text-xl font-semibold text-blue-700 mb-2 text-center">Pending Leave Requests</h3>
 
           <div className="bg-gradient-to-br from-blue-700 to-blue-400 w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-md mx-auto">
-            <span role="img" aria-label="bell" className="text-white text-3xl">🔔</span>
+            <span role="img" aria-label="bell" className="text-white text-3xl">🔔</span> 
           </div>
 
           <p className="text-gray-700 text-base mt-2 text-center">Click to view all requests</p>

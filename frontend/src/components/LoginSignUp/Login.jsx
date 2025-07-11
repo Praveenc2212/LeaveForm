@@ -144,37 +144,35 @@ import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from './AuthHeader';
-
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const admin = "ppp@kce.ac.in";
-  const passkey = "123";
 
   const HandleLogin = (e) => {
     e.preventDefault();
-    if (email === admin && passkey === password) {
-      navigate("/student");
-    } else if (email === "sss@kce.ac.in" && passkey === password) {
+    // if (email === admin && passkey === password) {
+    //   navigate("/student");
+    // }
+    if (email === "sss@kce.ac.in" && "123" === password) {
       navigate("/staff");
-    } else if (email === "hod@kce.ac.in" && passkey === password) {
-      navigate("/hod");
-    } else {
-      alert("Invalid credentials");
+    }
+    if (email === "ppp@kce.ac.in" && "123" === password) {
+      navigate("/student");
     }
   };
   
-  return (
-    <div className="min-h-screen bg-orange-50/30 font-sans p-4">
+  return ( // flex items-center justify-center
+    <div className="min-h-screen bg-orange-50/30 font-sans pt-7 pr-5 pl-5 ">
       <div className="flex justify-center mt-10 mb-6 relative z-10">
         <div className="bg-white rounded-xl shadow-2xl p-10 w-full max-w-md">
           <div className="flex flex-col items-center mb-8">
             <div className="bg-orange-100 rounded-full w-24 h-24 flex items-center justify-center mb-4">
               <UserRound className="size-10 text-orange-500" />
             </div>
-            <h2 className="text-3xl font-normal text-black">Sign In</h2>
+            <h2 className="text-3xl font-normal text-black">Log In</h2>
           </div>
           <form className="space-y-4" onSubmit={HandleLogin}>
             <input
@@ -206,11 +204,11 @@ function Login() {
               </button>
             </div>
             <button
-              type="submit"
+              // onClick={HandleLogin}
               className="w-full bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium py-3 cursor-pointer rounded-md transition"
             >
               Login
-            </button>
+            </button>          
           </form>
         </div>
       </div>

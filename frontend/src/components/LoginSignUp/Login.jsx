@@ -1,25 +1,26 @@
+
 import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
-import AuthHeader from './AuthHeader';
 import { useNavigate } from "react-router-dom";
+import AuthHeader from './AuthHeader';
+// import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const HandleLogin = (e) => {
     e.preventDefault();
     // if (email === admin && passkey === password) {
     //   navigate("/student");
     // }
-    if (email === "sss@kce.ac.in" && "123" === password) {
-      navigate("/staff");
-    }
-    if (email === "ppp@kce.ac.in" && "123" === password) {
-      navigate("/student");
-    }
+    // if (email === "sss@kce.ac.in" && "123" === password) {
+      // navigate("/staff");
+    // }
+    // if (email === "ppp@kce.ac.in" && "123" === password) {
+      // navigate("/student");
+    // }
   };
   
   return ( // flex items-center justify-center

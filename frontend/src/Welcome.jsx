@@ -24,7 +24,7 @@ function Welcome() {
           <img
             src="logo-kce.png"
             alt="Karpagam Logo"
-            className="h-28 drop-shadow-[0_0_6px_white] mb-6"
+            className="h-28 drop-shadow-[0_0_1px_white] mb-6"
           />
         </div>
 

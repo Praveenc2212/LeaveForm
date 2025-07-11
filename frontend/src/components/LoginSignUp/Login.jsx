@@ -23,10 +23,9 @@ function Login() {
     // }
   };
   
-  return ( // flex items-center justify-center
-    <div className="min-h-screen bg-orange-50/30 font-sans pt-7 pr-5 pl-5 ">
-      <div className="flex justify-center mt-10 mb-6 relative z-10">
-        <div className="bg-white rounded-xl shadow-2xl p-10 w-full max-w-md">
+  return (
+    <div className="h-96 bg-orange-50/30 font-sans  flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-2xl p-12 w-full max-w-md flex flex-col justify-center fixed top-30    ">
           <div className="flex flex-col items-center mb-8">
             <div className="bg-orange-100 rounded-full w-24 h-24 flex items-center justify-center mb-4">
               <UserRound className="size-10 text-orange-500" />
@@ -69,7 +68,6 @@ function Login() {
               Login
             </button>          
           </form>
-        </div>
       </div>
     </div>
   );

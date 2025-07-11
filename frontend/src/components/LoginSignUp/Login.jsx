@@ -142,26 +142,28 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthHeader from './AuthHeader';
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const admin = "ppp@kce.ac.in";
+  const passkey = "123";
 
   const HandleLogin = (e) => {
     e.preventDefault();
-    // if (email === admin && passkey === password) {
-    //   navigate("/student");
-    // }
-    // if (email === "sss@kce.ac.in" && passkey === password) {
-    //   navigate("/staff");
-    // }
-    // if (email === "hod@kce.ac.in" && passkey === password) {
-    //   navigate("/hod");
-    // }
+    if (email === admin && passkey === password) {
+      navigate("/student");
+    } else if (email === "sss@kce.ac.in" && passkey === password) {
+      navigate("/staff");
+    } else if (email === "hod@kce.ac.in" && passkey === password) {
+      navigate("/hod");
+    } else {
+      alert("Invalid credentials");
+    }
   };
   
   return (
@@ -204,13 +206,11 @@ function Login() {
               </button>
             </div>
             <button
-              onClick={HandleLogin}
+              type="submit"
               className="w-full bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium py-3 cursor-pointer rounded-md transition"
             >
               Login
             </button>
-           
-          
           </form>
         </div>
       </div>

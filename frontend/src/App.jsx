@@ -55,7 +55,7 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/staff" element={<StaffDashBoard />} />
           <Route path="/leaverequests" element={<LeaveRequests />} />
-          <Route path="/hod" element={<HODDashBoard />} />
+          <Route path="/HODDashBoard" element={<HODDashBoard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />

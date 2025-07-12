@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
-import { getUserByEmail } from "../../../services/user.service.js";
-import { getFormsByApplicant } from "../../../services/form.service.js";
+import { getFacultyByEmail } from "../../../services/user.service.js";
+import { getFormsByTutor } from "../../../services/form.service.js";
 
 export const FacultyLogin = async (req, res) => {
     try {
@@ -14,7 +14,7 @@ export const FacultyLogin = async (req, res) => {
             });
         }
 
-        const user = await getUserByEmail(email);
+        const user = await getFacultyByEmail(email);
 
         if (!user) {
             return res.status(401).json({
@@ -32,42 +32,20 @@ export const FacultyLogin = async (req, res) => {
         }
 
         // Generate JWT token and set it in cookies...
-        GenerateJwtTokens(user._id, res);
+        GenerateJwtTokens({ userId: user._id, designation: user.designation }, res);
 
-        switch (user.designation) {
-            case "STUDENT":
-                res.status(200).json({
-                    success: true,
-                    message: "Login successful.",
-                    userData: {
-                        id: user._id,
-                        name: user.name,
-                        email: user.email,
-                        rollno: user.rollno,
-                        department: user.department,
-                        year: user.year,
-                        section: user.section,
-                        designation: user.designation,
-                    },
-                    leaveData: await getFormsByApplicant(user._id),
-                });
-                break;
-            case "STAFF":
-                user.designation = "Staff";
-                break;
-            case "HOD":
-                user.designation = "HOD";
-                break;
-            default:
-                res.status(400).json({
-                    success: false,
-                    message: "Invalid designation.",
-                });
-        }
-
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Login successful.",
+            userData: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                staffId: user.staffId,
+                department: user.department,
+                designation: user.designation,
+            },
+            leaveData: await getFormsByTutor(user._id),
         });
     } catch (err) {
         console.error("Login error:", err);

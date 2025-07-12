@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import React from "react";
-=======
-
->>>>>>> b7dff64da90cd78a5ca51c29b005eb21728fec4f
 import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import AuthHeader from './AuthHeader';
 // import { useNavigate } from "react-router-dom";
 function Login() {

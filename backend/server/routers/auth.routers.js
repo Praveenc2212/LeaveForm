@@ -6,6 +6,7 @@ import { FacultyLogin } from "../controllers/Auth/Faculty/facultyLogin.controlle
 import { StudentSignUp } from "../controllers/Auth/Student/studentSingup.controller.js";
 import { FacultySignUp } from "../controllers/Auth/Faculty/facultySingup.controller.js";
 import { createClass } from "../controllers/Auth/class.controller.js";
+import { checkAuthentication } from "../Middleware/UserAuthentication.Middleware.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post("/admin/faculty/signup", FacultySignUp);
 router.post("/admin/class", createClass);
 
 // Checking Authentication...
-router.get("/checkAuthenticated", checkAuthenticated);
+router.get("/checkAuthenticated", checkAuthentication);
 // Route to handle Student login...
 router.post("/student/login", StudentLogin);
 

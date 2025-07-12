@@ -19,11 +19,13 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    class: {
+    classId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
         required: true,
     },
 });
+
+StudentSchema.index({ email: 1 });
 
 export const StudentModel = mongoose.model("Student", StudentSchema);

@@ -12,7 +12,7 @@ export async function createStudent(data) {
 
 // Find Student by email...
 export async function getStudentByEmail(email) {
-    return await StudentModel.findOne({ email });
+    return await StudentModel.findOne({ email }).populate('classId');
 }
 
 
@@ -31,7 +31,7 @@ export async function getFacultyByEmail(email) {
 
 // --- Class Services ---
 // Create a new Class document
-export async function createClass(data) {
+export async function createClassModel(data) {
     const newClass = new ClassModel(data);
     return await newClass.save();
 }
@@ -40,3 +40,4 @@ export async function createClass(data) {
 export async function getClassByDetails(department, year, section) {
     return await ClassModel.findOne({ department, year, section });
 }
+

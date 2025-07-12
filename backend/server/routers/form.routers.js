@@ -1,17 +1,12 @@
 import express from "express";
+import { applyForm } from "../controllers/LeaveForm/applyForm.controller";
+import { facultyFormResponse } from "../controllers/LeaveForm/facultyResponse.controller";
 
 const router = express.Router();
 
 // Create a new leave form (student applies)
-router.post("/apply", applyForm);
+router.post("/student/apply", applyForm);
 
-// Get all forms for a specific class (for tutors/HODs)
-router.get("/class/:classId/forms", getFormsByClass);
-
-// Get all forms for a specific student
-router.get("/student/:studentId/forms", getFormsByStudent);
-
-// Update status of a form (approve/reject by tutor or HOD)
-router.patch("/form/:id/status", updateFormStatus);
+router.post("/faculty/response", facultyFormResponse);
 
 export default router;

@@ -26,8 +26,10 @@ export const FacultySchema = new mongoose.Schema({
     designation: {
         type: String,
         required: true,
-        enum: ["Staff", "HOD"],
+        enum: ["STAFF", "HOD"],
     },
 });
+
+FacultySchema.index({ email: 1 });
 
 export const FacultyModel = mongoose.model("Faculty", FacultySchema);

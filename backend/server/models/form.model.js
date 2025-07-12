@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const FormSchema = new mongoose.Schema({
-    applicant: {
+    applicantId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
         required: true,
     },
-    class: {
+    classId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Class",
         required: true,
@@ -28,8 +28,8 @@ const FormSchema = new mongoose.Schema({
     appliedAt: { type: Date, default: Date.now },
 });
 
-FormSchema.index({ applicant: 1 });
-FormSchema.index({ class: 1 , status: 1 });
+FormSchema.index({ applicantId: 1 });
+FormSchema.index({ classId: 1 , status: 1 });
 FormSchema.index({ status: 1 });
 
 export const FormModel = mongoose.model("Form", FormSchema);

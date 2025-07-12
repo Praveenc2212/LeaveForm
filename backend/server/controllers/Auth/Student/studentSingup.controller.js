@@ -51,7 +51,7 @@ export const StudentSignUp = async (req, res) => {
             email,
             password: hashedPassword,
             rollno,
-            class: studentClass._id,
+            classId: studentClass._id,
         });
 
         res.status(201).json({
@@ -62,7 +62,7 @@ export const StudentSignUp = async (req, res) => {
                 name: student.name,
                 email: student.email,
                 rollno: student.rollno,
-                class: student.class,
+                classId: student.classId,
             },
         });
     } catch (error) {

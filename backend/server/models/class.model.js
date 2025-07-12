@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
 export const ClassSchema = new mongoose.Schema({
-    tutors: [{
+    tutorsIds: [{ 
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Faculty",
-        required: true,
+        ref: "Faculty"
     }],
     department: {
         type: String,

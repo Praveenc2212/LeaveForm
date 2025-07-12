@@ -15,6 +15,7 @@ import  "./server/controllers/LeaveForm/ApplyLeaveform.controller.js"
 // Custom Functions & Routers...
 import AuthRouter from "./server/routers/auth.routers.js";
 import DB from "./server/connections/DB.connections.js";
+import FormRouter from "./server/routers/form.routers.js";
 
 // Configurations...
 configDotenv();
@@ -69,9 +70,7 @@ app.get("/", (req, res) => res.send("Hello, World! From Backend"));
 app.use("/auth", AuthRouter);
 
 // Form Routes...
-// app.use("/form", (req, res, next) => {
-//     next();
-// });
+app.use("/api/form", FormRouter);
 
 // 404 Page Not Found...
 app.use((req, res) => {

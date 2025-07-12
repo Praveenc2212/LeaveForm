@@ -1,23 +1,18 @@
-
 import bcrypt from "bcryptjs";
-import { getFacultyByEmail, createFaculty } from "../../../services/user.service.js";
+import {
+    getFacultyByEmail,
+    createFaculty,
+} from "../../../services/user.service.js";
 
 export const FacultySignUp = async (req, res) => {
     try {
-        const { name, email, password, staffId, department, designation } = req.body;
+        const { name, email, password, staffId, designation, department } = req.body;
 
-        // Check required fields
-        if (
-            !name ||
-            !email ||
-            !password ||
-            !staffId ||
-            !department ||
-            !designation
-        ) {
+        // Check for minimal required fields
+        if (!name || !email || !password || !staffId || !designation && !department) {
             return res.status(400).json({
                 success: false,
-                message: "All fields are required.",
+                message: "Name, email, password, staffId, designation, and department are required.",
             });
         }
 
@@ -33,13 +28,12 @@ export const FacultySignUp = async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Register faculty
+        // Register faculty (with or without classId)
         const faculty = await createFaculty({
             name,
             email,
             password: hashedPassword,
             staffId,
-            department,
             designation,
         });
 

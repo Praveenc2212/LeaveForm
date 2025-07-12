@@ -1,8 +1,9 @@
-import { UserModel } from "../../models/User.model.js";
 import bcrypt from "bcryptjs";
-import { GenerateJwtTokens } from "../../utils/GenerateJWT.util.js";
+import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
+import { getFacultyByEmail } from "../../../services/user.service.js";
+import { getFormsByTutor } from "../../../services/form.service.js";
 
-export const Login = async (req, res) => {
+export const FacultyLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -13,7 +14,8 @@ export const Login = async (req, res) => {
             });
         }
 
-        const user = await UserModel.findOne({ email });
+        const user = await getFacultyByEmail(email);
+
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -30,19 +32,20 @@ export const Login = async (req, res) => {
         }
 
         // Generate JWT token and set it in cookies...
-        GenerateJwtTokens(user._id, res);
+        GenerateJwtTokens({ userId: user._id, designation: user.designation }, res);
 
-        
-
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "Login successful.",
-            user: {
+            userData: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                staffId: user.staffId,
+                department: user.department,
                 designation: user.designation,
             },
+            leaveData: await getFormsByTutor(user._id),
         });
     } catch (err) {
         console.error("Login error:", err);

@@ -1,5 +1,3 @@
-// LeaveRequests.jsx
-
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './../Header';

@@ -20,6 +20,7 @@ import Header from './components/DashBoard/Header';
 import Contact from './Contact';
 import About from './About';
 import Footer from './footer'; // ✅ make sure this is exported as capital 'Footer'
+import NotFound404 from './components/NotFound/NotFound404';
 
 function App() {
   const location = useLocation();
@@ -63,7 +64,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-          <Route path="*" element={<div className="p-4 text-center">404 - Page Not Found</div>} />
+          <Route path="*" element={<NotFound404/>} />
         </Routes>
       </div>
       {/* ✅ Footer always shown at bottom */}

@@ -28,6 +28,7 @@ function Login() {
             <input
               type="email"
               name="email"
+              required
               value={email}
               onChange={e => setEmail(e.target.value)}
               autoComplete="off"
@@ -40,6 +41,7 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={password}
+                required
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="off"
                 placeholder="Enter Password"

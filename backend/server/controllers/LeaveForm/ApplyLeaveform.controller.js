@@ -19,14 +19,13 @@ mongoose.connect("mongodb://localhost:27017/Leave", {
 app.post('/apply-leave', async (req, res) => {
   try {
     const { fullname, rollno, email, department, year,section ,startDate,endDate,reason,status} = req.body;
-
     const new_leave = new LeaveForm({
      fullname,
        rollno,
        email,
        department, 
        year,
-       section ,
+       section,
        startDate,
        endDate,
        reason,
@@ -38,7 +37,8 @@ app.post('/apply-leave', async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 });
-
 app.listen(process.env.PORT || 3000, () => {
  // console.log("Server running on port ${process.env.PORT}");
 });
+
+      

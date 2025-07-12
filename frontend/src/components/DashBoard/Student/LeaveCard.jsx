@@ -10,7 +10,7 @@ function LeaveCard() {
         {/* Apply Leave */}
         <button
           className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
-          onClick={() => navigate("/leaveform")}
+          onClick={() => navigate("/student/leaveform")}
         >
           {/* SVG icon for Apply Leave with orange accent */}
           <svg
@@ -115,7 +115,6 @@ function LeaveCard() {
             </svg>
             <span className="text-sm text-black">Leave Status</span>
           </button>
-
           <button
             className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
             onClick={() => navigate("/history")}

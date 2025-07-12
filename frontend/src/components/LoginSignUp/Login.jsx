@@ -8,12 +8,11 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   // const navigate = useNavigate();
+  // const { login } = useAuthStore();
 
   const HandleLogin = (e) => {
     e.preventDefault();
   };
-
-  
   return (
     <div className="h-96 bg-orange-50/30 font-sans  flex items-center justify-center">
       <div className="bg-white rounded-xl shadow-2xl p-12 w-full max-w-md flex flex-col justify-center fixed top-30    ">
@@ -35,7 +34,7 @@ function Login() {
               placeholder="Enter E-Mail"
               className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-200"
             />
-
+            
              <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}

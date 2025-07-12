@@ -1,40 +1,31 @@
-// LeaveRequests.jsx
-
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './../Header';
 // Add this import for the avatar icon
 import { CircleUserRound } from 'lucide-react';
-
 function LeaveRequests() {
   const navigate = useNavigate();
   const location = useLocation();
   const leaveRequests = location.state?.leaveRequests || [];
-
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedReq, setSelectedReq] = useState(null);
-
   const handleAccept = (id) => {
     alert(`Accepted leave request with ID: ${id}`);
     setModalOpen(false);
   };
-
   const handleReject = (id) => {
     alert(`Rejected leave request with ID: ${id}`);
     setModalOpen(false);
   };
-
   const handleView = (req) => {
     setSelectedReq(req);
     setModalOpen(true);
   };
-
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedReq(null);
   };
-
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {/* Blurred Background Image */}
@@ -53,7 +44,6 @@ function LeaveRequests() {
       >
         Back to Dashboard
       </button>
-
       <div className="flex flex-col gap-8 items-center px-2">
         {leaveRequests.length === 0 ? (
           <p className="text-center text-gray-700 text-lg">No pending leave requests.</p>
@@ -67,7 +57,7 @@ function LeaveRequests() {
                          mx-auto w-full max-w-md sm:max-w-2xl
                          sm:py-6 sm:min-h-0"
             >
-              {/* Profile, Name, Roll */}
+              {/* Profile, Name, Roll */} 
               <div className="flex flex-col items-center sm:flex-row sm:items-center flex-1 min-w-0 w-full">
                 {/* Replace image with avatar icon */}
                 <CircleUserRound className="w-16 h-16 text-orange-400 mb-2 sm:mb-0 sm:mr-4" />
@@ -85,7 +75,7 @@ function LeaveRequests() {
               <div className="flex flex-row gap-6 mt-4 sm:mt-0 flex-shrink-0">
                 
                 <button
-                  onClick={() => handleReject(req.id)}
+                  onClick={() => handleReject(req.id)} 
                   className="flex flex-col items-center group"
                   title="Reject"
                 >

@@ -53,11 +53,11 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/student" element={<StudentDashBoard />} />
-          <Route path="/leaveform" element={<LeaveForm />} />
+          <Route path="/student/leaveform" element={<LeaveForm />} />
           <Route path="/recentleave" element={<RecentLeavePage />} />
           <Route path="/history" element={<History />} />
           <Route path="/staff" element={<StaffDashBoard />} />
-          <Route path="/leaverequests" element={<LeaveRequests />} />
+          <Route path="/staff/leaverequests" element={<LeaveRequests />} />
           <Route path="/hod" element={<HODDashBoard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact" element={<Contact />} />

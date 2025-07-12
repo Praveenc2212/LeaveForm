@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+// import { ArrowLeft } from 'lucide-react';
 const LeaveForm = () => {
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({ 
     reason: "",
     startDate: "",
     endDate: "",
@@ -14,17 +17,27 @@ const LeaveForm = () => {
       [name]: value,
     }));
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Leave Form Data:", formData);
     alert("Leave Form Submitted!");
+    navigate("/student");
   };
   return (
-    <div className="min-h-screen bg-[#FFF9F4] flex items-center justify-center py-8 px-2">
+    <>
+      {/* <div className="flex items-center justify-start p-4">
+        <button onClick={() => navigate("/student")} className="text-gray-600 hover:text-gray-800 cursor-pointer">
+          <ArrowLeft size={24} />
+        </button>
+      </div> */}
+     <div>
+    </div>
+    <div className="min-h-screen bg-[#FFF9F4] flex items-center justify-center py-2 pt-0 px-2">
+      
       <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white rounded-xl shadow-2xl mx-auto p-6 sm:p-8 flex flex-col items-center">
         <div className="flex flex-col items-center mb-6">
-          
+       
           <h2 className="text-3xl font-bold text-black mb-2 text-center">
             Leave Form
           </h2>
@@ -83,7 +96,7 @@ const LeaveForm = () => {
           </button>
         </form>
       </div>
-    </div>
+    </div></>
   );
 };
 

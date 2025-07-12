@@ -6,7 +6,6 @@ import  LeaveForm from '../../models/LeaveForm';
 const app = express();
 
 app.use(express.json());
-
 // Connect to MongoDB Atlas
 mongoose.connect("mongodb://localhost:27017/Leave", {
   useNewUrlParser: true,

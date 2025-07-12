@@ -20,8 +20,8 @@ const historyLeaves = [
 ];
 function History() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-blue-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-8">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl shadow-orange-200 p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Leave History</h1>
         {historyLeaves.map((leave, idx) => (
           <RecentLeaveCard

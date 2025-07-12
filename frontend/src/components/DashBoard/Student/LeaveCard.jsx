@@ -9,7 +9,7 @@ function LeaveCard() {
       <div className="flex flex-col items-center justify-center gap-10 py-10 w-full px-4 max-w-screen-md">
         {/* Apply Leave */}
         <button
-          className="w-full max-w-[180px] aspect-square rounded-2xl bg-white shadow-md hover:shadow-2xl hover:shadow-orange-200 transition duration-300 flex flex-col items-center justify-center gap-2"
+          className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
           onClick={() => navigate("/leaveform")}
         >
           {/* SVG icon for Apply Leave with orange accent */}
@@ -102,11 +102,17 @@ function LeaveCard() {
             className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
             onClick={() => navigate("/recentleave")}
           >
-            <img
-              src="/status.png"
-              alt="Leave Status"
-              className="w-12 h-12 object-contain"
-            />
+            {/* SVG icon for Leave Status with orange accent and larger, centered tick */}
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="12" y="8" width="24" height="32" rx="3" fill="#FFF7ED" stroke="#FB923C" strokeWidth="2"/>
+              <polyline points="18,28 24,34 30,20" fill="none" stroke="#FB923C" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <span className="text-sm text-black">Leave Status</span>
           </button>
 

@@ -19,7 +19,7 @@ import FormRouter from "./server/routers/form.routers.js";
 configDotenv();
 
 // Connections...
-DB.connect(process.env.MONGO_DB_URL);
+DB.connect(process.env.MONGO_DB_URL_LOCAL);
 
 const app = express();
 const PORT = process.env.PORT || 3000;

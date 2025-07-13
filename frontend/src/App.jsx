@@ -1,6 +1,7 @@
 
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Toaster } from "react-hot-toast";
 import Signup from './components/LoginSignUp/Signup';
 import Login from './components/LoginSignUp/Login';
 import Welcome from './Welcome';
@@ -11,7 +12,7 @@ import StudentDashBoard from './components/DashBoard/Student/StudentDashBoard';
 import LeaveForm from './components/DashBoard/Student/LeaveForm';
 import RecentLeavePage from './components/DashBoard/Student/RecentLeavePage';
 import History from './components/DashBoard/Student/History';
-import { useAuthStore } from './store/AuthStore';
+// import { useAuthStore } from './store/AuthStore';
 import HODDashBoard from './components/DashBoard/HODPage/HODDashBoard';
 import Profile from './components/DashBoard/Profile';
 import Header from './components/DashBoard/Header';
@@ -19,10 +20,11 @@ import Header from './components/DashBoard/Header';
 
 import Contact from './Contact';
 import About from './About';
-import Footer from './footer'; // ✅ make sure this is exported as capital 'Footer'
+import Footer from './footer';
 import NotFound404 from './components/NotFound/NotFound404';
 
 function App() {
+  // const { userData } = useAuthStore();
   const location = useLocation();
   const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
 
@@ -41,15 +43,13 @@ function App() {
 
   if (showWelcome && location.pathname === '/') {
     return <Welcome />;
-  }
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* 🔼 Sticky Header */}
-      <div className='fixed top-0 left-0 w-full z-50'>
+  } 
 
-        <Header />
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <div className='fixed top-0 left-0 w-full z-50'>
+          <Header />
       </div>
-      {/* 🔽 Push main content below header */}
       <div className="pt-24 flex-grow">
         <Routes>
           <Route path="/" element={<Login />} />
@@ -68,8 +68,10 @@ function App() {
           <Route path="*" element={<NotFound404/>} />
         </Routes>
       </div>
-      {/* ✅ Footer always shown at bottom */}
+
       <Footer />
+
+      <Toaster />
     </div>
   );
 }

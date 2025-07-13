@@ -6,7 +6,6 @@ import { getFormsByApplicant } from "../../../services/form.service.js";
 export const StudentLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -19,7 +18,7 @@ export const StudentLogin = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: "Invalid email or password.",
+                message: "Invalid email.",
             });
         }
 
@@ -27,7 +26,7 @@ export const StudentLogin = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
-                message: "Invalid email or password.",
+                message: "Invalid password.",
             });
         }
 
@@ -42,6 +41,7 @@ export const StudentLogin = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 rollno: user.rollno,
+                classId: user.classId._id,
                 department: user.classId.department,
                 year: user.classId.year,
                 section: user.classId.section,

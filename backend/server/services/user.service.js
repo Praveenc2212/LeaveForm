@@ -28,6 +28,10 @@ export async function getFacultyByEmail(email) {
     return await FacultyModel.findOne({ email });
 }
 
+export async function getFacultyByStaffId(staffId) {
+    return await FacultyModel.findOne({ staffId });
+}
+
 
 // --- Class Services ---
 // Create a new Class document

@@ -11,7 +11,7 @@ import StudentDashBoard from './components/DashBoard/Student/StudentDashBoard';
 import LeaveForm from './components/DashBoard/Student/LeaveForm';
 import RecentLeavePage from './components/DashBoard/Student/RecentLeavePage';
 import History from './components/DashBoard/Student/History';
-
+import { useAuthStore } from './store/AuthStore';
 import HODDashBoard from './components/DashBoard/HODPage/HODDashBoard';
 import Profile from './components/DashBoard/Profile';
 import Header from './components/DashBoard/Header';
@@ -27,7 +27,6 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
 
   useEffect(() => {
-    checkAuth();
     if (location.pathname === '/') {
       setShowWelcome(true);
       const timer = setTimeout(() => {
@@ -37,7 +36,8 @@ function App() {
     } else {
       setShowWelcome(false);
     }
-  }, [location.pathname, checkAuth]);
+    // checkAuth();
+  }, [location.pathname ]);
 
   if (showWelcome && location.pathname === '/') {
     return <Welcome />;

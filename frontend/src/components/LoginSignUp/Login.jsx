@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
 // import { useNavigate } from "react-router-dom";
 import AuthHeader from './AuthHeader';
+import { useAuthStore } from "../../store/AuthStore.jsx";
 // import { useNavigate } from "react-router-dom";
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+     const {Login} = useAuthStore();
+     const [userData, setUserData] = useState({
+            email: "",
+            password: "",
+         });
   const [showPassword, setShowPassword] = useState(false);
   // const navigate = useNavigate();
   // const { login } = useAuthStore();
 
   const HandleLogin = (e) => {
     e.preventDefault();
+
+    Login(userData);
   };
   return (
-    <div className="h-96 bg-orange-50/30 font-sans  flex items-center justify-center">
+    <div className="h-96 font-sans  flex items-center justify-center">
       <div className="bg-white rounded-xl shadow-2xl p-12 w-full max-w-md flex flex-col justify-center fixed top-30    ">
 
           <div className="flex flex-col items-center mb-8">
@@ -28,8 +34,8 @@ function Login() {
               type="email"
               name="email"
               required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              value={userData.email}
+              onChange={e => setUserData({...userData, email : e.target.value})}
               autoComplete="off"
               placeholder="Enter E-Mail"
               className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-200"
@@ -39,9 +45,9 @@ function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                value={password}
+                value={userData.password}
                 required
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => setUserData({...userData, password : e.target.value})}
                 autoComplete="off"
                 placeholder="Enter Password"
                 className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-100 bg-transparent pr-12"
@@ -56,7 +62,6 @@ function Login() {
               </button>
             </div>
             <button
-              // onClick={HandleLogin}
               className="w-full bg-orange-100 hover:bg-orange-200 text-orange-600 font-medium py-3 cursor-pointer rounded-md transition"
             >
               Login

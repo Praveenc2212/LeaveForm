@@ -5,7 +5,7 @@ function LeaveCard() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center">
+    <div className="min-h-screen w-full flex flex-col items-center">
       <div className="flex flex-col items-center justify-center gap-10 py-10 w-full px-4 max-w-screen-md">
         {/* Apply Leave */}
         <button

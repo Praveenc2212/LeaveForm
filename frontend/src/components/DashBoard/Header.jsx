@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import logo from "../../assets/logo.png";
 import profilePic from "../../assets/Profile.png";
 
-const Header = () => {
+const Header = () => {  
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between items-center bg-white/10 backdrop-blur-md shadow-md rounded-xl py-2 px-6 mb-6 border border-white/20">
+    <div className="flex justify-between items-center bg-white shadow-md py-2 px-6 mb-6 border border-white/20">
       
       {/* Left: Logo + Title */}
       <div className="flex items-center space-x-4 cursor-pointer" onClick={() => navigate('/')}>

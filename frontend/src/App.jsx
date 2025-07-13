@@ -27,6 +27,7 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
 
   useEffect(() => {
+    checkAuth();
     if (location.pathname === '/') {
       setShowWelcome(true);
       const timer = setTimeout(() => {
@@ -36,13 +37,13 @@ function App() {
     } else {
       setShowWelcome(false);
     }
-  }, [location.pathname]);
+  }, [location.pathname, checkAuth]);
 
   if (showWelcome && location.pathname === '/') {
     return <Welcome />;
   }
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       {/* 🔼 Sticky Header */}
       <div className='fixed top-0 left-0 w-full z-50'>
 

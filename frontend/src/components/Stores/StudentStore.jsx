@@ -15,7 +15,7 @@ export const StudentStore =create((set)=>({
           const response = await axios.get(''); // temp api it will changable
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
-          set({ studentData: data.userData ,leaveForms: data.leaveData ,  isLoading: false, isError: false });
+          set({ studentData: data.userData , leaveForms: data.leaveData ,  isLoading: false, isError: false });
         } catch (error) {
           console.error('Failed to fetch student data:', error);
           set({ isLoading: false, isError: true });
@@ -33,7 +33,7 @@ export const StudentStore =create((set)=>({
           set({ isLoading: false, isError: true });
         }
       },
-      submitLeaveForm: async (formData) => {
+      ApplyLeaveForm: async (formData) => {
         set({ isLoading: true });
         try {
           const response = await axios.post('', formData); // temp api it will changable

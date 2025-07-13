@@ -1,7 +1,7 @@
 
 import { createLeaveForm } from "../../services/form.service.js";
 
-export const applyForm = async (req, res) => {
+export const applyLeaveForm = async (req, res) => {
     try {
         const { applicantId, classId, startDate, endDate, reason } = req.body;
 

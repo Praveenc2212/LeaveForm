@@ -34,6 +34,7 @@ export const FacultySignUp = async (req, res) => {
             email,
             password: hashedPassword,
             staffId,
+            department,
             designation,
         });
 

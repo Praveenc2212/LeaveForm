@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 export const useAuthStore = create((set) => ({
     userData: null,
-    LeaveForms: null,
+    leaveForms: null,
     isLoading: false,
     isAuthenticated: false,
     isCheckingAuth : false,
@@ -11,10 +11,7 @@ export const useAuthStore = create((set) => ({
     setRedirectPath: (path) => set({ redirect_path: path }),
     checkAuth: async () => {
         set({ isCheckingAuth: true });
-
-
         try {
-
             set({isLoading: true});
             const url = "http://localhost:1247";
             const apiRes = await axios.get(url+"/auth/check");
@@ -38,34 +35,29 @@ export const useAuthStore = create((set) => ({
             set({isLoading: true});
         } 
     },
-    login: async (logData) => { 
+    Login: async (userData) => { 
         set({ isLoging: true }); 
         try {
-            // API endpoints for different roles
-            //auth/student/login
-            //auth/faculty/login
-            //auth/admin/student/signup
-            //auth/admin/faculty/signup
-            //auth/admin/class
-            //api/form/apply { usrId , reason , startdaataa, enddate , classId }
-            const url ="http://localhost:1247/api";
-            const emailStart = logData.email;
-            if(emailStart.startWith("7178" , 0 )) {
-                const apiRes = await axios.post(url+"/auth/student/login", logData);
-                toast.success(`Welcome Back, ${apiRes.data.name}`);
-                set({ userData: apiRes.data, isAuthenticated: true });
-                set({ redirect_path: '/student' });
+            const url = "http://localhost:1247/auth";
+            if(userData.email.startsWith("7178" , 0 )) {
+                const apiRes = await axios.post(url + "/student/login", userData);
+                console.log("UserData response:", apiRes.data.userData);
+                console.log("LeaveForm response:", apiRes.data.leaveData);
+                toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
+                set({ userData: apiRes.data.userData, isAuthenticated: true, leaveForms: apiRes.data.leaveData, redirect_path: '/student' });
             }
             else{
-                const apiRes = await axios.post(url+"/auth/faculty/login", logData);
-                toast.success(`Welcome Back, ${apiRes.data.name}`);
-                set({ userData: apiRes.data, isAuthenticated: true });
+                const apiRes = await axios.post(url + "/faculty/login", userData);
+                toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
+                set({ userData: apiRes.data.userData, isAuthenticated: true, leaveForms: apiRes.data.leaveData, redirect_path: '/faculty' });
             }
-              set({isLoading: false});
+            set({isLoading: false});
         }catch (error) {
+            // console.log(error);
+            
             let err = error.response ?
-                error.response.data :
-                "Error: Server is Down"
+            error.response.data :
+            "Error: Server is Down"
             console.error(error);
             toast.error(err);
             set({ userData: null, isAuthenticated: false });
@@ -77,25 +69,24 @@ export const useAuthStore = create((set) => ({
         set({ isLoading: true });
         const url ="http://localhost:1247/api";
         try {
-            const apiRes = await axios.post(url+"/form/student/apply-leave", leaveData);
+            await axios.post(url+"/form/student/apply-leave", leaveData);
             toast.success("Leave Applied Successfully");
         } catch (error) {
             let err = error.response ?
-                error.response.data :
-                "Error: Server is Down"
+            error.response.data :
+            "Error: Server is Down"
             console.error(error);
             toast.error(err);
         } finally {
             set({ isLoading: false });
         }
-
+        
     }
 }))
-
-// import React from 'react'
-// function AuthStore() {
-//   return (
-//     <div>AuthStore</div>
-//   )
-// }
-// export default AuthStore
+// API endpoints for different roles
+//auth/student/login
+//auth/faculty/login
+//auth/admin/student/signup
+//auth/admin/faculty/signup
+//auth/admin/class
+//api/form/apply { usrId , reason , startdate , enddate , classId }

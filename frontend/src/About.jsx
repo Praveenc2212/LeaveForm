@@ -1,63 +1,82 @@
 import React from "react";
-
-import me from './assets/me.jpg'; 
-import cp from './assets/cp.jpg'; 
+import me from './assets/me.jpg';
+import cp from './assets/cp.jpg';
 import d from './assets/dhanu.jpg';
-import s from './assets/sh.jpg'; 
-const team = [
-  {
-    name: "Dhanush",
-    role: "Frontend | Backend Developer",
-    image: d, 
-  },
-  {
-    name: "Praveen C", 
-    role: "Backend Developer",
-    image: cp,
-  },
-  {
-    name: "Praveenkumar ",
-    role: "Frontend Developer",
-    image: me,
-  },
-  {
-    name: "Shankar S",
-    role: "Frontend Developer",
-    image: s,
-  },
+import s from './assets/sh.jpg';
+import bgImage from './assets/bg13.jpg';
+import overlay from './assets/bg6.png';
+
+const teamMembers = [
+  { name: "Praveen M", role: "Team Lead", image: me },
+  { name: "Dhanush", role: "Frontend & Backend Developer", image: d },
+  { name: "Praveen C", role: "Frontend & Backend Developer", image: cp },
+  { name: "Shankar S", role: "Frontend Developer", image: s },
+  { name: "Praveen M", role: "Team Lead", image: me },
+  { name: "Dhanush", role: "Frontend & Backend Developer", image: d },
+  { name: "Praveen M", role: "Team Lead", image: me },
+  { name: "Dhanush", role: "Frontend & Backend Developer", image: d },
 ];
 
-function About() {
+const TeamPage = () => {
   return (
-    <div className="min-h-screen bg-[#fefaf6] py-10 px-4 md:px-16">
-     
-      <h1 className="text-4xl font-extrabold text-center text-[#7c4f29] mb-2">
-        Meet Our Team
+    <div className="min-h-screen bg-cover bg-center py-10 px-4 flex flex-col items-center opacity: 1.0"
+    style={{ backgroundImage: `url(${bgImage})`}}
+    >
+      <h1 className="text-5xl font-bold text-center text-black mb-12">
+        About <span className="text-white">Us</span>
       </h1>
-      <p className="text-lg font-medium text-center text-gray-700 mb-10">
-        Administration Team
-      </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 place-items-center">
-        {team.map((member, index) => (
-          <div
-            key={index}
-            className="bg-white p-6 rounded-xl shadow-md w-64 text-center border border-[#d2b48c]"
-          >
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-[#f1e3cd] object-cover"
-            />
-            <h3 className="text-xl font-bold text-[#7c4f29]">{member.name}</h3>
-            <p className="text-sm text-gray-600 mt-1">{member.role}</p>
-          </div>
-        ))}
+      <div className="flex flex-col gap-10 w-full max-w-4xl">
+        {teamMembers.map((member, index) => {
+          const isOdd = index % 2 !== 0;
+
+          return (
+            <div
+              key={index}
+              className={`relative flex items-center rounded-2xl shadow-lg px-6 py-8 ${
+                isOdd
+                  ? "bg-orange-300 text-black flex-row-reverse"
+                  : "bg-orange-100 text-black"
+              }`}
+            >
+              {/* Decorative Overlay Image */}
+              <img
+                src={overlay}
+                alt="Decoration"
+                className={`absolute w-28 ${
+                  isOdd ? "top-0 left-0 h-40 w-70" : "top-0 right-0 h-40 w-70 scale-x-[-1]"
+                } opacity-100`}
+              />
+
+              {/* Profile Image */}
+              <div
+                className={`w-24 h-24 rounded-full overflow-hidden border-4 ${
+                  isOdd ? "border-orange-100 ml-6" : "border-orange-400 mr-6"
+                } shadow-md flex-shrink-0`}
+              >
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+
+              {/* Text */}
+              <div
+                className={`flex-1 flex flex-col ${
+                  isOdd ? "items-end pr-6 text-right" : "items-start pl-6 text-left"
+                }`}
+              >
+                <h2 className="text-2xl font-bold mb-1">{member.name}</h2>
+                <p className="text-lg mb-1 opacity-80">{member.role}</p>
+               
+              </div>
+            </div>
+          );
+        })}
       </div>
-
-     
     </div>
   );
-}
+};
 
-export default About;
+export default TeamPage;

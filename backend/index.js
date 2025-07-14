@@ -11,16 +11,15 @@ import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-import  "./server/controllers/LeaveForm/ApplyLeaveform.controller.js"
-// Custom Functions & Routers...
 import AuthRouter from "./server/routers/auth.routers.js";
 import DB from "./server/connections/DB.connections.js";
+import FormRouter from "./server/routers/form.routers.js";
 
 // Configurations...
 configDotenv();
 
 // Connections...
-DB.connect(process.env.MONGO_DB_URL_LOCAL);
+DB.connect(process.env.MONGO_DB_URL);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -64,9 +63,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes...
 app.get("/", (req, res) => res.send("Hello, World! From Backend"));
-app.post("/apply-leave",ApplyLeavefrorm )
+
 // Authentication Routes...
 app.use("/auth", AuthRouter);
+
+// Form Routes...
+app.use("/api/form", FormRouter);
 
 // 404 Page Not Found...
 app.use((req, res) => {
@@ -83,7 +85,6 @@ app.use((err, req, res) => {
                 : "Internal Server Error",
     });
 });
-
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

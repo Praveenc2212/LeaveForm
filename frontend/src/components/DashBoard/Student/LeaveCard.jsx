@@ -5,12 +5,12 @@ function LeaveCard() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center">
+    <div className="min-h-screen w-full flex flex-col items-center">
       <div className="flex flex-col items-center justify-center gap-10 py-10 w-full px-4 max-w-screen-md">
         {/* Apply Leave */}
         <button
           className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
-          onClick={() => navigate("/leaveform")}
+          onClick={() => navigate("/student/leaveform")}
         >
           {/* SVG icon for Apply Leave with orange accent */}
           <svg
@@ -115,7 +115,6 @@ function LeaveCard() {
             </svg>
             <span className="text-sm text-black">Leave Status</span>
           </button>
-
           <button
             className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2"
             onClick={() => navigate("/history")}

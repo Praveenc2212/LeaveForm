@@ -8,7 +8,7 @@
         "concurrently": "^9.2.0"
     },
     "dependencies": {
-        "@tailwindcss/vite": "^4.1.11",
-        "tailwindcss": "^4.1.11"
+        "react-hot-toast": "^2.5.2",
+        "zustand": "^5.0.6"
     }
 }

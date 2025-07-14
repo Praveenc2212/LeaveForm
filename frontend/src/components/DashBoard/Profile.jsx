@@ -2,10 +2,9 @@ import React from "react";
 import { UserRound, LogOut } from "lucide-react";
 import AuthHeader from "../LoginSignUp/AuthHeader"; // ✅ Correct path
 
-
-
 function Profile() {
   return (
+
     <>
       {/* <AuthHeader /> */}
       <div className="min-h-screen mt-7 h-[90vh] overflow-hidden bg-orange-50/30 font-sans text-sm flex flex-col items-center justify-center p-1">
@@ -64,6 +63,7 @@ function Profile() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
         {/* Logout Button */}

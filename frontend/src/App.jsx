@@ -41,7 +41,7 @@ function App() {
     // checkAuth();
   }, [location.pathname ]);
 
-  if (showWelcome && location.pathname === '/') {
+  if (showWelcome && location.pathname === '/') { 
     return <Welcome />;
   } 
 
@@ -52,7 +52,8 @@ function App() {
       </div>
       <div className="pt-24 flex-grow">
         <Routes>
-          <Route path="/" element={<Login />} />
+          
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/student" element={<StudentDashBoard />} />
           <Route path="/student/leaveform" element={<LeaveForm />} />

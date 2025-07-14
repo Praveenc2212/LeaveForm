@@ -1,6 +1,6 @@
 import React from "react";
 import ProgressCard from "./ProgressCard";
-import { useAuthStore } from '../../../store/AuthStore.jsx';
+import { useAuthStore } from '../../../store/useAuthStore.jsx';
 function RecentLeavePage() {
   // const leaveData = [];
   const { leaveForms } = useAuthStore();

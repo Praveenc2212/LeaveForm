@@ -2,7 +2,7 @@
 import React, { use, useRef } from 'react';
 import { FaDownload } from 'react-icons/fa';
 import LeaveFormDownload from './LeaveFormDownload';
-import { useAuthStore } from '../../../store/AuthStore.jsx';
+import { useAuthStore } from '../../../store/useAuthStore.jsx';
 function ProgressCard({  status, startDate , endDate, reason }) {
   
   const downloadRef = useRef();

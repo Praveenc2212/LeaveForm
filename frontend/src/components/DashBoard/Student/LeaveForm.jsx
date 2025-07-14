@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useAuthStore } from "../../../store/useAuthStore";
 import App from "../../../App";
 // import { ArrowLeft } from 'lucide-react';
 const LeaveForm = () => {
   const navigate = useNavigate();
-  const { ApplyLeave  } = useAuthStore();
+  const { ApplyLeave, userData  } = useAuthStore();
   const [formData, setFormData] = useState({ 
     reason: "",
     startDate: "",
     endDate: "",
+    applicantId: userData ? userData.id : "",
+    classId: userData ? userData.classId : "",
   });
 
   const handleChange = (e) => {
@@ -37,7 +39,7 @@ const LeaveForm = () => {
         <button onClick={() => navigate("/student")} className="text-gray-600 hover:text-gray-800 cursor-pointer">
           <ArrowLeft size={24} />
         </button>
-      </div> */}
+      </div> */} 
      <div>
     </div>
     <div className="min-h-screen bg-[#FFF9F4] flex items-center justify-center py-2 pt-0 px-2">

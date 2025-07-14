@@ -8,13 +8,16 @@ import {
 
 export const checkAuthentication = async (req, res) => {
     try {
-        const token = req.cookies[process.env.JWT_TOKEN_NAME];
+        const token = req.cookies[process.env.JWT_TOKEN_NAME]; //JWT_TOKEN_NAME
         if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "Authentication token missing.",
             });
         }
+
+        console.log("Token:", token);
+        
 
         const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
         if (!data) {

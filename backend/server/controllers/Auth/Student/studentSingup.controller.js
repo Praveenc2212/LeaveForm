@@ -6,7 +6,7 @@ export const StudentSignUp = async (req, res) => {
     try {
         const { name, email, password, rollno, department, year, section } =
             req.body;
-
+            
         // Check required fields
         if (
             !name ||

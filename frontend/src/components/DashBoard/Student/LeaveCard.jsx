@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 function LeaveCard() {
   const navigate = useNavigate();
   return (
-    //<div className="h-screen w-full bg-white flex flex-col">
-      <div className="flex flex-col items-center justify-center w-full gap-6 flex-1" style={{ margin: 0, padding: 0 }}>
+    <div className="min-h-screen w-full flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center gap-10 py-10 w-full px-4 max-w-screen-md">
         {/* Apply Leave */}
         <button
           className="w-full max-w-[180px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer"

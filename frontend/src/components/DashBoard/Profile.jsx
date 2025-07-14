@@ -1,8 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { UserRound, LogOut } from "lucide-react";
 import AuthHeader from "../LoginSignUp/AuthHeader"; // ✅ Correct path
+import { useAuthStore } from "../../store/AuthStore";
 
 function Profile() {
+  const { userData } = useAuthStore();
   return (
     <>
       {/* <AuthHeader /> */}
@@ -24,7 +26,7 @@ function Profile() {
               <div className="md:w-1/2 mb-2">
                 <label className="text-sm text-gray-600">Name</label>
                 <div className="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800">
-                  Shankar
+                  {userData.name}
                 </div>
               </div>
               <div className="md:w-1/2 mb-2">
@@ -39,7 +41,7 @@ function Profile() {
               <div className="md:w-1/2 mb-2 flex flex-col justify-start">
                 <label className="text-sm text-gray-600">Email</label>
                 <div className="w-full mt-1 px-4 py-2 h-[44px] rounded-lg border border-gray-300 bg-white text-gray-800 flex items-center">
-                  shankar@example.com
+                  {userData.email}
                 </div>
               </div>
               <div className="md:w-1/2 mb-2 flex flex-col justify-start">

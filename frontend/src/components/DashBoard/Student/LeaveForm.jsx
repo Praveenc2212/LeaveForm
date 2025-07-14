@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+// import { useAuthStore } from "../../../store/AuthStore";
+import App from "../../../App";
 // import { ArrowLeft } from 'lucide-react';
 const LeaveForm = () => {
   const navigate = useNavigate();
-  
+  // const { ApplyLeave  } = useAuthStore();
   const [formData, setFormData] = useState({ 
     reason: "",
     startDate: "",
@@ -20,8 +23,12 @@ const LeaveForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Leave Form Data:", formData);
-    alert("Leave Form Submitted!");
+    // ApplyLeave(formData);
+    setFormData({
+      reason: "",
+      startDate: "",
+      endDate: "",
+    });
     navigate("/student");
   };
   return (

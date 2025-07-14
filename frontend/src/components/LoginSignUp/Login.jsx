@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { use, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, UserRound } from "lucide-react";
 import { useAuthStore } from "../../store/AuthStore.jsx";
 function Login() {
+	const navigate  = useNavigate();
 	const { Login } = useAuthStore();
 	const [userData, setUserData] = useState({
 		email: "",
@@ -12,6 +14,7 @@ function Login() {
 	const HandleLogin = (e) => {
 		e.preventDefault();
 		Login(userData);
+		navigate("/student");
 	};
 
 	return (

@@ -45,6 +45,7 @@ export const useAuthStore = create((set) => ({
                 console.log("LeaveForm response:", apiRes.data.leaveData);
                 toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
                 set({ userData: apiRes.data.userData, isAuthenticated: true, leaveForms: apiRes.data.leaveData, redirect_path: '/student' });
+                // Navigate("/student");
             }
             else{
                 const apiRes = await axios.post(url + "/faculty/login", userData);
@@ -68,8 +69,15 @@ export const useAuthStore = create((set) => ({
     ApplyLeave : async(leaveData) =>{
         set({ isLoading: true });
         const url ="http://localhost:1247/api";
+        leaveForm ={
+            classId: useAuthStore.getState().userData.classId,
+            applicantId: useAuthStore.getState().leaveForms.applicantId,
+            startDate : leaveData.startDate,
+            endDate : leaveData.endDate,
+            reason : leaveData.reason
+        }
         try {
-            await axios.post(url+"/form/student/apply-leave", leaveData);
+            await axios.post(url+"/form/student/apply-leave", leaveForm);
             toast.success("Leave Applied Successfully");
         } catch (error) {
             let err = error.response ?

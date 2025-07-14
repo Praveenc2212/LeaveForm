@@ -1,0 +1,109 @@
+.video-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  filter: blur(10px);
+}
+
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.content-wrapper {
+  text-align: center;
+  color: #fff;
+  z-index: 1;
+  position: relative;
+  animation: fadeIn 2s ease forwards;
+}
+
+.logo-wrapper {
+  animation: dropIn 1s ease-out;
+}
+.logo {
+  height: 120px;
+  width: auto;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 6px #fff);
+}
+
+.headline {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 10px #3d699b;
+  animation: slideUp 1s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.college-name {
+  font-size: 2rem;
+  margin-top: 10px;
+  font-weight: 700;
+  color: #ffd3b5;
+  text-shadow: 0 0 10px #ce7a56;
+  animation: slideUp 1s ease forwards;
+  animation-delay: 1s;
+  opacity: 0;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-top: 15px;
+  color: #eee;
+  letter-spacing: 0.2rem;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 1.5s;
+  opacity: 0;
+}
+
+@keyframes dropIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

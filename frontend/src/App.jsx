@@ -46,7 +46,7 @@ function App() {
       </div>
       {/* 🔽 Push main content below header */}
       <div className="pt-24 flex-grow">
-        <Routes>
+        <Routes>  
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/student" element={<StudentDashBoard />} />

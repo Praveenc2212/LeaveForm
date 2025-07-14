@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Signup from "./components/LoginSignUp/Signup";
 import Login from "./components/LoginSignUp/Login";
-import Welcome from "./Welcome";
 import StaffDashBoard from "./components/DashBoard/StaffPage/StaffDashBoard";
 import LeaveRequests from "./components/DashBoard/StaffPage/LeaveRequests";
 // import { useAuthStore } from './store/AuthStore';
@@ -29,6 +28,7 @@ import Contact from "./Contact";
 import About from "./About";
 import Footer from "./footer";
 import NotFound404 from "./components/NotFound/NotFound404";
+// import Welcome from "./components/Welcome";
 
 function App() {
      const navigate = useNavigate();
@@ -46,26 +46,24 @@ function App() {
         }
         console.log( "this is user data : " ,userData);
      
-     // const { userData } = useAuthStore();
-     // const location = useLocation();
-     // const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
+    //  const location = useLocation();
+    //  const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
 
-     // useEffect(() => {
-     //   if (location.pathname === '/') {
-     //     setShowWelcome(true);
-     //     const timer = setTimeout(() => {
-     //       setShowWelcome(false);
-     //     }, 3000);
-     //     return () => clearTimeout(timer);
-     //   } else {
-     //     setShowWelcome(false);
-     //   }
-     //   // checkAuth();
-     // }, [location.pathname ]);
+    //  useEffect(() => {
+    //    if (location.pathname === '/') {
+    //      setShowWelcome(true);
+    //      const timer = setTimeout(() => {
+    //        setShowWelcome(false);
+    //      }, 3000);
+    //      return () => clearTimeout(timer);
+    //    } else {
+    //      setShowWelcome(false);
+    //    }
+    //  }, [location.pathname ]);
 
-     // if (showWelcome && location.pathname === '/') {
-     //   return <Welcome />;
-     // }
+    //  if (showWelcome && location.pathname === '/') {
+    //    return <Welcome />;
+    //  }
 
      return (
           <div className="min-h-screen flex flex-col bg-white">

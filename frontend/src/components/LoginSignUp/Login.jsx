@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Eye, EyeOff, UserRound } from "lucide-react";
 import { useAuthStore } from "../../store/AuthStore.jsx";
 function Login() {
-	const { Login } = useAuthStore();
-	const [userData, setUserData] = useState({
+	const { Login, userData } = useAuthStore();
+	const [data, setData] = useState({
 		email: "",
 		password: "",
 	});
 	const [showPassword, setShowPassword] = useState(false);
 
-	const HandleLogin = (e) => {
+	const HandleLogin = async (e) => {
 		e.preventDefault();
-		Login(userData);
+		await Login(data);
+		console.log("UserData:", userData);
 	};
 
 	return (
@@ -29,8 +30,8 @@ function Login() {
 						type="email"
 						name="email"
 						required
-						value={userData.email}
-						onChange={e => setUserData({ ...userData, email: e.target.value })}
+						value={data.email}
+						onChange={e => setData({ ...data, email: e.target.value })}
 						autoComplete="off"
 						placeholder="Enter E-Mail"
 						className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-200"
@@ -40,9 +41,9 @@ function Login() {
 						<input
 							type={showPassword ? "text" : "password"}
 							name="password"
-							value={userData.password}
+							value={data.password}
 							required
-							onChange={e => setUserData({ ...userData, password: e.target.value })}
+							onChange={e => setData({ ...data, password: e.target.value })}
 							autoComplete="off"
 							placeholder="Enter Password"
 							className="w-full px-4 py-3 border border-orange-200 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-100 bg-transparent pr-12"

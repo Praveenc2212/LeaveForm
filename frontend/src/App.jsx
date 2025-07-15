@@ -32,7 +32,7 @@ import NotFound404 from "./components/NotFound/NotFound404";
 
 function App() {
      const navigate = useNavigate();
-     const { userData, checkAuth, isCheckingAuth } = useAuthStore();
+     const { userData, checkAuth, isCheckingAuth  } = useAuthStore();
      useEffect(() => {
           checkAuth();
      }, [checkAuth]);
@@ -73,25 +73,25 @@ function App() {
                <div className="pt-24 flex-grow">
                     <Routes>
                         <Route path="/" element={<Navigate to={"/login"} /> } />
-                         <Route path="/login" element={ userData ? <Navigate to={!userData.designation ? "/student" : `/${userData.designation.toLowerCase()}`} /> : <Login />} />
+                         <Route path="/login" element={ userData ? <Navigate to={!userData.designation ? "/student" : `/${userData.designation.toLowerCase()}/leaverequests`} /> : <Login />} />
                          <Route path="/signup" element={<Signup />} />
                          <Route
                               path="/student"
                               element={userData ? <StudentDashBoard /> : <Navigate to="/login" />}
-                         />
+                         /> 
                          <Route
                               path="/student/leaveform"
                               element={userData ? <LeaveForm /> : <Navigate to="/login" />}
                          />
-                         <Route
+                         <Route 
                               path="/recentleave"
-                              element={<RecentLeavePage />}
+                              element={<RecentLeavePage />} 
                          />
                          <Route path="/history" element={userData ? <History /> : <Navigate to="/login" />} />
                          <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />} />
                          <Route
                               path="/staff/leaverequests"
-                              element={<LeaveRequests />}
+                              element={<LeaveRequests  />}
                          />
                          <Route
                               path="/hod/leaverequests"

@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 
 export const useAuthStore = create((set) => ({
      userData: null,
-     isLogingIn: false,
      leaveForms: [],
+     isLogingIn: false,
      isAuthenticated: false,
      isCheckingAuth: false,
      redirect_path: "/login",
@@ -52,6 +52,8 @@ export const useAuthStore = create((set) => ({
                          redirect_path: "/student",
                     });
                     console.log("UserData:", useAuthStore.getState().userData);
+                    console.log("LeaveDatas:", useAuthStore.getState().leaveForms);
+                    
                } else {
                     const apiRes = await axios.post(
                          url + "/faculty/login",

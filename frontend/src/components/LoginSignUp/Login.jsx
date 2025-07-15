@@ -7,7 +7,7 @@ function Login() {
 
 	const { Login, userData } = useAuthStore();
 	const [data, setData] = useState({
-		email: "717823p254@kce.ac.in",
+		email: "rajapriya@kce.ac.in",
 		password: "123456",
 	});
 	const [showPassword, setShowPassword] = useState(false);

@@ -204,8 +204,8 @@ function LeaveCard() {
           </button>
         </div>
       </div>
-      //{/* Only one Footer at the bottom */}
-    //</div>
+      {/* Only one Footer at the bottom */}
+    </div>
   );
 }
 

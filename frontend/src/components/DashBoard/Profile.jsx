@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { UserRound, LogOut } from "lucide-react";
 import AuthHeader from "../LoginSignUp/AuthHeader"; // ✅ Correct path
 import { useAuthStore } from "../../store/useAuthStore";
@@ -32,7 +32,7 @@ function Profile() {
               <div className="md:w-1/2 mb-2">
                 <label className="text-sm text-gray-600">Roll Number</label>
                 <div className="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800">
-                  {userData.rollno}
+                  717823p112 
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@ function Profile() {
               <div className="w-1/2">
                 <label className="text-sm text-gray-600">Year</label>
                 <div className="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800">
-                  {userData.year} Year
+                  {userData.year}  III Year
                 </div>
               </div>
               <div className="w-1/2">

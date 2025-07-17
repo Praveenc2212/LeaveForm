@@ -1,13 +1,13 @@
-import { use, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, UserRound } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.jsx";
 function Login() {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
-	const { Login, userData } = useAuthStore();
+	const { Login } = useAuthStore();
 	const [data, setData] = useState({
-		email: "rajapriya@kce.ac.in",
+		email: "@kce.ac.in",
 		password: "123456",
 	});
 	const [showPassword, setShowPassword] = useState(false);

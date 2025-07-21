@@ -15,7 +15,6 @@ export const GenerateJwtTokens = (data, res) => {
         });
 
         return token;
-
     } catch (error) {
         throw new Error(`Error: Creating Json Web Token Failed... :- ${error}`);
     }

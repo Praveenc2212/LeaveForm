@@ -1,12 +1,7 @@
-
 export const Logout = (req, res) => {
     try {
         // Clear the cookie...
-        res.clearCookie("CSE Leave Portal Auth Token", {
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.STATUS != 'development',
-        });
+        res.cookie(process.env.JWT_TOKEN_NAME, "", { maxAge: 0 });
 
         // Send response...
         res.status(200).json({
@@ -14,9 +9,11 @@ export const Logout = (req, res) => {
             message: "Logout Successful...",
         });
     } catch (error) {
+        console.log("Logout Error:", error);
+
         res.status(500).json({
             success: false,
-            message: `Error: Logout Failed... :- ${error.message}`,
+            message: `Error: Logout Failed...`,
         });
     }
-}
+};

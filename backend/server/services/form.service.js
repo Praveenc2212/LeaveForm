@@ -1,21 +1,81 @@
-
 import { ClassModel } from "../models/class.model.js";
 import { FormModel } from "../models/Form.model.js";
 
 // Create a new Leave Form
-export async function createLeaveForm(data) {
+export const createLeaveForm = async (data) => {
     const form = new FormModel(data);
     return await form.save();
-}
+};
 
 // Get all forms by Applicant ID
-export async function getFormsByApplicant(applicantId) {
-    return FormModel.find({ applicantId }).sort({ appliedAt: -1 })  
-}
+export const getFormsByApplicant = async (applicantId) => {
+    return await FormModel.find({ applicantId })
+        .sort({ appliedAt: -1 })
+        .select("_id startDate endDate reason status")
+        .lean();
+};
 
-export async function getFormsByTutor(tutorId) {
-    const classData = await ClassModel.findOne({ tutorIds: tutorId }, { _id: 1 });
+export const getRecentAppliedStudentForm = async (studentId) => {
+    return await FormModel.findOne({ applicantId: studentId })
+        .sort({ appliedAt: -1 })
+        .select("_id startDate endDate reason status")
+        .lean();
+};
+
+// for class Tutors, return data is separated into 2 : tutor not Accepted and tutor Accepted...
+export const getFormsByTutor = async (tutorId, status) => {
+    const classData = await ClassModel.findOne(
+        { tutorIds: tutorId },
+        { _id: 1 }
+    );
+
     if (!classData) return [];
-    return await FormModel.find({ classId: classData._id, status: "Pending" })
-        .populate("applicantId", "name rollno");
-}
+
+    return await FormModel.find({ classId: classData._id, status })
+        .populate("applicantId", "_id name rollno")
+        .lean();
+};
+
+// Retrieves Forms That are Tutor Approved for HOD of Specific Department...
+export const getReviewedFormsByDepartment = async (department) => {
+    const classes = await ClassModel.find({ department }).select("_id");
+    const classIds = classes.map((cls) => cls._id);
+    return await FormModel.find({
+        classId: { $in: classIds },
+        status: "Reviewed",
+    })
+        .populate("applicantId", "name rollno classId")
+        .populate("classId", "year section")
+        .lean();
+};
+
+export const updateLeaveFormStatus = async (formId, status) => {
+    return await FormModel.findByIdAndUpdate(formId, { status });
+};
+
+// Delete Forms by IDs
+export const deleteManyFormsByIds = async (ids) => {
+    return await FormModel.deleteMany({ _id: { $in: ids } });
+};
+
+// Update many forms by Tutor ID
+export const updateManyFormsByTutor = async (tutorId) => {
+    const classId = await ClassModel.findOne({ tutorIds: tutorId }).select("_id");
+    if (!classId) {
+        return;
+    }
+    return await FormModel.updateMany(
+        { classId, status: "Pending" },
+        { $set: { status: "Reviewed" } }
+    );
+};
+
+// Update many forms by Department for HOD
+export const updateManyFormsByDepartment = async (department) => {
+    const classes = await ClassModel.find({ department }).select("_id");
+    const classIds = classes.map((cls) => cls._id);
+    return await FormModel.updateMany(
+        { classId: { $in: classIds }, status: "Reviewed" },
+        { $set: { status: "Approved" } }
+    );
+};

@@ -6,7 +6,9 @@ import { FacultyLogin } from "../controllers/Auth/Faculty/facultyLogin.controlle
 import { StudentSignUp } from "../controllers/Auth/Student/studentSingup.controller.js";
 import { FacultySignUp } from "../controllers/Auth/Faculty/facultySingup.controller.js";
 import { createClass } from "../controllers/Auth/class.controller.js";
-import { checkAuthentication } from "../Middleware/UserAuthentication.Middleware.js";
+import { AuthenticatedData } from "../controllers/Auth/authenticatedData.controller.js";
+
+import { checkAuthentication } from "../Middleware/checkAuthentication.Middleware.js";
 
 const router = express.Router();
 
@@ -16,7 +18,8 @@ router.post("/admin/faculty/signup", FacultySignUp);
 router.post("/admin/class", createClass);
 
 // Checking Authentication...
-router.get("/checkAuthenticated", checkAuthentication);
+router.get("/checkAuthenticated", checkAuthentication , AuthenticatedData );
+
 // Route to handle Student login...
 router.post("/student/login", StudentLogin);
 

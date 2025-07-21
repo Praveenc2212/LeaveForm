@@ -19,8 +19,8 @@ const FormSchema = new mongoose.Schema({
         default: "Pending",
         enum: [
             "Pending",
-            "Tutor Approved",
-            "HOD Approved",
+            "Reviewed",
+            "Approved",
             "Tutor Rejected",
             "HOD Rejected",
         ],

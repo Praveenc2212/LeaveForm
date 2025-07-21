@@ -4,7 +4,7 @@ import { getStudentByEmail, createStudent ,getClassByDetails } from "../../../se
 
 export const StudentSignUp = async (req, res) => {
     try {
-        const { name, email, password, rollno, department, year, section } =
+        const { name, email, password, rollno, gender, department, year, section } =
             req.body;
             
         // Check required fields
@@ -13,9 +13,10 @@ export const StudentSignUp = async (req, res) => {
             !email ||
             !password ||
             !rollno ||
+            !gender ||
             !department ||
             !year ||
-            !section
+            !section 
         ) {
             return res.status(400).json({
                 success: false,
@@ -49,6 +50,7 @@ export const StudentSignUp = async (req, res) => {
         const student = await createStudent({
             name,
             email,
+            gender,
             password: hashedPassword,
             rollno,
             classId: studentClass._id,
@@ -62,6 +64,7 @@ export const StudentSignUp = async (req, res) => {
                 name: student.name,
                 email: student.email,
                 rollno: student.rollno,
+                gender: student.gender,
                 classId: student.classId,
             },
         });

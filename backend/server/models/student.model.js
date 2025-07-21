@@ -10,6 +10,11 @@ const StudentSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    gender: {
+        type: String,
+        required: true,
+        enum: ["MALE", "FEMALE"],
+    },
     email: {
         type: String,
         required: true,
@@ -25,6 +30,5 @@ const StudentSchema = new mongoose.Schema({
         required: true,
     },
 });
-
 
 export const StudentModel = mongoose.model("Student", StudentSchema);

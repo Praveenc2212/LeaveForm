@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
 import { getFacultyByEmail } from "../../../services/user.service.js";
-import { getFormsByTutor } from "../../../services/form.service.js";
 
 export const FacultyLogin = async (req, res) => {
     try {
@@ -14,16 +13,16 @@ export const FacultyLogin = async (req, res) => {
             });
         }
 
-        const user = await getFacultyByEmail(email);
+        const faculty = await getFacultyByEmail(email);
 
-        if (!user) {
+        if (!faculty) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email.",
             });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, faculty.password);
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
@@ -32,20 +31,22 @@ export const FacultyLogin = async (req, res) => {
         }
 
         // Generate JWT token and set it in cookies...
-        GenerateJwtTokens({ userId: user._id, designation: user.designation }, res);
+        GenerateJwtTokens(
+            { id: faculty._id, designation: faculty.designation, department: faculty.department },
+            res
+        );
 
         res.status(200).json({
             success: true,
             message: "Login successful.",
             userData: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                staffId: user.staffId,
-                department: user.department,
-                designation: user.designation,
+                id: faculty._id,
+                name: faculty.name,
+                email: faculty.email,
+                staffId: faculty.staffId,
+                department: faculty.department,
+                designation: faculty.designation,
             },
-            leaveData: await getFormsByTutor(user._id),
         });
     } catch (err) {
         console.error("Login error:", err);

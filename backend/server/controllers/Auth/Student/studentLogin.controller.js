@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
 import { getStudentByEmail } from "../../../services/user.service.js";
-import { getFormsByApplicant } from "../../../services/form.service.js";
 
 export const StudentLogin = async (req, res) => {
     try {
@@ -13,16 +12,16 @@ export const StudentLogin = async (req, res) => {
             });
         }
 
-        const user = await getStudentByEmail(email);
+        const student = await getStudentByEmail(email);
 
-        if (!user) {
+        if (!student) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email.",
             });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, student.password);
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
@@ -31,22 +30,23 @@ export const StudentLogin = async (req, res) => {
         }
 
         // Generate JWT token and set it in cookies...
-        GenerateJwtTokens({ userId: user._id, designation: "STUDENT" }, res);
+        GenerateJwtTokens({ id: student._id, designation: "STUDENT" }, res);
 
         res.status(200).json({
             success: true,
             message: "Login successful.",
             userData: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                rollno: user.rollno,
-                classId: user.classId._id,
-                department: user.classId.department,
-                year: user.classId.year,
-                section: user.classId.section,
+                id: student._id,
+                name: student.name,
+                email: student.email,
+                rollno: student.rollno,
+                gender: student.gender,
+                classId: student.classId._id,
+                department: student.classId.department,
+                year: student.classId.year,
+                section: student.classId.section,
+                designation: "STUDENT",
             },
-            leaveData: await getFormsByApplicant(user._id),
         });
     } catch (err) {
         console.error("Login error:", err);

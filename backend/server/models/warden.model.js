@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const FacultySchema = new mongoose.Schema({
+const WardenSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -14,15 +14,11 @@ export const FacultySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    department: {
+    year: {
         type: String,
         required: true,
-    },
-    designation: {
-        type: String,
-        required: true,
-        enum: ["STAFF", "HOD", "ADMIN"],
+        enum: ["I", "II", "III", "IV"],
     },
 });
 
-export const FacultyModel = mongoose.model("Faculty", FacultySchema);
+export const WardenModel = mongoose.model("Warden", WardenSchema);

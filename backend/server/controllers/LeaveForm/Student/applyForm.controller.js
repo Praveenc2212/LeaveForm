@@ -1,31 +1,33 @@
+import { createLeaveForm } from "../../../services/form.service.js";
 
-import { createLeaveForm } from "../../services/form.service.js";
-
+// For Student to apply for a leave form...
 export const applyLeaveForm = async (req, res) => {
+    if (req.user.designation !== "STUDENT") {
+        return res.status(403).json({ message: "Forbidden" });
+    }
     try {
-        const { applicantId, classId, startDate, endDate, reason } = req.body;
+        const { classId, startDate, endDate, reason } = req.body;
 
-        if (!applicantId || !classId || !startDate || !endDate || !reason) {
+        if (!classId || !startDate || !endDate || !reason) {
             return res.status(400).json({
                 success: false,
-                message: "All fields (applicantId, classId, startDate, endDate, reason) are required.",
+                message:
+                    "All fields (classId, startDate, endDate, reason) are required.",
             });
         }
 
         await createLeaveForm({
-            applicantId,
+            applicantId: req.user.id,
             classId,
             startDate,
             endDate,
             reason,
-            status: "Pending",
         });
-        
+
         return res.status(201).json({
             success: true,
             message: "Leave form submitted successfully.",
         });
-
     } catch (error) {
         return res.status(500).json({
             success: false,

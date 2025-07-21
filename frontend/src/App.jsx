@@ -1,69 +1,43 @@
 import {
-     BrowserRouter,
      Routes,
      Route,
-     useLocation,
      Navigate,
-     useNavigate,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import Signup from "./components/LoginSignUp/Signup";
-import Login from "./components/LoginSignUp/Login";
-import StaffDashBoard from "./components/DashBoard/StaffPage/StaffDashBoard";
-import LeaveRequests from "./components/DashBoard/StaffPage/LeaveRequests";
-// import { useAuthStore } from './store/AuthStore';
-import StudentDashBoard from "./components/DashBoard/Student/StudentDashBoard";
-import LeaveForm from "./components/DashBoard/Student/LeaveForm";
-import RecentLeavePage from "./components/DashBoard/Student/RecentLeavePage";
-import History from "./components/DashBoard/Student/History";
-// import { useAuthStore } from './store/AuthStore';
-import HODDashBoard from "./components/DashBoard/HODPage/HODDashBoard";
-import Profile from "./components/DashBoard/Profile";
-import Header from "./components/DashBoard/Header";
+import Signup from "./components/Admin/Signup";
+import Login from "./components/Authentication/Login";
+import StaffDashBoard from "./components/Staff/StaffDashBoard";
+import PendingLeaveRequests from "./components/Staff/PendingLeaveRequests";
+import ReviewedLeaveRequests from "./components/Staff/ReviewedLeaveRequests";
+import StudentDashBoard from "./components/Student/StudentDashBoard";
+import ApplyLeaveForm from "./components/Student/ApplyLeaveForm";
+import StudentLeaveStatus from "./components/Student/StudentLeaveStatus";
+import StudentLeaveHistory from "./components/Student/StudentLeaveHistory";
+import HODDashBoard from "./components/HOD/HODDashBoard";
+import Profile from "./components/Profile";
+import Header from "./components/Header";
 import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
-
-import Contact from "./Contact";
-import About from "./About";
-import Footer from "./footer";
-import NotFound404 from "./components/NotFound/NotFound404";
-// import Welcome from "./components/Welcome";
+import Contact from "./components/Contact";
+import About from "./components/About";
+import Footer from "./components/footer";
+import Error404 from "./components/Error/Error404";
 
 function App() {
-     const navigate = useNavigate();
-     const { userData, checkAuth, isCheckingAuth  } = useAuthStore();
+     const { userData, checkAuth, isCheckingAuth } = useAuthStore();
+
      useEffect(() => {
           checkAuth();
      }, [checkAuth]);
-     
-     if (isCheckingAuth) {
-       return (
-         <div className="flex items-center justify-center min-h-screen">
+
+     if (isCheckingAuth && !userData) {
+          return (
+               <div className="flex items-center justify-center min-h-screen">
                     <Loader className="animate-spin text-gray-700" size={50} />
                </div>
           );
-        }
-        console.log( "this is user data : " ,userData);
-     
-    //  const location = useLocation();
-    //  const [showWelcome, setShowWelcome] = useState(location.pathname === '/');
-
-    //  useEffect(() => {
-    //    if (location.pathname === '/') {
-    //      setShowWelcome(true);
-    //      const timer = setTimeout(() => {
-    //        setShowWelcome(false);
-    //      }, 3000);
-    //      return () => clearTimeout(timer);
-    //    } else {
-    //      setShowWelcome(false);
-    //    }
-    //  }, [location.pathname ]);
-
-    //  if (showWelcome && location.pathname === '/') {
-    //    return <Welcome />;
-    //  }
+     }
 
      return (
           <div className="min-h-screen flex flex-col bg-white">
@@ -72,36 +46,27 @@ function App() {
                </div>
                <div className="pt-24 flex-grow">
                     <Routes>
-                        <Route path="/" element={<Navigate to={"/login"} /> } />
-                         <Route path="/login" element={ userData ? <Navigate to={!userData.designation ? "/student" : `/${userData.designation.toLowerCase()}/leaverequests`} /> : <Login />} />
+                         <Route path="/" element={userData ? <Navigate to={`/${userData.designation.toLowerCase()}`} /> : <Navigate to="/login" />} />
+                         <Route path="/login" element={userData ? <Navigate to="/" /> : <Login />} />
                          <Route path="/signup" element={<Signup />} />
-                         <Route
-                              path="/student"
-                              element={userData ? <StudentDashBoard /> : <Navigate to="/login" />}
-                         /> 
-                         <Route
-                              path="/student/leaveform"
-                              element={userData ? <LeaveForm /> : <Navigate to="/login" />}
-                         />
-                         <Route 
-                              path="/recentleave"
-                              element={<RecentLeavePage />} 
-                         />
-                         <Route path="/history" element={userData ? <History /> : <Navigate to="/login" />} />
-                         <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />} />
-                         <Route
-                              path="/staff/leaverequests"
-                              element={<LeaveRequests  />}
-                         />
-                         <Route
-                              path="/hod/leaverequests"
-                              element={userData ? <LeaveRequests /> : <Navigate to="/login" />}
-                         />
+
+                         <Route path="/student" element={userData ? <StudentDashBoard /> : <Navigate to="/login" />} />
+                         <Route path="/student/ApplyLeaveForm" element={userData ? <ApplyLeaveForm /> : <Navigate to="/login" />} />
+                         <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
+                         <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
+
+                         <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />}>
+                              <Route path="PendingRequests" element={<PendingLeaveRequests />} />
+                              <Route path="ReviewedRequests" element={<ReviewedLeaveRequests />} />
+                              {/* <Route path="ReviewedRequests" element={<ReviewedLeaveRequests />} /> */}
+                         </Route>
+
                          <Route path="/hod" element={userData ? <HODDashBoard /> : <Navigate to="/login" />} />
                          <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
+
                          <Route path="/contact" element={<Contact />} />
                          <Route path="/about" element={<About />} />
-                         <Route path="*" element={<NotFound404 />} />
+                         <Route path="*" element={<Error404 />} />
                     </Routes>
                </div>
 

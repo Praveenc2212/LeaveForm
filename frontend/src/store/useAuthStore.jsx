@@ -1,109 +1,62 @@
 import { create } from "zustand";
-import axios from "axios";
 import toast from "react-hot-toast";
+import { axiosInstence } from "../utils/axiosInstance";
 
 export const useAuthStore = create((set) => ({
      userData: null,
-     leaveForms: [],
-     isLogingIn: false,
-     isAuthenticated: false,
+     isLoggingIn: false,
      isCheckingAuth: false,
-     redirect_path: "/login",
-     setRedirectPath: (path) => set({ redirect_path: path }),
      checkAuth: async () => {
           set({ isCheckingAuth: true });
           try {
-               const apiRes = await axios.get(
-                    "http://localhost:1247/auth/checkAuthenticated",
-                    { withCredentials: true }
-               );
-               set({
-                    userData: apiRes.data.userData,
-                    leaveForms: apiRes.data.leaveForms,
-                    isAuthenticated: true,
-               });
+               const apiRes = await axiosInstence.get("/auth/checkAuthenticated");
+               set({ userData: apiRes.data.userData });
                toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
           } catch (error) {
-               let err = error.response
-                    ? error.response.data
-                    : "Error: Server is Down";
-               console.log(err);
-               set({ userData: null, isAuthenticated: false });
+               if (!error.response) {
+                    toast.error("Server is Down, Please try again later");
+                    set({ userData: null });
+                    return;
+               }
+               let err = error.response.data;
+               console.error(err);
+               set({ userData: null });
           } finally {
                set({ isCheckingAuth: false });
           }
      },
      Login: async (data) => {
-          set({ isLoging: true });
+          set({ isLoggingIn: true });
           try {
-               const url = "http://localhost:1247/auth";
-               if (data.email.startsWith("7178", 0)) {
-                    const apiRes = await axios.post(
-                         url + "/student/login",
-                         data,
-                         { withCredentials: true }
-                    );
-                    console.log("LeaveForm response:", apiRes.data.leaveData);
-                    toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
-                    set({
-                         userData: apiRes.data.userData,
-                         isAuthenticated: true,
-                         leaveForms: apiRes.data.leaveData,
-                         redirect_path: "/student",
-                    });
-                    console.log("UserData:", useAuthStore.getState().userData);
-                    console.log("LeaveDatas:", useAuthStore.getState().leaveForms);
-                    
+               let apiRes;
+               if (data.email.startsWith("7178")) {
+                    apiRes = await axiosInstence.post("/auth/student/login", data);
                } else {
-                    const apiRes = await axios.post(
-                         url + "/faculty/login",
-                         data
-                    );
-                    toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
-                    set({
-                         userData: apiRes.data.userData,
-                         isAuthenticated: true,
-                         leaveForms: apiRes.data.leaveData,
-                         redirect_path: "/faculty",
-                    });
+                    apiRes = await axiosInstence.post("/auth/faculty/login", data);
                }
-               console.log("UserData:", useAuthStore.getState().userData);
-               set({ isLoading: false });
+               set({ userData: apiRes.data.userData });
+               toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
           } catch (error) {
-               // console.log(error);
-
-               let err = error.response
-                    ? error.response.data
-                    : "Error: Server is Down";
-               console.error(error);
+               let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+               console.error(err);
                toast.error(err);
-               set({ userData: null, isAuthenticated: false });
+               set({ userData: null });
           } finally {
-               set({ isLogingIn: false });
+               set({ isLoggingIn: false });
           }
      },
-     ApplyLeave: async (leaveData) => {
-          set({ isLoading: true });
-          const url = "http://localhost:1247/api";
-
+     Logout: async () => {
+          set({ isCheckingAuth: true, userData: null });
           try {
-               await axios.post(url + "/form/student/apply-leave", leaveData);
-               toast.success("Leave Applied Successfully");
+               await axiosInstence.post("/auth/logout");
+               toast.success("Logout Successful...");
           } catch (error) {
-               let err = error.response
-                    ? error.response.data
-                    : "Error: Server is Down";
-               console.error(error);
+               let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+               console.error(err);
                toast.error(err);
           } finally {
-               set({ isLoading: false });
+               set({ isCheckingAuth: false });
           }
      },
+
 }));
-// API endpoints for different roles
-//auth/student/login
-//auth/faculty/login
-//auth/admin/student/signup
-//auth/admin/faculty/signup
-//auth/admin/class
-//api/form/apply { usrId , reason , startdate , enddate , classId }

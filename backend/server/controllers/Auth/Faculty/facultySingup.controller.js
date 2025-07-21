@@ -9,7 +9,7 @@ export const FacultySignUp = async (req, res) => {
         const { name, email, password, staffId, designation, department } = req.body;
 
         // Check for minimal required fields
-        if (!name || !email || !password || !staffId || !designation && !department) {
+        if (!name || !email || !password || !staffId || !designation || !department) {
             return res.status(400).json({
                 success: false,
                 message: "Name, email, password, staffId, designation, and department are required.",

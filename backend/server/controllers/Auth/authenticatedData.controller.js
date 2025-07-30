@@ -25,7 +25,7 @@ export const AuthenticatedData = async (req, res) => {
             });
             break;
         }
-        case "FACULTY": {
+        case "STAFF": {
             const faculty = await FacultyModel.findById(user.id);
             res.status(200).json({
                 success: true,
@@ -62,6 +62,7 @@ export const AuthenticatedData = async (req, res) => {
                 success: true,
                 message: "Login successful.",
                 userData: {
+                    
                     id: warden.id,
                     name: warden.name,
                     email: warden.email,

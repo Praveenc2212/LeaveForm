@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
-import { GenerateJwtTokens } from "../../../utils/GenerateJWT.util.js";
-import { getStudentByEmail } from "../../../services/user.service.js";
+import { GenerateJwtTokens } from "../../utils/GenerateJWT.util.js";
+import { getFacultyByEmail } from "../../services/user.service.js";
 
-export const StudentLogin = async (req, res) => {
+export const FacultyLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
+
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -12,16 +13,16 @@ export const StudentLogin = async (req, res) => {
             });
         }
 
-        const student = await getStudentByEmail(email);
+        const faculty = await getFacultyByEmail(email);
 
-        if (!student) {
+        if (!faculty) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email.",
             });
         }
 
-        const isMatch = await bcrypt.compare(password, student.password);
+        const isMatch = await bcrypt.compare(password, faculty.password);
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
@@ -30,22 +31,21 @@ export const StudentLogin = async (req, res) => {
         }
 
         // Generate JWT token and set it in cookies...
-        GenerateJwtTokens({ id: student._id, designation: "STUDENT" }, res);
+        GenerateJwtTokens(
+            { id: faculty._id, designation: faculty.designation, department: faculty.department },
+            res
+        );
 
         res.status(200).json({
             success: true,
             message: "Login successful.",
             userData: {
-                id: student._id,
-                name: student.name,
-                email: student.email,
-                rollno: student.rollno,
-                gender: student.gender,
-                classId: student.classId._id,
-                department: student.classId.department,
-                year: student.classId.year,
-                section: student.classId.section,
-                designation: "STUDENT",
+                id: faculty._id,
+                name: faculty.name,
+                email: faculty.email,
+                staffId: faculty.staffId,
+                department: faculty.department,
+                designation: faculty.designation,
             },
         });
     } catch (err) {

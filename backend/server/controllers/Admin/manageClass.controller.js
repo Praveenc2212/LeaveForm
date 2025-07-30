@@ -2,7 +2,7 @@
 import { ClassModel } from "../../models/class.model.js";
 import { createClassModel, getFacultyByStaffId } from "../../services/user.service.js";
 
-export const createClass = async (req, res) => {
+export const createClassController = async (req, res) => {
     try {
         const { staffId , department, year, section } = req.body;
 

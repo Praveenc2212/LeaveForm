@@ -28,12 +28,7 @@ export const useAuthStore = create((set) => ({
      Login: async (data) => {
           set({ isLoggingIn: true });
           try {
-               let apiRes;
-               if (data.email.startsWith("7178")) {
-                    apiRes = await axiosInstence.post("/auth/student/login", data);
-               } else {
-                    apiRes = await axiosInstence.post("/auth/faculty/login", data);
-               }
+               const apiRes = await axiosInstence.post("/auth/login", data);
                set({ userData: apiRes.data.userData });
                toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
           } catch (error) {

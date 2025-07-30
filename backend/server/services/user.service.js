@@ -15,12 +15,32 @@ export async function getStudentByEmail(email) {
     return await StudentModel.findOne({ email }).populate('classId');
 }
 
+//find Student by roll number...
+export async function getStudentByRollNo(rollno) {
+    return await StudentModel.findOne({ rollno }).populate('classId');
+}
+
+// Find Student by Class Details...
+export async function getStudentsByClass(section, department, year) {
+    return await StudentModel.find({ section, department, year })
+        .select("_id name rollno classId").populate('classId');
+}
+
+// create Multiple Students...
+export async function createMultipleStudents(students) {
+    return await StudentModel.insertMany(students, { ordered: false });
+}
 
 // --- Faculty Services ---
 // Register a new Faculty...
 export async function createFaculty(data) {
     const faculty = new FacultyModel(data);
     return await faculty.save();
+}
+
+// create Multiple Faculty...
+export async function createMultipleFaculty(facultyList) {
+    return await FacultyModel.insertMany(facultyList, { ordered: false });
 }
 
 // Find faculty by email...
@@ -44,4 +64,3 @@ export async function createClassModel(data) {
 export async function getClassByDetails(department, year, section) {
     return await ClassModel.findOne({ department, year, section });
 }
-

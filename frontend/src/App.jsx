@@ -44,7 +44,7 @@ function App() {
                <div className="fixed top-0 left-0 w-full z-50">
                     <Header />
                </div>
-               <div className="pt-24 flex-grow">
+               <div className="pt-13 flex-grow">
                     <Routes>
                          <Route path="/" element={userData ? <Navigate to={`/${userData.designation.toLowerCase()}`} /> : <Navigate to="/login" />} />
                          <Route path="/login" element={userData ? <Navigate to="/" /> : <Login />} />

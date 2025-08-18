@@ -1,30 +1,36 @@
 
 import express from "express";
 import { Logout } from "../controllers/Auth/logout.controller.js";
-import { StudentLogin } from "../controllers/Auth/Student/studentLogin.controller.js";
-import { FacultyLogin } from "../controllers/Auth/Faculty/facultyLogin.controller.js";
-import { StudentSignUp } from "../controllers/Auth/Student/studentSingup.controller.js";
-import { FacultySignUp } from "../controllers/Auth/Faculty/facultySingup.controller.js";
-import { createClass } from "../controllers/Auth/class.controller.js";
+import { createClassController } from "../controllers/Admin/manageClass.controller.js";
 import { AuthenticatedData } from "../controllers/Auth/authenticatedData.controller.js";
 
 import { checkAuthentication } from "../Middleware/checkAuthentication.Middleware.js";
+import { LoginController } from "../controllers/Auth/login.controller.js";
+import { createMultipleFacultyController } from "../controllers/Admin/faculty/createMultipleFaculty.controller.js";
+import { createMultipleStudentController } from "../controllers/Admin/student/createMultipleStudent.controller.js";
+import { updateFacultyController } from "../controllers/Admin/faculty/updateFaculty.controller.js";
+import { getStudentController } from "../controllers/Admin/student/getStudent.controller.js";
 
 const router = express.Router();
 
-// Temporary route for testing purposes...
-router.post("/admin/student/signup", StudentSignUp);
-router.post("/admin/faculty/signup", FacultySignUp);
-router.post("/admin/class", createClass);
+// Admin Create Routes...
+router.post("/admin/student/create-multiple-student", createMultipleStudentController);
+router.post("/admin/faculty/create-multiple-faculty", createMultipleFacultyController);
+router.post("/admin/create-class", createClassController);
+
+// Read Operations...
+router.get("/admin/student/get-student/by/:action", checkAuthentication, getStudentController);
+// router.get("/admin/faculty/get-faculty", checkAuthentication, getFacultyController);
+
+// Admin Update Operations...
+// router.get("/admin/student/update-student", checkAuthentication, updateStudentController);
+router.get("/admin/faculty/update-faculty", checkAuthentication, updateFacultyController);
 
 // Checking Authentication...
 router.get("/checkAuthenticated", checkAuthentication , AuthenticatedData );
 
-// Route to handle Student login...
-router.post("/student/login", StudentLogin);
-
-// Route to handle Faculty login...
-router.post("/faculty/login", FacultyLogin);
+// Route to handle login...
+router.post("/login", LoginController);
 
 // Route to handle user logout...
 router.post("/logout", Logout);

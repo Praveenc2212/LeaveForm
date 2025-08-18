@@ -30,6 +30,7 @@ const __dirname = path.dirname(__filename);
 // Security Middlewares...
 app.use(helmet());
 app.use(compression());
+app.use(express.json({ limit: '16mb' }));
 
 // Rate Limiter...
 const limiter = rateLimit({

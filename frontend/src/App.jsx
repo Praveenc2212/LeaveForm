@@ -23,6 +23,23 @@ import Contact from "./components/Contact";
 import About from "./components/About";
 import Footer from "./components/footer";
 import Error404 from "./components/Error/Error404";
+import AdminDashBoard from "./components/Admin/AdminDashBoard";
+import Adminstudent from "./components/Admin/adminstudent";
+import Adminfaculty from "./components/Admin/adminfaculty";
+import Adminclass from "./components/Admin/adminclass";
+import Adminwarden from "./components/Admin/adminwarden";
+import Updatestudent from "./components/Admin/updatestudent";
+import Updatefaculty from "./components/Admin/updatefaculty";
+import Updateclass from "./components/Admin/updateclass";
+import Updatewarden from "./components/Admin/updatewarden";
+import Deletestudent from "./components/Admin/deletestudent";
+import Deletefaculty from "./components/Admin/deletefaculty";
+import Deleteclass from "./components/Admin/deleteclass";
+import Deletewarden from "./components/Admin/deletewarden";
+import Addstudent from "./components/Admin/addstudent";
+import Addfaculty from "./components/Admin/addfaculty";
+import Addclass from "./components/Admin/addclass";
+import Addwarden from "./components/Admin/addwarden";
 
 function App() {
      const { userData, checkAuth, isCheckingAuth } = useAuthStore();
@@ -54,6 +71,23 @@ function App() {
                          <Route path="/student/ApplyLeaveForm" element={userData ? <ApplyLeaveForm /> : <Navigate to="/login" />} />
                          <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
                          <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
+                         <Route path="/admin" element={ <AdminDashBoard/>} />
+                         <Route path="/adminstudent" element={ <Adminstudent/>} />
+                         <Route path="/adminfaculty" element={ <Adminfaculty/>} />
+                         <Route path="/adminclass" element={ <Adminclass/>} />
+                         <Route path="/adminwarden" element={ <Adminwarden/>} />
+                         <Route path="/student/addstudent" element={<Addstudent />} />
+                         <Route path="/student/addfaculty" element={<Addfaculty />} />
+                         <Route path="/student/addclass" element={<Addclass />} />
+                         <Route path="/student/addwarden" element={<Addwarden />} />
+                         <Route path="/student/updatestudent" element={<Updatestudent />} />
+                         <Route path="/student/updatefaculty" element={<Updatefaculty />} />
+                         <Route path="/student/updateclass" element={<Updateclass />} />
+                         <Route path="/student/updatewarden" element={<Updatewarden />} />
+                         <Route path="/student/deletestudent" element={<Deletestudent />} />
+                         <Route path="/student/deletefaculty" element={<Deletefaculty />} />
+                         <Route path="/student/deleteclass" element={<Deleteclass />} />
+                         <Route path="/student/deletewarden" element={<Deletewarden />} />
 
                          <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />}>
                               <Route path="PendingRequests" element={<PendingLeaveRequests />} />

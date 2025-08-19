@@ -11,7 +11,9 @@ export const useStaffFormStore = create((set) => ({
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-pending-forms');
-      set({ pendingLeaves: apiRes.data.leaveForms });  
+      set({ pendingLeaves: apiRes.data.leaveForms });
+      toast.success("Pending Leave Requests Fetched Successfully");
+
     } catch (error) {
       let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
       console.error(err);
@@ -20,10 +22,11 @@ export const useStaffFormStore = create((set) => ({
       set({ isFetching: false });
     }
   },
+
   setFacultyAccepteTheForm: async (formId) => {
     set({ isFetching: true });
     try {
-      const apiRes = await axiosInstence.post(/api/form/staff/accept/${ formId });
+      const apiRes = await axiosInstence.post(`/api/form/staff/accept/${formId}`);
       // set({ leaveForms: apiRes.data.leaveForms });
     } catch (error) {
       let err = error.response ? error.response.data.message : "Server is Down, Please try again later";

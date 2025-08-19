@@ -9,14 +9,14 @@ export const useAuthStore = create((set) => ({
      checkAuth: async () => {
           set({ isCheckingAuth: true });
           try {
-               const apiRes = await axiosInstence.get("/auth/checkAuthenticated");
+               const apiRes = await axiosInstence.get('/auth/checkAuthenticated');
                set({ userData: apiRes.data.userData });
-               toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
+               // toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
           } catch (error) {
                if (!error.response) {
                     toast.error("Server is Down, Please try again later");
                     set({ userData: null });
-                    return;
+                   return;
                }
                let err = error.response.data;
                console.error(err);

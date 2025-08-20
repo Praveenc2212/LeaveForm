@@ -11,7 +11,7 @@ export const acceptLeaveByHod = async (req, res) => {
             });
         }
 
-        const data = await updateLeaveFormStatus(formId, "Reviewed");
+        const data = await updateLeaveFormStatus(formId, "Approved");
 
         return res.status(200).json({
             success: true,

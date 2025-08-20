@@ -56,7 +56,9 @@ router.post("/staff/discuss/:formId", checkAuthentication, discussLeaveByStaff);
 
 // Staff Oprations...
 router.post("/staff/accept-all", checkAuthentication, acceptAllLeavesForms);
-
+router.get("/approved-leave-forms", checkAuthentication, (req, res) => {
+    RetrieveStaffForms(req, res, "Approved");
+});
 // // HOD Oprations...
 router.post("/hod/accept/:formId", acceptLeaveByHod);
 router.post("/hod/reject/:formId", rejectLeaveByHod);

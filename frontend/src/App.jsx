@@ -95,7 +95,7 @@ function App() {
                               {/* <Route path="ReviewedRequests" element={<ReviewedLeaveRequests />} /> */}
                          </Route>
 
-                         <Route path="/hod" element={userData ? <HODDashBoard /> : <Navigate to="/login" />} />
+                         <Route path="/hod" element={true ? <HODDashBoard /> : <Navigate to="/login" />} />
                          <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
 
                          <Route path="/contact" element={<Contact />} />

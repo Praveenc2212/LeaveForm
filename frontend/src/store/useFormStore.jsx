@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 export const useFormStore = create((set) => ({
     leaveForms: [],
+    leaveStatus : null,
     isApplying: false,
     isFetching: false,
     ApplyForm: async (form) => {
@@ -23,10 +24,12 @@ export const useFormStore = create((set) => ({
     },
     getStudentLeaveStatus: async () => {
         set({ isFetching: true });
-        let data = null;
+        // let data = null;
         try {
             const apiRes = await axiosInstence.get('/api/form/student/leave-status');
-            data = apiRes.data;
+            console.log("Status of the student", apiRes.data.LeaveForm.status);
+            
+             set({ leaveStatus :  apiRes.data.LeaveForm });
         } catch (error) {
             let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
             console.error(err);
@@ -34,7 +37,7 @@ export const useFormStore = create((set) => ({
         } finally {
             set({ isFetching: false });
         }
-        return data;
+        // return data;
     },
     getStudentLeaveForms: async () => {
         set({ isFetching: true });

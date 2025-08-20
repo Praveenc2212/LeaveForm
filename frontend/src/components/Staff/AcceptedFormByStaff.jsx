@@ -7,7 +7,10 @@ function AcceptedFormByStaff() {
   useEffect(() => {
     getFacultyAcceptedForms();
   }, [getFacultyAcceptedForms]);
-    console.log("Accepted Leaves:", acceptedLeaves);
+  console.log("Accepted Leaves:", acceptedLeaves);
+  
+    // console.log("Accepted Leaves:", acceptedLeaves[0].applicantId.rollno);
+    // console.log("Accepted Leaves:", acceptedLeaves[0].startDate);
 
   return (
     <div>
@@ -25,9 +28,9 @@ function AcceptedFormByStaff() {
         {acceptedLeaves.map((leave) => (
           <div key={leave._id} className="bg-orange-100 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold">{leave.applicantId.name}</h2>
-            <p className="text-gray-600">Leave Type: {leave.leaveType}</p>
-            <p className="text-gray-600">From: {new Date(leave.fromDate).toLocaleDateString()}</p>
-            <p className="text-gray-600">To: {new Date(leave.toDate).toLocaleDateString()}</p>
+            {/* <p className="text-gray-600">Leave Type: {leave.leaveType}</p> */}
+            <p className="text-gray-600">From: {new Date(leave.startDate).toLocaleDateString()}</p>
+            <p className="text-gray-600">To: {new Date(leave.endDate).toLocaleDateString()}</p>
             <p className="text-gray-600">Reason: {leave.reason}</p>
           </div>
         ))}

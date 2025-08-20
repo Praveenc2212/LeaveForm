@@ -26,7 +26,7 @@ function adminclass() {
           onClick={() => navigate("/student/Addclass")}
         >
           <img
-            src="/icons/student.svg"
+            src="/icons/add.svg"
             alt="Apply Leave"
             className="w-[60px] h-[60px] -mr-3"
           />
@@ -38,7 +38,7 @@ function adminclass() {
             onClick={() => navigate("/student/updateclass")}
           >
             <img
-              src="/icons/staff.svg"
+              src="/icons/update.svg"
               alt="Leave Status"
               className="w-[80px] h-[80px] mb-[-10px]"
             />
@@ -52,7 +52,7 @@ function adminclass() {
             onClick={() => navigate("/student/Deleteclass")}
           >
             <img
-              src="/icons/class.svg"
+              src="/icons/delete.svg"
               alt="Leave History"
               className="w-[70px] h-[70px]"
             />

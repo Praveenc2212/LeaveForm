@@ -6,9 +6,9 @@ import AcceptedFormByStaff from "./AcceptedFormByStaff";
 // import {useNavigate} from 'react-router-dom';
 function StaffDashBoard() {
     const cards = [
-        { title: "pandding" },
-        { title: "Accepect" },
-        { title: "OnForm" },
+        { title: "Bending" },
+        { title: "Accept" },
+        { title: "OnLeave" },
     ];
     const [activeIdx, setActiveIdx] = useState(0); // "My links" is active by default
 

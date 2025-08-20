@@ -9,7 +9,7 @@ function AddStudent() {
   const [fileName, setFileName] = useState(null);
   const [fileSelected, setFileSelected] = useState(false);
   const [rows, setRows] = useState([]);
-  const [confirmedIndexes, setConfirmedIndexes] = useState([]);
+  const [confirmedAll, setConfirmedAll] = useState(false); // ✅ new state
   const [searchTerm, setSearchTerm] = useState("");
   const [filterYear, setFilterYear] = useState("");
 
@@ -55,13 +55,9 @@ function AddStudent() {
     return matchesSearch && matchesYear;
   });
 
-  const handleConfirm = (index) => {
-    const originalIndex = rows.findIndex(
-      (row) => row.roll === filteredRows[index].roll
-    );
-    if (!confirmedIndexes.includes(originalIndex)) {
-      setConfirmedIndexes([...confirmedIndexes, originalIndex]);
-    }
+  // ✅ Confirm all function
+  const handleConfirmAll = () => {
+    setConfirmedAll(true);
   };
 
   return (
@@ -101,6 +97,18 @@ function AddStudent() {
         <p className="text-gray-600 mb-4">Selected file: {fileName}</p>
       )}
 
+      {/* Confirm All Button Above Table */}
+      {fileSelected && rows.length > 0 && !confirmedAll && (
+        <div className="mb-4">
+          <button
+            onClick={handleConfirmAll}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow"
+          >
+            Confirm All
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       {fileSelected && rows.length > 0 && (
         <div className="w-full max-w-5xl overflow-x-auto shadow-md">
@@ -117,35 +125,25 @@ function AddStudent() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows.map((row, index) => {
-                const originalIndex = rows.findIndex(
-                  (r) => r.roll === row.roll
-                );
-                return (
-                  <tr className="text-center" key={index}>
-                    <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2">{row.name}</td>
-                    <td className="border px-4 py-2">{row.roll}</td>
-                    <td className="border px-4 py-2">{row.dept}</td>
-                    <td className="border px-4 py-2">{row.class}</td>
-                    <td className="border px-4 py-2">{row.year}</td>
-                    <td className="border px-4 py-2">
-                      {confirmedIndexes.includes(originalIndex) ? (
-                        <span className="text-green-600 font-semibold">
-                          Confirmed
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => handleConfirm(index)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-                        >
-                          Confirm
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+              {filteredRows.map((row, index) => (
+                <tr className="text-center" key={index}>
+                  <td className="border px-4 py-2">{index + 1}</td>
+                  <td className="border px-4 py-2">{row.name}</td>
+                  <td className="border px-4 py-2">{row.roll}</td>
+                  <td className="border px-4 py-2">{row.dept}</td>
+                  <td className="border px-4 py-2">{row.class}</td>
+                  <td className="border px-4 py-2">{row.year}</td>
+                  <td className="border px-4 py-2">
+                    {confirmedAll ? (
+                      <span className="text-green-600 font-semibold">
+                        Confirmed
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">Pending</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

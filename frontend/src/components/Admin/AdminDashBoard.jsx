@@ -24,7 +24,7 @@ function AdminDashBoard() {
             onClick={() => navigate("/adminfaculty")}
           >
             <img
-              src="/icons/staff.svg"
+              src="/icons/staff1.svg"
               alt="Leave Status"
               className="w-[80px] h-[80px] mb-[-10px]"
             />
@@ -38,7 +38,7 @@ function AdminDashBoard() {
             onClick={() => navigate("/adminclass")}
           >
             <img
-              src="/icons/class.svg"
+              src="/icons/class1.svg"
               alt="Leave History"
               className="w-[70px] h-[70px]"
             />
@@ -50,7 +50,7 @@ function AdminDashBoard() {
             onClick={() => navigate("/adminwarden")}
           >
             <img
-              src="/icons/warden.svg"
+              src="/icons/hostel1.svg"
               alt="Leave History"
               className="w-[70px] h-[70px]"
             />

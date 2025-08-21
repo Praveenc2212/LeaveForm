@@ -36,7 +36,7 @@ function App() {
                <div className="flex items-center justify-center min-h-screen">
                     <Loader className="animate-spin text-gray-700" size={50} />
                </div>
-          ); 
+          );
      }
 
      return (

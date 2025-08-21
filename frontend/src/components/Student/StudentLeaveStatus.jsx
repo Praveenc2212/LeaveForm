@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProgressCard from "./StudentLeaveStatusCard.jsx";
-import { useAuthStore } from '../../store/useAuthStore.jsx';
+import { useFormStore } from '../../store/useFormStore.jsx';
 function StudentLeaveStatus() {
-  const { leaveForms } = useAuthStore();
-  const leaveData = null;
-
+  const { leaveStatus , getStudentLeaveStatus } = useFormStore();
+  useEffect(()=>{
+    getStudentLeaveStatus();
+  },[]);
+  console.log("Status of the studentn",leaveStatus);
+  const leaveData = leaveStatus;
   return (
     <div className="pt-10 overflow-hidden bg-white flex items-center justify-center">
       {leaveData ? (
-        <ProgressCard
-          status={leaveForms.status}
-          staffAccepted={leaveForms.startDate}
-          hodAccepted={leaveForms.endDate}
-          reason={leaveForms.reason}
+         <ProgressCard
+         leaveStatus={leaveData}
+          // status={leaveStatus.status}     // status (Pending, Reviewed, Approved, Tutor Rejected, HOD Rejected)
+          // startDate={leaveStatus.startDate} // ✅ correct
+          // endDate={leaveStatus.endDate}     // ✅ correct
+          // reason={leaveStatus.reason}       // ✅ correct
         />
       ) : (
         <div className="pt-50 text-gray-500 text-2xl font-medium text-center px-4">

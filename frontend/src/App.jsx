@@ -36,7 +36,7 @@ function App() {
                <div className="flex items-center justify-center min-h-screen">
                     <Loader className="animate-spin text-gray-700" size={50} />
                </div>
-          );
+          ); 
      }
 
      return (
@@ -67,7 +67,7 @@ function App() {
                          <Route path="/contact" element={<Contact />} />
                          <Route path="/about" element={<About />} />
                          <Route path="*" element={<Error404 />} />
-                    </Routes>
+                    </Routes> 
                </div>
 
                <Footer />

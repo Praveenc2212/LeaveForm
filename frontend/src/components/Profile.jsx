@@ -35,7 +35,7 @@ function Profile() {
               </div>
             </div>
 
-            {/* <div className="md:flex md:gap-4 items-start">
+            <div className="md:flex md:gap-4 items-start">
               <div className="md:w-1/2 mb-2 flex flex-col justify-start">
                 <label className="text-sm text-gray-600">Gender</label>
                 <div className="w-full mt-1 px-4 py-2 h-[44px] rounded-lg border border-gray-300 bg-white text-gray-800 flex items-center">
@@ -48,7 +48,7 @@ function Profile() {
                   {userData.department}
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="flex gap-4">
               <div className="w-1/2">

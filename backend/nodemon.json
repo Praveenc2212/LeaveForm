@@ -1,5 +1,5 @@
 {
-    "watch":["index.js","server"],
+    "watch":["index.js","server", ".env"],
     "ext":"js",
     "exec": "node index.js",
     "delay":2000

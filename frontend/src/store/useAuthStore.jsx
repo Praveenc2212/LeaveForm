@@ -2,6 +2,8 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstence } from "../utils/axiosInstance";
 
+const isValidNetwork = import.meta.env.VITE_NETWORK_IP
+
 export const useAuthStore = create((set) => ({
      userData: null,
      isLoggingIn: false,
@@ -14,7 +16,7 @@ export const useAuthStore = create((set) => ({
                // toast.success(`Welcome Back, ${apiRes.data.userData.name}`);
           } catch (error) {
                if (!error.response) {
-                    toast.error("Server is Down, Please try again later");
+                    toast.error((isValidNetwork ? "Network Error," : "Server is Down,") + " Please try again later");
                     set({ userData: null });
                    return;
                }

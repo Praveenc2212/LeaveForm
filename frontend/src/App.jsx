@@ -87,17 +87,12 @@ function App() {
             <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
             <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
 
-<<<<<<< HEAD
-                         <Route path="/hod" element={true ? <HODDashBoard /> : <Navigate to="/login" />} />
-                         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
-=======
             {/* Admin */}
             <Route path="/admin" element={<AdminDashBoard />} />
             <Route path="/adminstudent" element={<Adminstudent />} />
             <Route path="/adminfaculty" element={<Adminfaculty />} />
             <Route path="/adminclass" element={<Adminclass />} />
             <Route path="/adminwarden" element={<Adminwarden />} />
->>>>>>> 560b42c21d314fdbf310d3701081b1b886b91605
 
             {/* Admin - CRUD */}
             <Route path="/student/addstudent" element={<Addstudent />} />

@@ -1,10 +1,7 @@
-* Auto Fills (eg: on frontend - name , rollno, etc.. , are fetched through login info, and No need to enter the whole part)
-
 * wardern Page
 
 * Google-OAuth authorisation
 
-* HOD page -> search by roll_no , simplicity ,  II year , III year ,IV year . 
-
+* HOD page -> search by roll_no 
 
 * add a button that accept all applicants in hod and staff,

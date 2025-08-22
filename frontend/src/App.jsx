@@ -59,13 +59,13 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (isCheckingAuth && !userData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="animate-spin text-gray-700" size={50} />
-      </div>
-    );
-  }
+     if (isCheckingAuth && !userData) {
+          return (
+               <div className="flex items-center justify-center min-h-screen">
+                    <Loader className="animate-spin text-gray-700" size={50} />
+               </div>
+          ); 
+     }
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -87,17 +87,12 @@ function App() {
             <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
             <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
 
-<<<<<<< HEAD
-                         <Route path="/hod" element={true ? <HODDashBoard /> : <Navigate to="/login" />} />
-                         <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
-=======
             {/* Admin */}
             <Route path="/admin" element={<AdminDashBoard />} />
             <Route path="/adminstudent" element={<Adminstudent />} />
             <Route path="/adminfaculty" element={<Adminfaculty />} />
             <Route path="/adminclass" element={<Adminclass />} />
             <Route path="/adminwarden" element={<Adminwarden />} />
->>>>>>> 560b42c21d314fdbf310d3701081b1b886b91605
 
             {/* Admin - CRUD */}
             <Route path="/student/addstudent" element={<Addstudent />} />
@@ -121,18 +116,16 @@ function App() {
               <Route path="ReviewedRequests" element={<ReviewedLeaveRequests />} />
             </Route>
 
-            {/* HOD */}
             <Route path="/hod" element={userData ? <HODDashBoard /> : <Navigate to="/login" />} />
-
-            {/* General */}
             <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
+
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
-
             <Route path="*" element={<Error404 />} />
-          </Routes>
-        </Suspense>
+          </Routes> 
+        </ Suspense>
       </div>
+
 
       <Footer />
       <Toaster />
@@ -141,3 +134,6 @@ function App() {
 }
 
 export default App;
+
+
+// Credits : Special Thanks For Praveen C, Harini, Praveen Kumar, Shankar

@@ -9,7 +9,9 @@ import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import compression from "compression";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import AuthRouter from "./server/routers/auth.routers.js";
 import DB from "./server/connections/DB.connections.js";
@@ -22,7 +24,7 @@ configDotenv();
 DB.connect(process.env.MONGO_DB_URL);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const {NETWORK_IP, CLIENT_PORT, SERVER_PORT} = process.env;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,12 +35,12 @@ app.use(compression());
 app.use(express.json({ limit: '16mb' }));
 
 // Rate Limiter...
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: "Too many requests from this IP, please try again later.",
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+//     message: "Too many requests from this IP, please try again later.",
+// });
+// app.use(limiter);
 
 // Logging...
 app.use(morgan(process.env.STATUS === "development" ? "dev" : "combined"));
@@ -52,7 +54,7 @@ app.use(
     cors({
         origin:
             process.env.STATUS === "development"
-                ? "http://localhost:5173"
+                ? [`http://localhost:${CLIENT_PORT}`, `http://${NETWORK_IP}:${CLIENT_PORT}`]
                 : "https://example.app.com",
         methods: ["GET", "POST", "PUT"],
         credentials: true,
@@ -86,6 +88,16 @@ app.use((err, req, res) => {
                 : "Internal Server Error",
     });
 });
-app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+
+app.listen(SERVER_PORT, '0.0.0.0' , () => {
+    console.log(`\n🚀 Server running at ${NETWORK_IP ? `http://${NETWORK_IP}:${SERVER_PORT}` : `http://localhost:${SERVER_PORT}`}`);
 });
+
+// #For Local Area Network Access
+
+// Note : * Before Running This, Ensure the '.env' File, and Fill Your Ip Correctly
+//        * Application Can Be Accessed Only When You Are In the Same Network,
+
+// app.listen(PORT, '0.0.0.0', () => {
+//     console.log(`Backend Server is Ready -> ${BACKEND_BASE_URL_NETWORK}`);
+// });

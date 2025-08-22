@@ -62,7 +62,7 @@ export const deleteManyFormsByIds = async (ids) => {
 export const updateManyFormsByTutor = async (tutorId) => {
     const classId = await ClassModel.findOne({ tutorIds: tutorId }).select("_id");
     if (!classId) {
-        return;
+        throw Error("Invalid Class Access.");
     }
     return await FormModel.updateMany(
         { classId, status: "Pending" },

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/logo.png";
-import logoutIcon from "../assets/logout.png";
-import profilePic from "../assets/Profile.png"; // ✅ Correct import
+import profilePic from "../assets/Profile.png";
 import { useAuthStore } from '../store/useAuthStore';
+import { LogOut } from "lucide-react";
 
 const Header = () => {
-  const { userData, logout } = useAuthStore();
+  const { userData, Logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -14,9 +14,12 @@ const Header = () => {
   if (location.pathname === "/about") return <></>;
 
   const handleLogout = () => {
-    logout();
+    Logout();
     navigate('/');
   };
+
+  // Determine if the user is staff or hod based on the pathname
+  const isStaffOrHod = location.pathname === '/hod' || location.pathname === '/staff';
 
   return (
     <div className="flex justify-between items-center bg-white shadow-md py-2 px-6 mb-6 border border-white/20">
@@ -34,47 +37,30 @@ const Header = () => {
 
       {/* Right side */}
       <div>
-        {!userData ? <></> :
-          location.pathname === '/hod' || location.pathname === '/staff' ? (
-            <table className="text-gray-700 text-sm sm:text-base">
-              <tbody>
-                <tr>
-                  <td><b>Name </b></td>
-                  <td>: Dr. Staff Name</td>
-                </tr>
-                <tr>
-                  <td><b>Dept</b></td>
-                  <td>: CSE</td>
-                </tr>
-              </tbody>
-            </table>
-          ) : location.pathname === '/admin' ? (
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700 hidden sm:block text-sm sm:text-base">
-                {userData.email}
-              </span>
-              <img
-                src={logoutIcon}
-                alt="Logout"
-                className="h-8 w-8 cursor-pointer hover:opacity-80"
+        {!userData ? null : (
+          <div className="flex items-center space-x-1">
+            <span className="text-gray-600 hidden sm:block text-sm sm:text-lg">
+              {userData.email}
+            </span>
+            {isStaffOrHod ? (
+
+              <button
+                className="h-10 w-10 flex items-center justify-center rounded-full p-2 hover:border-orange-400 hover:border-1 hover:bg-orange-100 transition cursor-pointer"
                 onClick={handleLogout}
                 title="Logout"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700 hidden sm:block text-sm sm:text-base">
-                {userData.email}
-              </span>
+              >
+                <LogOut size={30} color="#f97316" />
+              </button>
+            ) : (
               <img
-                src={profilePic} // ✅ Corrected here
+                src={profilePic}
                 alt="Profile"
                 className="h-10 w-10 rounded-full border-2 border-blue-400 cursor-pointer"
                 onClick={() => navigate('/profile')}
               />
-            </div>
-          )
-        }
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

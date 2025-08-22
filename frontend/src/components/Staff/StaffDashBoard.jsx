@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import PendingLeaveRequests from "./PendingLeaveRequests";
 import ReviewedLeaveRequests from "./ReviewedLeaveRequests";
 import AcceptedFormByStaff from "./AcceptedFormByStaff";
 // import {useNavigate} from 'react-router-dom';
+
 function StaffDashBoard() {
     const cards = [
-        { title: "Bending" },
-        { title: "Accept" },
-        { title: "OnLeave" },
+        { title: "Pending" },
+        { title: "Reviewed" },
+        { title: "Approved" },
     ];
     const [activeIdx, setActiveIdx] = useState(0); // "My links" is active by default
 
@@ -32,9 +33,7 @@ function StaffDashBoard() {
                             )}
                         </button>
                     ))}
-                    
                 </div>
-
             </div>
             <Outlet />
             <div>

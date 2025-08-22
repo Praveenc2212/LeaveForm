@@ -12,7 +12,7 @@ export const useStaffFormStore = create((set) => ({
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-pending-forms');
       set({ pendingLeaves: apiRes.data.leaveForms });
-      toast.success("Pending Leave Requests Fetched Successfully");
+      // toast.success("Pending Leave Requests Fetched Successfully");
 
     } catch (error) {
       let err = error.response ? error.response.data.message : "Server is Down, Please try again later";

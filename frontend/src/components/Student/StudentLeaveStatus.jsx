@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ProgressCard from "./StudentLeaveStatusCard.jsx";
 import { useFormStore } from "../../store/useFormStore.jsx";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 function StudentLeaveStatus() {
   const { leaveStatus, getStudentLeaveStatus } = useFormStore();
@@ -22,12 +23,16 @@ function StudentLeaveStatus() {
           {/* Back Button inside card */}
           <button
             onClick={() => navigate(-1)}
-            className="absolute top-3 left-3 z-50 p-1 rounded-full hover:bg-gray-100"
+            className="absolute top-3 left-3 z-50 w-10 h-10 flex items-center justify-center
+                       rounded-full border border-transparent 
+                       bg-orange-50 text-orange-600
+                       hover:border-orange-500 hover:bg-orange-100
+                       transition-all duration-200"
           >
             <img
-              src="/icons/back.svg"
+              src="/icons/undo-2.svg"
               alt="Back"
-              className="w-[28px] h-[28px]"
+              className="w-[24px] h-[24px]"
             />
           </button>
 
@@ -44,22 +49,3 @@ function StudentLeaveStatus() {
 }
 
 export default StudentLeaveStatus;
-
-
-
-
-
-/*
-{
-    "success": true,
-    "message": "Data fetched successfully.",
-    "LeaveForm": {
-        "_id": "687b9f20f62cff91a92d6fd4",
-        "startDate": "2025-07-19T00:00:00.000Z",
-        "endDate": "2025-07-21T00:00:00.000Z",
-        "reason": "home town Festival",
-        "status": "Pending"
-    }
-}
-
-*/

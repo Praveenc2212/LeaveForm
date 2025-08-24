@@ -1,7 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircleUserRound, House, FileText, Loader } from 'lucide-react';
+import { CircleUserRound, FileText, Loader, Calendar, MessageSquareQuote, Hash, ShieldCheck } from 'lucide-react';
 import { useStaffFormStore } from '../../store/useStaffFormStore';
+import toast, { Toaster } from 'react-hot-toast';
+
+// Helper function to format dates
+const formatDate = (dateString) => {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+// Helper function to calculate the number of days, inclusive
+const calculateNumberOfDays = (startDateString, endDateString) => {
+  if (!startDateString || !endDateString) return 0;
+  const start = new Date(startDateString);
+  const end = new Date(endDateString);
+  start.setUTCHours(0, 0, 0, 0);
+  end.setUTCHours(0, 0, 0, 0);
+  const timeDiff = end.getTime() - start.getTime();
+  if (isNaN(timeDiff) || timeDiff < 0) return 0;
+  const dayDiff = timeDiff / (1000 * 3600 * 24);
+  return dayDiff + 1;
+};
 
 function PendingLeaveRequests() {
   const navigate = useNavigate();
@@ -9,147 +33,187 @@ function PendingLeaveRequests() {
     getFacultypending,
     pendingLeaves,
     setFacultyAccepteTheForm,
+    setFacultyRejectTheForm,
+    StaffAcceptAll,
     isFetching,
   } = useStaffFormStore();
-  const leaveRequests = pendingLeaves || [];
 
-  // Modal state
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedReq, setSelectedReq] = useState(null);
+  const [processingId, setProcessingId] = useState(null);
+  const [processingAction, setProcessingAction] = useState(null);
+  const [isAcceptingAll, setIsAcceptingAll] = useState(false);
+  const [localLeaves, setLocalLeaves] = useState([]);
+  const [removingId, setRemovingId] = useState(null);
 
   useEffect(() => {
     getFacultypending();
     // eslint-disable-next-line
-  }, [setFacultyAccepteTheForm]);
+  }, []);
 
-  const handleAccept = async (id) => {
-    await setFacultyAccepteTheForm(id);
-    setModalOpen(false);
+  useEffect(() => {
+    setLocalLeaves(pendingLeaves || []);
+  }, [pendingLeaves]);
+  
+  const handleAction = async (id, action) => {
+    setProcessingId(id);
+    setProcessingAction(action);
+    try {
+      if (action === 'accept') {
+        await setFacultyAccepteTheForm(id);
+      } else {
+        await setFacultyRejectTheForm(id);
+      }
+      setRemovingId(id);
+      setTimeout(() => {
+        setLocalLeaves((leaves) => leaves.filter((leave) => leave._id !== id));
+        setRemovingId(null);
+      }, 300);
+    } catch (err) {
+      toast.error(`Failed to ${action} request. Please try again.`);
+    } finally {
+      setProcessingId(null);
+      setProcessingAction(null);
+    }
   };
 
-  const handleReject = (id) => {
-    alert(`Rejected leave request with ID: ${id}`);
-    setModalOpen(false);
-  };
-
-  const handleView = (req) => {
-    setSelectedReq(req);
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setSelectedReq(null);
+  const handleAcceptAll = async () => {
+    if (window.confirm(`Are you sure you want to accept all ${localLeaves.length} pending requests?`)) {
+        setIsAcceptingAll(true);
+        try {
+            await StaffAcceptAll();
+            setLocalLeaves([]);
+        } catch (err) {
+            toast.error("Failed to accept all requests. Please try again.");
+        } finally {
+            setIsAcceptingAll(false);
+        }
+    }
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 p-4">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <FileText className="w-10 h-10 text-orange-400" />
-            <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-              {leaveRequests.length}
-            </span>
-          </div>
-          <h1 className="text-xl font-bold text-gray-800">New Leave Requests</h1>
-        </div>
-        <button
-          onClick={() => navigate('/staff')}
-          className="bg-orange-400 text-white px-3 py-2 rounded hover:bg-orange-500 flex items-center"
-        >
-          <House className="w-5 h-5 mr-2" /> Dashboard
-        </button>
-      </div>
+    <div className="min-h-screen w-full bg-gray-50 p-4 sm:p-6 font-sans">
+      <Toaster position="top-center" reverseOrder={false} />
 
-      {isFetching ? (
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader className="animate-spin" size={40} />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {leaveRequests.map((leave) => (
-            <div
-              key={leave._id}
-              className="bg-white rounded-xl shadow-md p-6 flex flex-col gap-3"
-            >
-              <div className="flex items-center gap-4 mb-2">
-                <CircleUserRound className="w-10 h-10 text-orange-400" />
-                <div>
-                  <div className="font-semibold text-gray-800">
-                    {leave.applicantId.name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {leave.applicantId.rollno}
-                  </div>
-                </div>
-              </div>
-              <div className="text-sm text-gray-600 mb-2">
-                <p>
-                  <strong>Start Date:</strong> {leave.startDate}
-                </p>
-                <p>
-                  <strong>End Date:</strong> {leave.endDate}
-                </p>
-                <p>
-                  <strong>Reason:</strong> {leave.reason}
-                </p>
-              </div>
-              <div className="flex justify-between mt-2">
-                <button
-                  onClick={() => handleReject(leave._id)}
-                  className="w-1/2 mr-2 py-2 border-2 text-red-500 rounded hover:bg-red-50 hover:text-white font-semibold"
-                >
-                  Decline
-                </button>
-                <button
-                  onClick={() => handleAccept(leave._id)}
-                  className="w-1/2 ml-2 py-2 border-2 border-green-500 text-green-500 rounded hover:bg-green-50 hover:text-white font-semibold"
-                >
-                  Accept
-                </button>
-              </div>
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+            <div className="relative">
+              <FileText className="w-10 h-10 text-orange-500" />
+              {localLeaves.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">
+                  {localLeaves.length}
+                </span>
+              )}
             </div>
-          ))}
-        </div>
-      )}
-
-      {modalOpen && selectedReq && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center px-4">
-          <div className="bg-white rounded-xl p-6 shadow-xl w-full max-w-md relative">
+          {localLeaves.length > 0 && (
             <button
-              onClick={handleCloseModal}
-              className="absolute top-2 right-3 text-2xl text-gray-400 hover:text-gray-700"
+                onClick={handleAcceptAll}
+                disabled={isAcceptingAll}
+                className="border border-green-500 text-green-600 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors flex items-center justify-center shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              &times;
+                {isAcceptingAll ? <Loader className="animate-spin w-5 h-5 mr-2" /> : <ShieldCheck className="w-5 h-5 mr-2" />}
+                {isAcceptingAll ? 'Processing...' : 'Accept All'}
             </button>
-            <div className="flex flex-col items-center">
-              <CircleUserRound className="w-16 h-16 text-orange-400 mb-2" />
-              <h2 className="text-lg font-bold text-gray-800">{selectedReq.applicantId.name}</h2>
-              <p className="text-sm text-gray-500 mb-3">{selectedReq.applicantId.rollno}</p>
-              <div className="w-full text-sm text-gray-700 mb-4">
-                <p><strong>Start Date:</strong> {selectedReq.startDate}</p>
-                <p><strong>End Date:</strong> {selectedReq.endDate}</p>
-                <p className="mt-2"><strong>Reason:</strong> {selectedReq.reason}</p>
-              </div>
-              <div className="flex w-full gap-4">
-                <button
-                  onClick={() => handleReject(selectedReq._id)}
-                  className="w-1/2 py-2 border border-red-500 text-red-500 rounded hover:bg-red-400 hover:text-white"
-                >
-                  Reject
-                </button>
-                <button
-                  onClick={() => handleAccept(selectedReq._id)}
-                  className="w-1/2 py-2 border border-green-500 text-green-500 rounded hover:bg-green-400 hover:text-white"
-                >
-                  Accept
-                </button>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+
+        {isFetching && (
+          <div className="flex items-center justify-center p-10">
+            <Loader className="animate-spin text-orange-500" size={36} />
+          </div>
+        )}
+
+        {!isFetching && localLeaves.length === 0 && (
+            <div className="text-center py-12 px-6 bg-white rounded-xl shadow-sm">
+                <h2 className="text-2xl font-semibold text-gray-700">No Pending Requests</h2>
+                <p className="text-gray-500 mt-2">All leave requests have been reviewed.</p>
+            </div>
+        )}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {localLeaves.map((leave) => {
+            const numberOfDays = calculateNumberOfDays(leave.startDate, leave.endDate);
+            return (
+                <div
+                key={leave._id}
+                className={`bg-white rounded-xl shadow-sm flex flex-col transition-all duration-300 border border-gray-200
+                    ${removingId === leave._id ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}
+                `}
+                >
+                <div className="p-5 flex items-center gap-4 border-b border-gray-100">
+                    <CircleUserRound className="w-12 h-12 text-orange-500 flex-shrink-0" />
+                    <div className="overflow-hidden">
+                    <div className="font-bold text-gray-800 text-lg truncate">
+                        {leave.applicantId.name}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                        {leave.applicantId.rollno}
+                    </div>
+                    </div>
+                </div>
+                
+                <div className="p-5 flex-grow space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-start gap-2 text-sm">
+                            <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
+                            <div>
+                                <span className="font-bold text-gray-700">From:</span>
+                                <span className="ml-1.5">{formatDate(leave.startDate)}</span>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm">
+                            <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
+                            <div>
+                                <span className="font-bold text-gray-700">To:</span>
+                                <span className="ml-1.5">{formatDate(leave.endDate)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-2 text-sm">
+                        <Hash className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
+                        <div>
+                            <span className="font-bold text-gray-700">No. of Days:</span>
+                            <span className="ml-1.5">{numberOfDays} {numberOfDays === 1 ? 'Day' : 'Days'}</span>
+                        </div>
+                    </div>
+
+                    <blockquote className="bg-orange-50/70 border-l-4 border-orange-400 p-3 text-gray-800">
+                        <div className="flex items-center gap-2 mb-1">
+                            <MessageSquareQuote className="w-5 h-5 text-orange-500 flex-shrink-0"/>
+                            <h3 className="font-bold text-orange-800 text-sm">Reason:</h3>
+                        </div>
+                        <p className="pl-1 text-sm italic">
+                            {leave.reason}
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div className="p-4 bg-gray-50/50 flex justify-between items-center gap-3 rounded-b-xl mt-auto">
+                    <button
+                    onClick={() => handleAction(leave._id, 'reject')}
+                    disabled={processingId === leave._id}
+                    className="w-full py-2 px-4 border border-red-400 text-red-500 rounded-lg hover:bg-red-500 hover:text-white font-semibold flex items-center justify-center transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                    {(processingId === leave._id && processingAction === "reject")
+                        ? <Loader className="animate-spin" size={20} />
+                        : "Decline"
+                    }
+                    </button>
+                    <button
+                    onClick={() => handleAction(leave._id, 'accept')}
+                    disabled={processingId === leave._id}
+                    className="w-full py-2 px-4 border border-green-500 text-green-600 rounded-lg hover:bg-green-500 hover:text-white font-semibold flex items-center justify-center transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                    {(processingId === leave._id && processingAction === "accept")
+                        ? <Loader className="animate-spin" size={20} />
+                        : "Accept"
+                    }
+                    </button>
+                </div>
+                </div>
+            )
+          })}
+        </div>
+      </div>
     </div>
   );
 }

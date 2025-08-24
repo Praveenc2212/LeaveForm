@@ -1,21 +1,23 @@
-import {axiosInstence} from "../utils/axiosInstance";
+import { axiosInstence } from "../utils/axiosInstance";
 import { create } from "zustand";
 import { toast } from "react-hot-toast";
- 
-export const useStaffFormStore = create((set) => ({
-  leaveForms: [],
-  pendingLeaves : [],
-  acceptedLeaves :[],
+
+export const useStaffFormStore = create((set, get) => ({
+  pendingLeaves: [],
+  acceptedLeaves: [],
   isFetching: false,
+  processingId: null, // Moved from component
+  processingAction: null, // Moved from component
+  isAcceptingAll: false, // Moved from component
+
+  // Fetches pending leave forms
   getFacultypending: async () => {
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-pending-forms');
-      set({ pendingLeaves: apiRes.data.leaveForms });
-      // toast.success("Pending Leave Requests Fetched Successfully");
-
+      set({ pendingLeaves: apiRes.data.leaveForms || [] });
     } catch (error) {
-      let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+      const err = error.response?.data?.message || "Failed to fetch pending requests.";
       console.error(err);
       toast.error(err);
     } finally {
@@ -23,39 +25,80 @@ export const useStaffFormStore = create((set) => ({
     }
   },
 
-  setFacultyAccepteTheForm: async (formId) => {
-    set({ isFetching: true });
+  // Handles a single leave action (accept or reject)
+  handleLeaveAction: async (formId, action) => {
+    set({ processingId: formId, processingAction: action });
     try {
-      const apiRes = await axiosInstence.post(`/api/form/staff/accept/${formId}`);
-      // set({ leaveForms: apiRes.data.leaveForms });
+      const endpoint = action === 'accept' 
+        ? `/api/form/staff/accept/${formId}` 
+        : `/api/form/staff/reject/${formId}`; // Assuming a reject endpoint
+      
+      await axiosInstence.post(endpoint);
+      
+      // Remove the processed leave from the local state
+      set((state) => ({
+        pendingLeaves: state.pendingLeaves.filter((leave) => leave._id !== formId),
+      }));
+      toast.success(`Request ${action === 'accept' ? 'Accepted' : 'Rejected'} Successfully`);
+
     } catch (error) {
-      let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+      const err = error.response?.data?.message || `Failed to ${action} request.`;
       console.error(err);
-      toast.error("Server is Down, Please try again later");
+      toast.error(err);
+      // Re-throw the error to be caught in the component if needed
+      throw new Error(err);
     } finally {
-      set({ isFetching: false });
+      set({ processingId: null, processingAction: null });
     }
   },
-  getFacultyAcceptedForms: async ()=>{
+
+  // Accepts all pending leave requests
+  acceptAllLeaves: async () => {
+    const { pendingLeaves } = get();
+    if (pendingLeaves.length === 0) {
+        toast.error("No pending requests to accept.");
+        return;
+    }
+    
+    if (window.confirm(`Are you sure you want to accept all ${pendingLeaves.length} pending requests?`)) {
+        set({ isAcceptingAll: true });
+        try {
+            // Assuming the backend has an endpoint to accept all
+            await axiosInstence.post('/api/form/staff/accept-all');
+            set({ pendingLeaves: [] }); // Clear leaves on success
+            toast.success("All pending requests have been accepted.");
+        } catch (error) {
+            const err = error.response?.data?.message || "Failed to accept all requests.";
+            console.error(err);
+            toast.error(err);
+        } finally {
+            set({ isAcceptingAll: false });
+        }
+    }
+  },
+
+  // Other existing functions...
+  getFacultyAcceptedForms: async () => {
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-reviewed-forms');
-      set({ acceptedLeaves : apiRes.data.leaveForms });
+      set({ acceptedLeaves: apiRes.data.leaveForms });
     } catch (error) {
-      let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+      const err = error.response?.data?.message || "Server is Down, Please try again later";
       console.error(err);
       toast.error(err);
     } finally {
       set({ isFetching: false });
     }
   },
+
   getFacultyOngoingForms: async () => {
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-ongoing-forms');
-      set({ leaveForms: apiRes.data.leaveForms });
+      set({ leaveForms: apiRes.data.leaveForms }); // Assuming 'leaveForms' is the correct state slice
     } catch (error) {
-      let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+      const err = error.response?.data?.message || "Server is Down, Please try again later";
       console.error(err);
       toast.error(err);
     } finally {
@@ -63,6 +106,5 @@ export const useStaffFormStore = create((set) => ({
     }
   },
 }));
- 
 
 export default useStaffFormStore;

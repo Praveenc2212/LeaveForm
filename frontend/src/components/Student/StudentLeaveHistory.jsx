@@ -39,16 +39,18 @@ function StudentLeaveHistory() {
         
         {/* Back Button in top-left inside card */}
         <button
-          onClick={() => navigate(-1)}
-          className="absolute top-4 left-4 p-1 rounded-full hover:bg-gray-100"
-        >
-          <img
-            src="/icons/back.svg"
-            alt="Back"
-            className="w-[28px] h-[28px]"
-          />
-        </button>
-
+  onClick={() => navigate(-1)}
+  className="absolute top-3 left-3 flex items-center justify-center 
+             w-9 h-9 rounded-full border border-transparent 
+             bg-orange-50 text-orange-600 
+             hover:border-orange-500 transition-all duration-200"
+>
+  <img
+    src="/icons/undo-2.svg"
+    alt="Back"
+    className="w-[28px] h-[28px] transition-colors duration-200 group-hover:brightness-0 group-hover:invert group-hover:sepia group-hover:saturate-500 group-hover:hue-rotate-[360deg] group-hover:text-orange-500"
+  />
+</button>
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Leave History
         </h1>

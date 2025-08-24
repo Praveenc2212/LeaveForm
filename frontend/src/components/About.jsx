@@ -19,11 +19,10 @@ const teamMembers = [
 
 const TeamPage = () => {
   return (
-    <div className="min-h-screen bg-cover bg-center py-10 px-4 flex flex-col items-center opacity: 1.0"
-    style={{ backgroundImage: `url(${bgImage})`}}
+    <div className="min-h-screen bg-cover bg-center py-10 px-4 flex flex-col items-center opacity: 1.0" 
     >
       <h1 className="text-5xl font-bold text-center text-black mb-12">
-        About <span className="text-white">Us</span>
+        About <span className="text-black">Us</span>
       </h1>
 
       <div className="flex flex-col gap-10 w-full max-w-4xl">
@@ -40,13 +39,7 @@ const TeamPage = () => {
               }`}
             >
               {/* Decorative Overlay Image */}
-              <img
-                src={overlay}
-                alt="Decoration"
-                className={`absolute w-28 ${
-                  isOdd ? "top-0 left-0 h-40 w-70" : "top-0 right-0 h-40 w-70 scale-x-[-1]"
-                } opacity-100`}
-              />
+              
 
               {/* Profile Image */}
               <div

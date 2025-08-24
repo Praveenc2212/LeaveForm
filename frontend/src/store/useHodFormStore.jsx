@@ -11,10 +11,12 @@ export const useHodFormStore = create((set) => ({
   getHodpending: async () => {
     set({ isFetching: true });
     try {
-      const apiRes = await axiosInstence.get('/api/form/staff/leave-reviewed-forms');
+      const apiRes = await axiosInstence.get('/api/form/hod/leave-pending-forms');
       set({ pendingLeaves: apiRes.data.leaveForms });
-      toast.success("Pending Leave Requests Fetched Successfully");
-
+      console.log("Pending Leaves p:", apiRes.data.leaveForms);
+      
+      // toast.success("Pending Leave Requests Fetched Successfully");
+      set({isFetching : false});
     } catch (error) {
       let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
       console.error(err);
@@ -50,6 +52,19 @@ export const useHodFormStore = create((set) => ({
   //     set({ isFetching: false });
   //   }
   // },
+  setHodRejectTheForm : async (formId) => {
+    set({ isFetching: true });
+    try {
+      const apiRes = await axiosInstence.post(`/api/form/hod/reject/${formId}`);
+      // set({ leaveForms: apiRes.data.leaveForms });
+    } catch (error) {
+      let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
+      console.error(err);
+      toast.error("Server is Down, Please try again later");
+    } finally {
+      set({ isFetching: false });
+    }
+  },
   getHodOngoingForms: async () => {
     set({ isFetching: true });
     try {
@@ -66,15 +81,15 @@ export const useHodFormStore = create((set) => ({
   getApprovedLeaveForms : async ()=>{
     set({isFetching : true });
     try{
-        const apiRes = await axiosInstence.get('/api/form/approved-leave-forms');
+        const apiRes = await axiosInstence.get('/api/form/hod/leave-approved-forms');
         // approvedLeaves = apiRes.data;
         console.log("Approved Leaves p:", apiRes.data.leaveForms);
         set({ approvedLeaveForms : apiRes.data.leaveForms });
-        toast.success("Approved Leave Forms Fetched Successfully");
+        // toast.success("Approved Leave Forms Fetched Successfully");
         // set({ approvedLeaveForms : apiRes.data  });
     }
     catch(error){
-      console.error( error ) ;    
+      console.error( error );    
       toast.error(error);
     }
     finally{

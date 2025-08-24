@@ -9,6 +9,15 @@ import {
     discussLeaveByStaff,
     rejectLeaveByStaff,
 } from "../controllers/LeaveForm/Staff/staffConfirmation.controller.js";
+import {
+    acceptLeaveByHod,
+    rejectLeaveByHod,
+    acceptAllLeaveByHod
+} from "../controllers/LeaveForm/Hod/HodConfirmation.controller.js";
+
+import { RetrieveHodForms } from "../controllers/LeaveForm/Hod/RetrieveHodForms.controller.js";
+// import {RetrieveStaffForms } from "../controllers/LeaveForm/Hod/RetrieveHodForms.controller.js"
+
 import { acceptAllLeavesForms } from "../controllers/LeaveForm/AcceptAllLeaveForms.controller.js";
 
 const router = express.Router();
@@ -52,8 +61,15 @@ router.post("/staff/discuss/:formId", checkAuthentication, discussLeaveByStaff);
 router.post("/staff/accept-all", checkAuthentication, acceptAllLeavesForms);
 
 // // HOD Oprations...
-// router.post("/hod/accept/:formId", acceptLeaveByHOD);
-// router.post("/hod/reject/:formId", rejectLeaveByHOD);
+router.post("/hod/accept/:formId",checkAuthentication, acceptLeaveByHod);
+router.post("/hod/reject/:formId",checkAuthentication, rejectLeaveByHod);
+router.get("/hod/leave-pending-forms", checkAuthentication, (req, res) => {
+    RetrieveHodForms(req, res, "Reviewed");
+});
+router.get("/hod/leave-approved-forms", checkAuthentication, (req, res) => {
+    RetrieveHodForms(req, res, "Approved");
+});
+
 // router.post("/hod/discuss/:formId", discussLeaveByHOD);
 // router.post("/hod/accept-all", acceptAllLeavesByHOD);
 

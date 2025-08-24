@@ -33,17 +33,27 @@
 
 // export default AcceptedFormByHod
 import React, { useEffect } from 'react'
-import useStaffFormStore from '../../store/useStaffFormStore';
+// import useStaffFormStore from '../../store/useStaffFormStore';
 import { FileText } from 'lucide-react'; // Add icon import
+import { Loader } from "lucide-react";
 import useHodFormStore from '../../store/useHodFormStore';
-function AcceptedFormByHod() {
-  const { approvedLeaveForms , getApprovedLeaveForms } = useHodFormStore();
-  // const {  getFacultyAcceptedForms } = useStaffFormStore();
+function AcceptedFormByHod() { //getApprovedLeaveForms
+  const { approvedLeaveForms , getApprovedLeaveForms , isFetching } = useHodFormStore();
   useEffect(() => {
     getApprovedLeaveForms();
   }, [getApprovedLeaveForms]);
-  const acceptedLeaves = approvedLeaveForms||[];
-    console.log("Approved Leaves:", approvedLeaveForms ) ;
+  console.log("Approved Leaves:", approvedLeaveForms ); 
+  
+  const acceptedLeaves = approvedLeaveForms || [];
+  //
+    console.log("Approved Leavesss:", acceptedLeaves   ) ;
+  if(acceptedLeaves.length === 0 ){
+    return (
+       <div className="flex items-center justify-center min-h-screen">
+                    <Loader className="animate-spin text-gray-700" size={50} />
+       </div>
+    );
+  }
   return (
     <div>
       <div className="flex items-center gap-3 m-4">

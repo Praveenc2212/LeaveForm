@@ -7,6 +7,14 @@ export const createLeaveForm = async (data) => {
     return await form.save();
 };
 
+export const getFromsByHod = async (hodId, status) => {
+    const classData = await ClassModel.findOne({ hodId }, { _id: 1 });
+    if (!classData) return [];
+    return await FormModel.find({ classId: classData._id, status })
+        .populate("applicantId", "_id name rollno")
+        .lean();    
+}
+
 // Get all forms by Applicant ID
 export const getFormsByApplicant = async (applicantId) => {
     return await FormModel.find({ applicantId })
@@ -37,12 +45,12 @@ export const getFormsByTutor = async (tutorId, status) => {
 };
 
 // Retrieves Forms That are Tutor Approved for HOD of Specific Department...
-export const getReviewedFormsByDepartment = async (department) => {
+export const getReviewedFormsByDepartment = async (department,statuss) => {
     const classes = await ClassModel.find({ department }).select("_id");
     const classIds = classes.map((cls) => cls._id);
     return await FormModel.find({
         classId: { $in: classIds },
-        status: "Reviewed",
+        status: statuss,
     })
         .populate("applicantId", "name rollno classId")
         .populate("classId", "year section")

@@ -38,7 +38,7 @@ export const useAuthStore = create((set) => ({
                console.error(err);
                toast.error(err);
                set({ userData: null });
-          } finally {
+          } finally {    
                set({ isLoggingIn: false });
           }
      },

@@ -17,7 +17,8 @@ function Profile() {
 
   return (
     <>
-      <div className="sm:pt-20 overflow-hidden font-sans text-sm flex flex-col items-center justify-center">
+      {/* Fullscreen Overlay to make sure modal is above header */}
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/20 z-[100]">
         <div className="relative w-full max-w-xs md:max-w-3xl bg-white rounded-2xl shadow-xl shadow-black/15 p-8 pt-0 pb-4 px-2 md:px-12 text-center font-sans text-sm">
           
           {/* ❌ Close button */}
@@ -65,16 +66,15 @@ function Profile() {
                   {userData.year} Year
                 </div>
               </div>
-             
             </div>
+
             <div className="flex gap-4">
-               <div className="md:w-1/2 mb-2 flex flex-col justify-start">
+              <div className="md:w-1/2 mb-2 flex flex-col justify-start">
                 <label className="text-sm text-gray-600">Department</label>
                 <div className="w-full mt-1 px-4 py-2 h-[44px] rounded-lg border border-gray-300 bg-white text-gray-800 flex items-center">
                   {userData.department}
                 </div>
               </div>
-              
               <div className="w-1/2">
                 <label className="text-sm text-gray-600">Section</label>
                 <div className="w-full mt-1 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800">

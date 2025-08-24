@@ -4,7 +4,7 @@ function StudentDashBoard() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ marginTop: "-20px" }} className="bg-white font-sans flex items-start justify-center p-4 sm:items-center">
+    <div style={{ marginTop: "-20px" }} className="bg-white font-sans flex items-start justify-center py-10 sm:items-center">
       <div className="w-full max-w-screen-md flex flex-col items-center gap-6 mt-0 pt-4 sm:pt-20">
         {/* Apply Leave */}
         <button

@@ -1,12 +1,15 @@
-import { getFormsByTutor } from "../../../services/form.service.js";
+import { getFromsByHod, getReviewedFormsByDepartment } from "../../../services/form.service.js";
 
-export const RetrieveStaffForms = async (req, res, status) => {
+export const RetrieveHodForms = async (req, res, status) => {
     try {
-        if (req.user.designation !== "STAFF") {
-            return res.status(403).json({ message: "Forbidden" });
+        if (req.user.designation !== "HOD") {
+            return res.status(403).json({ message: "Forbidden hod only allowed" });
         }
-        const staffId = req.user.id;
-        const leaveForms = await getFormsByTutor(staffId, status);
+        const hodId = req.user.id;
+        const leaveForms = await getReviewedFormsByDepartment(req.user.department , status);
+        // const leaveForms = await getFromsByHod(hodId, status);
+        // console.log("Leave Forms for HOD:", leaveForms);
+        
         res.status(200).json({
             success: true,
             message: "Leave forms fetched successfully.",

@@ -6,11 +6,10 @@ export const useStaffFormStore = create((set, get) => ({
   pendingLeaves: [],
   acceptedLeaves: [],
   isFetching: false,
-  processingId: null, // Moved from component
-  processingAction: null, // Moved from component
-  isAcceptingAll: false, // Moved from component
+  processingId: null,
+  processingAction: null,
+  isAcceptingAll: false,
 
-  // Fetches pending leave forms
   getFacultypending: async () => {
     set({ isFetching: true });
     try {
@@ -25,34 +24,30 @@ export const useStaffFormStore = create((set, get) => ({
     }
   },
 
-  // Handles a single leave action (accept or reject)
   handleLeaveAction: async (formId, action) => {
     set({ processingId: formId, processingAction: action });
     try {
       const endpoint = action === 'accept' 
         ? `/api/form/staff/accept/${formId}` 
-        : `/api/form/staff/reject/${formId}`; // Assuming a reject endpoint
+        : `/api/form/staff/reject/${formId}`;
       
       await axiosInstence.post(endpoint);
       
-      // Remove the processed leave from the local state
-      set((state) => ({
-        pendingLeaves: state.pendingLeaves.filter((leave) => leave._id !== formId),
-      }));
       toast.success(`Request ${action === 'accept' ? 'Accepted' : 'Rejected'} Successfully`);
+
+      setTimeout(() => {
+        set((state) => ({
+          pendingLeaves: state.pendingLeaves.filter((leave) => leave._id !== formId),
+        }));
+      }, 300);
 
     } catch (error) {
       const err = error.response?.data?.message || `Failed to ${action} request.`;
       console.error(err);
       toast.error(err);
-      // Re-throw the error to be caught in the component if needed
-      throw new Error(err);
-    } finally {
-      set({ processingId: null, processingAction: null });
     }
   },
 
-  // Accepts all pending leave requests
   acceptAllLeaves: async () => {
     const { pendingLeaves } = get();
     if (pendingLeaves.length === 0) {
@@ -60,43 +55,28 @@ export const useStaffFormStore = create((set, get) => ({
         return;
     }
     
-    if (window.confirm(`Are you sure you want to accept all ${pendingLeaves.length} pending requests?`)) {
-        set({ isAcceptingAll: true });
-        try {
-            // Assuming the backend has an endpoint to accept all
-            await axiosInstence.post('/api/form/staff/accept-all');
-            set({ pendingLeaves: [] }); // Clear leaves on success
-            toast.success("All pending requests have been accepted.");
-        } catch (error) {
-            const err = error.response?.data?.message || "Failed to accept all requests.";
-            console.error(err);
-            toast.error(err);
-        } finally {
-            set({ isAcceptingAll: false });
-        }
+    // The window.confirm logic is now removed from here.
+    set({ isAcceptingAll: true });
+    try {
+        await axiosInstence.post('/api/form/staff/accept-all');
+        toast.success("All pending requests have been accepted.");
+        setTimeout(() => {
+            set({ pendingLeaves: [] });
+        }, 300);
+    } catch (error) {
+        const err = error.response?.data?.message || "Failed to accept all requests.";
+        console.error(err);
+        toast.error(err);
+    } finally {
+        set({ isAcceptingAll: false });
     }
   },
 
-  // Other existing functions...
   getFacultyAcceptedForms: async () => {
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-reviewed-forms');
       set({ acceptedLeaves: apiRes.data.leaveForms });
-    } catch (error) {
-      const err = error.response?.data?.message || "Server is Down, Please try again later";
-      console.error(err);
-      toast.error(err);
-    } finally {
-      set({ isFetching: false });
-    }
-  },
-
-  getFacultyOngoingForms: async () => {
-    set({ isFetching: true });
-    try {
-      const apiRes = await axiosInstence.get('/api/form/staff/leave-ongoing-forms');
-      set({ leaveForms: apiRes.data.leaveForms }); // Assuming 'leaveForms' is the correct state slice
     } catch (error) {
       const err = error.response?.data?.message || "Server is Down, Please try again later";
       console.error(err);

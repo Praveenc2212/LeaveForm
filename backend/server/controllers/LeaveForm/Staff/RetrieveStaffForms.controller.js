@@ -3,7 +3,7 @@ import { getFormsByTutor } from "../../../services/form.service.js";
 export const RetrieveStaffForms = async (req, res, status) => {
     try {
         if (req.user.designation !== "STAFF") {
-            return res.status(403).json({ message: "Forbidden" });
+            return res.status(403).json({ message: "Forbidden only" });
         }
         const staffId = req.user.id;
         const leaveForms = await getFormsByTutor(staffId, status);

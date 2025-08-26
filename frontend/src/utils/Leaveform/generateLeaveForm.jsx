@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable'; // Correctly import the autoTable function
 
 // Helper function to format dates, ensuring consistency
 const formatDate = (dateString) => {
@@ -49,7 +49,8 @@ export const generateLeaveForm = (leave) => {
     const numberOfDays = calculateNumberOfDays(leave.startDate, leave.endDate);
     const leaveDates = `${formatDate(leave.startDate)} to ${formatDate(leave.endDate)}`;
     
-    doc.autoTable({
+    // THE FIX: Call autoTable as a function, passing the doc instance
+    autoTable(doc, {
         startY: 75,
         head: [['No of days leave required', 'Date(s) of leave', 'No of days leave already taken']],
         body: [[`${numberOfDays} ${numberOfDays > 1 ? 'Days' : 'Day'}`, leaveDates, '-']],
@@ -66,6 +67,7 @@ export const generateLeaveForm = (leave) => {
     });
 
     // --- 4. Reason for Leave ---
+    // Use the 'lastAutoTable' property from the doc object itself
     const finalY = doc.lastAutoTable.finalY;
     doc.text('Reason for Leave:', 14, finalY + 15);
     doc.setFont('helvetica', 'italic');

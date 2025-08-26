@@ -27,9 +27,9 @@ function StudentLeaveStatusCard({ leaveStatus }) {
           <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${applied ? "bg-green-500" : "bg-gray-300"}`} />
           <span className="mt-1 text-center">Applied</span>
         </div>
-        <div className={`flex-1 h-1 ${staffAccepted ? "bg-green-500" : "bg-gray-300"} mx-1 md:mx-2`} />
+        <div className={`flex-1 h-1 ${(staffAccepted )? "bg-green-500" : "bg-gray-300"} mx-1 md:mx-2`} />
         <div className="flex flex-col items-center flex-1">
-          <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${staffAccepted ? "bg-green-500" : "bg-gray-300"}`} />
+          <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${staffAccepted || hodAccepted? "bg-green-500" : "bg-gray-300"}`} />
           <span className="mt-1 text-center">Staff Accepted</span>
         </div>
         <div className={`flex-1 h-1 ${hodAccepted ? "bg-green-500" : "bg-gray-300"} mx-1 md:mx-2`} />

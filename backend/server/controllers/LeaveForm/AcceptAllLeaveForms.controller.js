@@ -2,6 +2,7 @@ import { updateManyFormsByDepartment, updateManyFormsByTutor } from "../../servi
 
 export const acceptAllLeavesForms = async (req, res) => {
     const user = req.user;
+    console.log(user);
     try {
         if (user.designation === "STAFF") {
             await updateManyFormsByTutor(user.id);

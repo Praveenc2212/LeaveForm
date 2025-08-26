@@ -111,10 +111,8 @@ function App() {
             <Route path="/student/deletewarden" element={<Deletewarden />} />
 
             {/* Staff */}
-            <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />}>
-              <Route path="PendingRequests" element={<PendingLeaveRequests />} />
-              <Route path="ReviewedRequests" element={<ReviewedLeaveRequests />} />
-            </Route>
+            <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />} />
+             
 
             <Route path="/hod" element={ userData ? <HODDashBoard /> : <Navigate to="/login" />} />
             <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />

@@ -4,12 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import PendingLeaveRequests from "./PendingLeaveRequests";
 import ReviewedLeaveRequests from "./ReviewedLeaveRequests";
-import AcceptedFormByStaff from "./AcceptedFormByStaff";
+import ApprovedLeaveRequests from "./ApprovedLeaveRequests";
 
 const TABS = [
     { title: "Pending", component: <PendingLeaveRequests /> },
-    { title: "Reviewed", component: <AcceptedFormByStaff /> },
-    { title: "Approved", component: <ReviewedLeaveRequests /> },
+    { title: "Reviewed", component: <ReviewedLeaveRequests /> },
+    { title: "Approved", component: <ApprovedLeaveRequests /> },
 ];
 
 function StaffDashBoard() {

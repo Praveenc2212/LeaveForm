@@ -12,7 +12,6 @@ import {
 import {
     acceptLeaveByHod,
     rejectLeaveByHod,
-    acceptAllLeaveByHod
 } from "../controllers/LeaveForm/Hod/HodConfirmation.controller.js";
 
 import { RetrieveHodForms } from "../controllers/LeaveForm/Hod/RetrieveHodForms.controller.js";
@@ -71,6 +70,6 @@ router.get("/hod/leave-approved-forms", checkAuthentication, (req, res) => {
 });
 
 // router.post("/hod/discuss/:formId", discussLeaveByHOD);
-// router.post("/hod/accept-all", acceptAllLeavesByHOD);
+router.post("/hod/accept-all", checkAuthentication, acceptAllLeavesForms);
 
 export default router;

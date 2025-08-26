@@ -4,7 +4,8 @@ import { toast } from "react-hot-toast";
 
 export const useStaffFormStore = create((set, get) => ({
   pendingLeaves: [],
-  acceptedLeaves: [],
+  acceptedLeaves: [], // These are "Reviewed" leaves, awaiting HOD
+  finalApprovedLeaves: [], // New state for leaves approved by HOD
   isFetching: false,
   processingId: null,
   processingAction: null,
@@ -33,11 +34,13 @@ export const useStaffFormStore = create((set, get) => ({
       
       await axiosInstence.post(endpoint);
       
-      toast.success(`Request ${action === 'accept' ? 'Accepted' : 'Rejected'} Successfully`);
+      toast.success(`Request ${action === 'accept' ? 'Reviewed' : 'Rejected'} Successfully`);
 
       setTimeout(() => {
         set((state) => ({
           pendingLeaves: state.pendingLeaves.filter((leave) => leave._id !== formId),
+          processingId: null,
+          processingAction: null,
         }));
       }, 300);
 
@@ -45,6 +48,7 @@ export const useStaffFormStore = create((set, get) => ({
       const err = error.response?.data?.message || `Failed to ${action} request.`;
       console.error(err);
       toast.error(err);
+      set({ processingId: null, processingAction: null });
     }
   },
 
@@ -55,16 +59,15 @@ export const useStaffFormStore = create((set, get) => ({
         return;
     }
     
-    // The window.confirm logic is now removed from here.
     set({ isAcceptingAll: true });
     try {
         await axiosInstence.post('/api/form/staff/accept-all');
-        toast.success("All pending requests have been accepted.");
+        toast.success("All pending requests have been marked as reviewed.");
         setTimeout(() => {
             set({ pendingLeaves: [] });
         }, 300);
     } catch (error) {
-        const err = error.response?.data?.message || "Failed to accept all requests.";
+        const err = error.response?.data?.message || "Failed to review all requests.";
         console.error(err);
         toast.error(err);
     } finally {
@@ -76,11 +79,31 @@ export const useStaffFormStore = create((set, get) => ({
     set({ isFetching: true });
     try {
       const apiRes = await axiosInstence.get('/api/form/staff/leave-reviewed-forms');
-      set({ acceptedLeaves: apiRes.data.leaveForms });
+      set({ acceptedLeaves: apiRes.data.leaveForms || [] });
     } catch (error) {
       const err = error.response?.data?.message || "Server is Down, Please try again later";
       console.error(err);
       toast.error(err);
+    } finally {
+      set({ isFetching: false });
+    }
+  },
+
+  // --- NEW FUNCTION ---
+  /**
+   * Fetches leave forms that have been fully approved by the HOD.
+   */
+  getApprovedLeaves: async () => {
+    set({ isFetching: true });
+    try {
+      // This endpoint is inferred from the API structure.
+      const apiRes = await axiosInstence.get('/api/form/staff/leave-approved-forms');
+      set({ finalApprovedLeaves: apiRes.data.leaveForms || [] });
+    } catch (error) {
+      const err = error.response?.data?.message || "Failed to fetch approved requests.";
+      console.error("Fetch Approved Error:", err);
+      toast.error(err);
+      set({ finalApprovedLeaves: [] });
     } finally {
       set({ isFetching: false });
     }

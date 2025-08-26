@@ -10,7 +10,7 @@ function StudentLeaveStatus() {
 
   useEffect(() => {
     getStudentLeaveStatus();
-  }, []);
+  }, [getStudentLeaveStatus]);
 
   console.log("Status of the student", leaveStatus);
 

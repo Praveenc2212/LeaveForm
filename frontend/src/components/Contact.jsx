@@ -14,7 +14,8 @@ const Contact = () => {
               &nbsp; Coimbatore, Tamilnadu
             </p>
             <p className="text-gray-300 mt-2">
-              • KCE : C-Block, 1st Floor, CCF Room<br />
+              • KCE : C-Block, 1st Floor, Staff Room,<br />
+              &nbsp; Mr. Vignesh Cabin<br />
             </p>
           </div>
           <div>
@@ -22,16 +23,28 @@ const Contact = () => {
             Dr. Vignesh :
             <p className="inline text-green-500 mt-2"> +91 98946 42277</p>
             <br />
-            Mr. Praveen .M :
-            <p className="inline text-green-500 mt-2"> +91 94897 90927</p>
-            <br />
             Mr. Dhanush .N :
             <p className="inline text-green-500 mt-2"> +91 63699 36471</p>
+            <br />
+            Mr. Praveen .C :
+            <p className="inline text-green-500 mt-2"> +91 93442 72090</p>
+            <br />
+            Mr. Praveen Kumar :
+            <p className="inline text-green-500 mt-2"> +91 75488 97689</p>
+            <br />
+            Ms. Harini :
+            <p className="inline text-green-500 mt-2"> +91 96263 15930</p>
+            <br />
+            Mr. Shankar :
+            <p className="inline text-green-500 mt-2"> +91 63824 08775</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold">✉︎ General Support</h2>
             <p className="text-green-500 mt-2">dhanudanush2005@gmail.com</p>
-            <p className="text-green-500">praveenraja4493@gmail.com</p>
+            <p className="text-green-500">717823p118@kce.ac.in</p>
+            <p className="text-green-500">717823p242@kce.ac.in</p>
+            <p className="text-green-500">717823p254@kce.ac.in</p>
+            <p className="text-green-500">717823p341@kce.ac.in</p>
           </div>
         </div>
       </div>
@@ -74,7 +87,7 @@ const Contact = () => {
           />
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded font-semibold"
+            className="bg-green-500 hover:bg-green-600 cursor-pointer text-white px-6 py-3 rounded font-semibold"
           >
             SEND
           </button>

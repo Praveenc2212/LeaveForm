@@ -57,21 +57,21 @@ const ApplyLeaveForm = () => {
       {/* Form Card */}
       <div className="flex items-center justify-center py-10 sm:pt-20 px-2">
         <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white rounded-xl shadow-2xl mx-auto p-6 sm:p-8 flex flex-col items-center">
-          
+
           {/* Back Button inside card - top left */}
           <button
-  onClick={() => navigate(-1)}
-  className="absolute top-3 left-3 flex items-center justify-center 
+            onClick={() => navigate(-1)}
+            className="absolute top-3 left-3 flex items-center justify-center 
              w-9 h-9 rounded-full border border-transparent 
              bg-orange-50 text-orange-600 
              hover:border-orange-500 transition-all duration-200"
->
-  <img
-    src="/icons/undo-2.svg"
-    alt="Back"
-    className="w-[28px] h-[28px] transition-colors duration-200 group-hover:brightness-0 group-hover:invert group-hover:sepia group-hover:saturate-500 group-hover:hue-rotate-[360deg] group-hover:text-orange-500"
-  />
-</button>
+          >
+            <img
+              src="/icons/undo-2.svg"
+              alt="Back"
+              className="w-[28px] h-[28px] transition-colors duration-200 group-hover:brightness-0 group-hover:invert group-hover:sepia group-hover:saturate-500 group-hover:hue-rotate-[360deg] group-hover:text-orange-500"
+            />
+          </button>
 
           <div className="flex flex-col items-center mb-6">
             <h2 className="text-3xl font-bold text-black mb-2 text-center">
@@ -127,11 +127,10 @@ const ApplyLeaveForm = () => {
             <button
               disabled={isApplying}
               type="submit"
-              className={`w-full text-orange-600 font-medium py-3 rounded-md transition ${
-                isApplying
+              className={`w-full text-orange-600 font-medium py-3 rounded-md transition ${isApplying
                   ? "bg-orange-50 cursor-not-allowed"
                   : "bg-orange-100 hover:bg-orange-200 cursor-pointer"
-              }`}
+                }`}
             >
               {isApplying ? (
                 <div className="flex items-center justify-center">

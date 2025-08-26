@@ -52,31 +52,3 @@ export const rejectLeaveByHod = async (req, res) => {
         });
     }
 };
-export const acceptAllLeaveByHod = async (req, res) => {
-    try {
-        const { formIds } = req.body;
-
-        if (!formIds || !Array.isArray(formIds) || formIds.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid Form IDs.",
-            });
-        }
-
-        const data = await Promise.all(
-            formIds.map((formId) => updateLeaveFormStatus(formId, "Reviewed"))
-        );
-
-        return res.status(200).json({
-            success: true,
-            message: "All leave forms accepted successfully.",
-            data,
-        });
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Operation failed. Please try again.",
-            error: error.message,
-        });
-    }
-}

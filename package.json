@@ -6,10 +6,5 @@
     },
     "devDependencies": {
         "concurrently": "^9.2.0"
-    },
-    "dependencies": {
-        "react-hot-toast": "^2.5.2",
-        "xlsx": "^0.18.5",
-        "zustand": "^5.0.6"
     }
 }

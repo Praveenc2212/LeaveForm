@@ -2,11 +2,11 @@ import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import HodPendingLeaveRequests from "./HodPendingLeaveRequests";
-import AcceptedFormByHod from "./AcceptedFormByHod";
+import HodApprovedLeaveRequests from "./HodApprovedLeaveRequests";
 
 const TABS = [
     { title: "Pending", component: <HodPendingLeaveRequests /> },
-    { title: "Approved", component: <AcceptedFormByHod /> },
+    { title: "Approved", component: <HodApprovedLeaveRequests /> },
 ];
 
 function HODDashboard() {

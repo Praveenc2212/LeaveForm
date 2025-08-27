@@ -18,13 +18,13 @@ export const studentLeaveStatus = async (req, res) => {
         }
 
         // Check status constraint
-        if (form.status === "Pending" || form.status === "Reviewed") {
+        if (form.status !== "Approved") {
             return res.status(200).json({
                 success: true,
                 message: "Data fetched successfully.",
                 LeaveForm: form,
             });
-        } else if (form.status === "Approved") {
+        } else {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
 
@@ -38,14 +38,7 @@ export const studentLeaveStatus = async (req, res) => {
                     LeaveForm: form,
                 });
             }
-        } else {
-            // Status is not allowed, do not send the form
-            return res.status(403).json({
-                success: false,
-                message: "No Recent Data.",
-                LeaveForm: null,
-            });
-        }
+        } 
         res.status(200).send(form);
     } catch (error) {
         console.error("Error fetching student leave status: ", error);

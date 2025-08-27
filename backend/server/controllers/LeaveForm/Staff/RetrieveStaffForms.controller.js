@@ -1,4 +1,4 @@
-import { getFormsByTutor } from "../../../services/form.service.js";
+import { getFormsByTutor, getApprovedFormsByTutor } from "../../../services/form.service.js";
 
 export const RetrieveStaffForms = async (req, res, status) => {
     try {
@@ -6,7 +6,13 @@ export const RetrieveStaffForms = async (req, res, status) => {
             return res.status(403).json({ message: "Forbidden only" });
         }
         const staffId = req.user.id;
-        const leaveForms = await getFormsByTutor(staffId, status);
+        
+        let leaveForms;
+        if(status === "Approved") {
+            leaveForms = await getApprovedFormsByTutor(staffId, status);
+        } else {
+            leaveForms = await getFormsByTutor(staffId, status);
+        }
         res.status(200).json({
             success: true,
             message: "Leave forms fetched successfully.",

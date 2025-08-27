@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { CircleUserRound, FileText, Loader, Calendar, MessageSquareQuote, Hash, CheckCircle, Download } from 'lucide-react';
-import useHodFormStore from '../../store/useHodFormStore'; // Corrected import
+import { CircleUserRound, FileText, Loader, Calendar, MessageSquareQuote, Hash, CheckCircle, Download, UserCheck } from 'lucide-react';
+import { useHodFormStore } from '../../store/useHodFormStore';
+import { useAuthStore } from '../../store/useAuthStore'; // Corrected import
 import { Toaster, toast } from 'react-hot-toast';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { generateLeaveForm } from '../../utils/Leaveform/generateLeaveForm';
 
@@ -30,6 +32,7 @@ function HodApprovedLeaveRequests() {
     isFetching,
     getApprovedLeaves,
   } = useHodFormStore();
+  const { userData } = useAuthStore();
 
   useEffect(() => {
     // Calling the correct action from the store
@@ -79,6 +82,8 @@ function HodApprovedLeaveRequests() {
             {/* Mapping over the correct state variable */}
             {approvedLeaves.map((leave) => {
               const numberOfDays = calculateNumberOfDays(leave.startDate, leave.endDate);
+              const tutorNames = leave.classId?.tutorIds?.map(t => t.name).join(', ') || 'N/A';
+
               return (
                 <motion.div
                   layout
@@ -89,7 +94,7 @@ function HodApprovedLeaveRequests() {
                   key={leave._id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200"
                 >
-                  <div className="p-5 flex items-center gap-4 border-b border-gray-100">
+                  <div className="p-5 pb-3 flex items-center gap-4 border-b border-gray-100">
                     <CircleUserRound className="w-12 h-12 text-blue-500 flex-shrink-0" />
                     <div className="overflow-hidden">
                       <p className="font-bold text-gray-800 text-lg truncate" title={leave.applicantId.name}>
@@ -136,9 +141,26 @@ function HodApprovedLeaveRequests() {
                         {leave.reason}
                       </p>
                     </blockquote>
+
+                    <div className="border-t border-gray-200 pt-3 mt-3">
+                        <h3 className="font-semibold text-gray-800 text-sm mb-2 flex items-center gap-2">
+                            <UserCheck className="w-5 h-5 text-gray-500"/>
+                            Approved By
+                        </h3>
+                        <div className="space-y-1.5 text-sm pl-2">
+                            <div className=" ">
+                                <span className="font-medium text-gray-600">Tutor : </span>
+                                <span className="text-gray-800"> {tutorNames}</span>
+                            </div>
+                            <div className="">
+                                <span className="font-medium text-gray-600">HOD : </span>
+                                <span className="text-gray-800"> {userData?.name}</span>
+                            </div>
+                        </div>
+                    </div>
                   </div>
 
-                  <div className="p-4 bg-gray-50/70 flex justify-between items-center gap-3 rounded-b-xl border-t border-gray-100">
+                  <div className="p-4 mt-[-10px] bg-gray-50/70 flex justify-between items-center gap-3 rounded-b-xl border-t border-gray-100">
                     <div className="flex items-center gap-2 text-green-600 font-semibold text-sm">
                       <CheckCircle size={18} />
                       <span>Approved</span>

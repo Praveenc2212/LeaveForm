@@ -72,4 +72,5 @@ router.get("/hod/leave-approved-forms", checkAuthentication, (req, res) => {
 // router.post("/hod/discuss/:formId", discussLeaveByHOD);
 router.post("/hod/accept-all", checkAuthentication, acceptAllLeavesForms);
 
+
 export default router;

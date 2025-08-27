@@ -9,13 +9,11 @@ import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import compression from "compression";
-// import rateLimit from "express-rate-limit";
-// import rateLimit from "express-rate-limit";
-// import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-import AuthRouter from "./server/routers/auth.routers.js";
+import AuthRouter from "./server/routers/auth.route.js";
 import DB from "./server/connections/DB.connections.js";
-import FormRouter from "./server/routers/form.routers.js";
+import FormRouter from "./server/routers/form.route.js";
+import AdminRouter from "./server/routers/admin.route.js";
 
 // Configurations...
 configDotenv();
@@ -72,6 +70,9 @@ app.use("/auth", AuthRouter);
 
 // Form Routes...
 app.use("/api/form", FormRouter);
+
+// Admin Routes...
+app.use("/api/admin", AdminRouter);
 
 // 404 Page Not Found...
 app.use((req, res) => {

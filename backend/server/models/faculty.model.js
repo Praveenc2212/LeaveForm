@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const FacultySchema = new mongoose.Schema({
+const FacultySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -13,6 +13,10 @@ export const FacultySchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    facultySignature : {
+        type: String,
+        default : ""
     },
     department: {
         type: String,

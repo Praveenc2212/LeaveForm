@@ -1,5 +1,5 @@
 import { ClassModel } from "../models/class.model.js";
-import { FormModel } from "../models/Form.model.js";
+import { FormModel } from "../models/form.model.js";
 
 // Create a new Leave Form
 export const createLeaveForm = async (data) => {
@@ -12,8 +12,8 @@ export const getFromsByHod = async (hodId, status) => {
     if (!classData) return [];
     return await FormModel.find({ classId: classData._id, status })
         .populate("applicantId", "_id name rollno")
-        .lean();    
-}
+        .lean();
+};
 
 // Get all forms by Applicant ID
 export const getFormsByApplicant = async (applicantId) => {
@@ -26,7 +26,7 @@ export const getFormsByApplicant = async (applicantId) => {
 export const getRecentAppliedStudentForm = async (studentId) => {
     return await FormModel.findOne({ applicantId: studentId })
         .sort({ appliedAt: -1 })
-        .select("_id startDate endDate reason status")
+        .select("_id startDate endDate reason status appliedAt")
         .lean();
 };
 
@@ -44,16 +44,45 @@ export const getFormsByTutor = async (tutorId, status) => {
         .lean();
 };
 
+export const getApprovedFormsByTutor = async (tutorId, status) => {
+    const classData = await ClassModel.findOne(
+        { tutorIds: tutorId },
+        { _id: 1 }
+    );
+
+    if (!classData) return [];
+
+    return await FormModel.find({ classId: classData._id, status })
+        .populate("applicantId", "_id name rollno")
+        .populate({
+            path: "classId",
+            select: "year section department tutorIds",
+            populate: {
+                path: "tutorIds",
+                select: "name",
+            },
+        })
+        .lean();
+};
+
 // Retrieves Forms That are Tutor Approved for HOD of Specific Department...
-export const getReviewedFormsByDepartment = async (department,statuss) => {
+export const getFormsByDepartment = async (department, status) => {
     const classes = await ClassModel.find({ department }).select("_id");
     const classIds = classes.map((cls) => cls._id);
+    
     return await FormModel.find({
         classId: { $in: classIds },
-        status: statuss,
+        status: status,
     })
         .populate("applicantId", "name rollno classId")
-        .populate("classId", "year section")
+        .populate({
+            path: "classId",
+            select: "year section department tutorIds",
+            populate: {
+                path: "tutorIds",
+                select: "name",
+            },
+        })
         .lean();
 };
 
@@ -68,7 +97,9 @@ export const deleteManyFormsByIds = async (ids) => {
 
 // Update many forms by Tutor ID
 export const updateManyFormsByTutor = async (tutorId) => {
-    const classId = await ClassModel.findOne({ tutorIds: tutorId }).select("_id");
+    const classId = await ClassModel.findOne({ tutorIds: tutorId }).select(
+        "_id"
+    );
     if (!classId) {
         throw Error("Invalid Class Access.");
     }

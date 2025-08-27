@@ -35,11 +35,12 @@ function ApprovedLeaveRequests() {
     getApprovedLeaves();
     // eslint-disable-next-line
   }, []);
-  
-  const handleDownload = (leave) => {
+
+  const handleDownload = async (leave) => {
     toast.success(`Generating PDF for ${leave.applicantId.name}...`);
     try {
-      generateLeaveForm(leave); // Call the PDF generation function
+      // Use 'await' because generateLeaveForm now fetches images asynchronously
+      await generateLeaveForm(leave);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
       toast.error("Could not generate PDF. See console for details.");
@@ -78,7 +79,7 @@ function ApprovedLeaveRequests() {
             <p className="text-gray-500 mt-2">There are currently no leave requests fully approved by the HOD.</p>
           </div>
         )}
-        
+
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <AnimatePresence>
             {finalApprovedLeaves.map((leave) => {
@@ -104,27 +105,27 @@ function ApprovedLeaveRequests() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="p-5 pt-3 flex-grow space-y-3">
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                       <div className="flex items-start gap-2">
-                          <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
-                          <div>
-                              <span className="font-semibold text-gray-700">From:</span>
-                              <span className="block text-gray-600">{formatDate(leave.startDate)}</span>
-                          </div>
+                        <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-semibold text-gray-700">From:</span>
+                          <span className="block text-gray-600">{formatDate(leave.startDate)}</span>
+                        </div>
                       </div>
                       <div className="flex items-start gap-2">
-                          <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
-                          <div>
-                              <span className="font-semibold text-gray-700">To:</span>
-                              <span className="block text-gray-600">{formatDate(leave.endDate)}</span>
-                          </div>
+                        <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-semibold text-gray-700">To:</span>
+                          <span className="block text-gray-600">{formatDate(leave.endDate)}</span>
+                        </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start gap-2 text-sm">
-                      <Hash className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5"/>
+                      <Hash className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold text-gray-700">Duration:</span>
                         <span className="ml-1.5 text-gray-600">{numberOfDays} {numberOfDays === 1 ? 'Day' : 'Days'}</span>
@@ -133,7 +134,7 @@ function ApprovedLeaveRequests() {
 
                     <blockquote className="bg-green-50/80 border-l-4 border-green-400 p-3 mt-2 text-gray-800 rounded-r-md">
                       <div className="flex items-center gap-2 mb-1">
-                        <MessageSquareQuote className="w-5 h-5 text-green-500 flex-shrink-0"/>
+                        <MessageSquareQuote className="w-5 h-5 text-green-500 flex-shrink-0" />
                         <h3 className="font-semibold text-green-800 text-sm">Reason for Leave</h3>
                       </div>
                       <p className="pl-1 text-sm italic leading-relaxed">

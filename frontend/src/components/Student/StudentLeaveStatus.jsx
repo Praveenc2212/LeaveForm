@@ -3,16 +3,16 @@ import { useFormStore } from "../../store/useFormStore.jsx";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, FileDown, Clock, User, MessageSquare, CheckCircle, XCircle, Hourglass, Timer, SquareArrowDown } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.jsx";
+import { generateLeaveForm } from "../../utils/Leaveform/generateLeaveForm";
 
 // Placeholder for download component
 const LeaveFormDownload = React.forwardRef((props, ref) => {
   const handleDownload = () => {
-    console.log("Downloading PDF for:", props.userData.name);
-    alert("Downloading PDF...");
+    generateLeaveForm(props.leaveData);
   };
 
   React.useImperativeHandle(ref, () => ({
-    handleDownload
+    handleDownload,
   }));
 
   return <div style={{ display: "none" }}></div>;

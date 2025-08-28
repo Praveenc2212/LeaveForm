@@ -26,7 +26,15 @@ export const getFormsByApplicant = async (applicantId) => {
 export const getRecentAppliedStudentForm = async (studentId) => {
     return await FormModel.findOne({ applicantId: studentId })
         .sort({ appliedAt: -1 })
-        .select("_id startDate endDate reason status appliedAt")
+        .populate("applicantId", "name rollno") // Populate student details
+        .populate({
+            path: "classId",
+            select: "year section department tutorIds", // Populate class details
+            populate: {
+                path: "tutorIds", // Further populate tutor details within the class
+                select: "name",
+            },
+        })
         .lean();
 };
 

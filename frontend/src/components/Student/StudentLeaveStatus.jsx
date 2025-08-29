@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useFormStore } from "../../store/useFormStore.jsx";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Calendar, FileDown, Clock, User, MessageSquare, CheckCircle, XCircle, Hourglass, Timer, SquareArrowDown } from "lucide-react";
+import { ArrowLeft, Calendar, FileDown, Clock, User, MessageSquare, CheckCircle, XCircle, Hourglass, Timer, SquareArrowDown, Loader } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.jsx";
 import { generateLeaveForm } from "../../utils/Leaveform/generateLeaveForm";
 
@@ -19,7 +19,7 @@ const LeaveFormDownload = React.forwardRef((props, ref) => {
 });
 
 // New, improved Status Card Component
-function LeaveStatusCard({ leaveData, userData }) {
+function LeaveStatusCard({ leaveData, userData, isDownloading }) {
   const downloadRef = useRef();
   const navigate = useNavigate();
 
@@ -80,14 +80,14 @@ function LeaveStatusCard({ leaveData, userData }) {
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 w-full max-w-lg">
       {/* Card Header */}
       <div className="flex items-center justify-between p-5 border-b border-gray-200">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1">
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
+            className="w-10 h-10 flex items-center cursor-pointer justify-center rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
-          <h2 className="text-xl font-bold text-gray-800">Leave Status</h2>
+          <h2 className="text-xl  font-bold text-gray-800">Leave Status</h2>
         </div>
         <div
           className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${statusInfo.color}`}
@@ -142,11 +142,11 @@ function LeaveStatusCard({ leaveData, userData }) {
 
         {/* Leave Details Grid */}
         {/* Leave Details Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg border">
+        <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-6 gap-3 bg-gray-50 p-4 rounded-lg border">
           {/* Student (left) and Applied Date (right) */}
           <div className="flex items-center gap-3">
             <User className="w-5 h-5 text-gray-500" />
-            <div> 
+            <div>
               <p className="text-sm text-gray-500">Student Name</p>
               <p className="font-semibold text-gray-800">
                 {userData.name} <span className="font-normal text-gray-600">({userData.rollno})</span>
@@ -210,10 +210,17 @@ function LeaveStatusCard({ leaveData, userData }) {
         {status === "Approved" && (
           <button
             onClick={() => downloadRef.current?.handleDownload()}
-            className="w-full flex items-center justify-center gap-2 bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+            className="w-full flex items-center cursor-pointer justify-center gap-2 hover:bg-indigo-500 hover:text-white font-semibold py-2.5 px-4 rounded-lg bg-transparent border-2 border-indigo-500 text-indigo-500 transition-colors"
           >
-            <FileDown className="w-5 h-5" />
-            Download Permit
+            {isDownloading ?
+              <>
+                <Loader className="animate-spin" size={23} />
+                Downloading...
+              </>
+              : <>
+                <FileDown className="w-5 h-5" /> Download Leave Form
+              </>
+            }
           </button>
         )}
       </div>
@@ -224,7 +231,7 @@ function LeaveStatusCard({ leaveData, userData }) {
 
 // Main Page Component
 function StudentLeaveStatus() {
-  const { leaveStatus, getStudentLeaveStatus } = useFormStore();
+  const { leaveStatus, getStudentLeaveStatus, isDownloading, isFetching } = useFormStore();
   const { userData } = useAuthStore();
 
   useEffect(() => {
@@ -233,10 +240,19 @@ function StudentLeaveStatus() {
 
   const currentLeaveData = leaveStatus;
 
+  if(isFetching) {
+    return (
+      <div className="flex items-center justify-center py-50">
+        <Loader className="animate-spin text-indigo-500" size={30} />
+        <span className="ml-4 text-indigo-500 text-lg">Fetching Leave Status...</span>
+      </div>
+    );
+  }
+
   return (
-    <div className="sm:mt-10 py-10 px-4 flex items-center justify-center">
+    <div className="sm:mt-10 mt-[-20px] py-10 px-4 flex items-center justify-center">
       {currentLeaveData ? (
-        <LeaveStatusCard leaveData={currentLeaveData} userData={userData} />
+        <LeaveStatusCard leaveData={currentLeaveData} userData={userData} isDownloading={isDownloading} />
       ) : (
         <div className="text-center p-10 bg-white rounded-lg shadow-md">
           <h3 className="text-xl font-semibold text-gray-700">No Recent Leave Data</h3>

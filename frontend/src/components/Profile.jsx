@@ -12,7 +12,7 @@ function Profile() {
   };
 
   const handleClose = () => {
-    navigate(-1); // 👈 Go back to the previous page
+    navigate(-1);
   };
 
   return (

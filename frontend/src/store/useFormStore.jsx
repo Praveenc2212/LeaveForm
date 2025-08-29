@@ -7,6 +7,7 @@ export const useFormStore = create((set) => ({
     leaveStatus : null,
     isApplying: false,
     isFetching: false,
+    isDownloading: false,
     ApplyForm: async (form) => {
         set({ isApplying: true });
         try {

@@ -1,0 +1,58 @@
+/* Using your provided CSS as the base */
+.splash-screen {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.fog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Your custom gradient */
+  background: radial-gradient(circle, rgba(93, 93, 93, 0.5) 0%, rgba(0,0,0,0.6) 100%);
+  
+  /* --- NEW: Added blur effect to make the logos pop --- */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); /* For Safari browser support */
+}
+
+.content-container {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- CHANGE: Adjusted sizes and spacing for a balanced layout --- */
+.logo {
+  max-width: 90%;
+  width: 500px; /* Adjusted for better balance */
+  height: auto;
+  margin-top: -50px;
+  filter: drop-shadow(0 5px 20px rgba(0, 0, 0, 0.5));
+}
+
+.app-logo {
+  width: 500px; /* Adjusted for better balance */
+  margin-top: 1rem; /* Reduced space to bring logos closer */
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+.loader-group {
+  margin-top: 2rem; /* Adjusted space above the loader */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

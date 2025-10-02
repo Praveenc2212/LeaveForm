@@ -33,7 +33,7 @@ export const useFormStore = create((set) => ({
         } catch (error) {
             let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
             console.error(err);
-            toast.error(err);
+            // toast.error(err);
         } finally {
             set({ isFetching: false });
         }

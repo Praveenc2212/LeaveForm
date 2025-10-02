@@ -22,7 +22,7 @@ const Header = () => {
   const isStaffOrHod = location.pathname === '/hod' || location.pathname === '/staff';
 
   return (
-    <div className="flex justify-between items-center bg-white shadow-md py-2 px-6 mb-6 border border-white/20">
+    <div className="flex justify-between items-center bg-white shadow-md py-2 px-6 mb-0 border border-white/20">
       {/* Logo */}
       <div
         className="flex items-center space-x-4 cursor-pointer"

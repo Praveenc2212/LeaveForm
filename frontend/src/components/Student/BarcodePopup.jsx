@@ -61,12 +61,12 @@ function BarcodePopup({ isOpen, onClose, barcodeData, userData, leaveData }) {
 						</div>
 
 						{/* Barcode */}
-						<div className="flex justify-center bg-white p-4 rounded-lg border-2 border-dashed border-gray-200">
+						<div className="flex justify-center bg-white py-4 rounded-lg border-2 border-dashed border-gray-200">
 							<Barcode
 								value={barcodeData || ""}
 								format="CODE128"
 								width={2}
-								height={80}
+								height={90}
 								displayValue={false}
 								background="#ffffff"
 								lineColor="#000000"

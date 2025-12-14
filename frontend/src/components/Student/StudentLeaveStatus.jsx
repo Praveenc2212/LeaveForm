@@ -69,12 +69,12 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 		const baseSteps = [
 			{ name: "Applied", completed: true, rejected: false },
 			{
-				name: "Staff Review",
+				name: "Staff",
 				completed: ["Reviewed", "Tutor Rejected", "HOD Rejected", "Approved"].includes(status),
 				rejected: status === "Tutor Rejected"
 			},
 			{
-				name:  "HOD Approval",
+				name:  "HOD",
 				completed: ["HOD Rejected", "Approved"].includes(status),
 				rejected: status === "HOD Rejected"
 			}
@@ -83,7 +83,7 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 		// Add Warden step for hostellers after HOD approval
 		if (isHosteller && status === "Approved") {
 			baseSteps.push({
-				name:  "Warden Outpass",
+				name:  "Warden",
 				completed: wardenApproved === true,
 				rejected:  false,
 				pending: outpassStatus === "pending"
@@ -346,7 +346,8 @@ function StudentLeaveStatus() {
 	const { userData } = useAuthStore();
 	const [outpassStatus, setOutpassStatus] = useState("none");
 	const [showBarcodePopup, setShowBarcodePopup] = useState(false);
-
+	
+	// console.log(JSON.stringify(leaveStatus));
 	useEffect(() => {
 		getStudentLeaveStatus();
 	}, [getStudentLeaveStatus]);
@@ -398,7 +399,7 @@ function StudentLeaveStatus() {
 					<BarcodePopup
 						isOpen={showBarcodePopup}
 						onClose={handleCloseBarcodePopup}
-						barcodeData={leaveStatus?.barcodeData}
+						barcodeData={leaveStatus?.barCode}
 						userData={userData}
 						leaveData={leaveStatus}
 					/>

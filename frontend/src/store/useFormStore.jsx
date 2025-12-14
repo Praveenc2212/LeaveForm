@@ -4,9 +4,10 @@ import toast from 'react-hot-toast';
 
 export const useFormStore = create((set) => ({
     leaveForms: [],
-    leaveStatus : null,
+    leaveStatus: null,
     isApplying: false,
     isFetching: false,
+    isRequestingOutpass: false,
     ApplyForm: async (form) => {
         set({ isApplying: true });
         try {
@@ -28,8 +29,8 @@ export const useFormStore = create((set) => ({
         try {
             const apiRes = await axiosInstence.get('/api/form/student/leave-status');
             console.log("Status of the student", apiRes.data.LeaveForm.status);
-            
-             set({ leaveStatus :  apiRes.data.LeaveForm });
+
+            set({ leaveStatus: apiRes.data.LeaveForm });
         } catch (error) {
             let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
             console.error(err);
@@ -64,6 +65,26 @@ export const useFormStore = create((set) => ({
             toast.error(err);
         } finally {
             set({ isFetching: false });
+        }
+    },
+    requestOutpass: async (formId) => {
+        set({ isRequestingOutpass: true });
+        try {
+            const response = await axiosInstence.post(`/api/form/student/request-outpass/${formId}`);
+            if (response.data.success) {
+                toast.success("Outpass request sent!  Waiting for warden approval.");
+                return true;
+            } else {
+                toast.error(response.data.message || "Failed to request outpass");
+                return false;
+            }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "Failed to request outpass.  Please try again.";
+            console.error(errMsg);
+            toast.error(errMsg);
+            return false;
+        } finally {
+            set({ isRequestingOutpass: false });
         }
     },
 }));

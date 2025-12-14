@@ -6,7 +6,10 @@ export const AuthenticatedData = async (req, res) => {
     const user = req.user;
     switch (user.designation) {
         case "STUDENT": {
-            const student = await StudentModel.findById(user.id).populate('classId', 'department year section');
+            const student = await StudentModel.findById(user.id).populate(
+                "classId",
+                "department year section"
+            );
             res.status(200).json({
                 success: true,
                 message: "Login successful.",
@@ -21,6 +24,7 @@ export const AuthenticatedData = async (req, res) => {
                     year: student.classId.year,
                     section: student.classId.section,
                     designation: "STUDENT",
+                    studentType: student.studentType,
                 },
             });
             break;
@@ -62,7 +66,6 @@ export const AuthenticatedData = async (req, res) => {
                 success: true,
                 message: "Login successful.",
                 userData: {
-                    
                     id: warden.id,
                     name: warden.name,
                     email: warden.email,

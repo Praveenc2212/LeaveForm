@@ -11,8 +11,8 @@ export const acceptLeaveByHod = async (req, res) => {
                 message: "Invalid Form.",
             });
         }
-        // const form = await 
-        const data = await updateLeaveFormStatus(formId, "Approved");
+
+        await updateLeaveFormStatus(formId, "Approved");
 
         const subject = "Leave Application Approved by HOD";
         const message = `
@@ -36,7 +36,6 @@ export const acceptLeaveByHod = async (req, res) => {
             return res.status(200).json({
             success: true,
             message: "Leave form accepted successfully.",
-            data,
         });
 
     } catch (error) {

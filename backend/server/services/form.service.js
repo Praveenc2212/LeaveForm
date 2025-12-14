@@ -1,5 +1,6 @@
 import { ClassModel } from "../models/class.model.js";
 import { FormModel } from "../models/form.model.js";
+import { generateEncryptedBarcode } from "../utils/barcode.util.js";
 
 // Create a new Leave Form
 export const createLeaveForm = async (data) => {
@@ -26,7 +27,7 @@ export const getFormsByApplicant = async (applicantId) => {
 export const getRecentAppliedStudentForm = async (studentId) => {
     return await FormModel.findOne({ applicantId: studentId })
         .sort({ appliedAt: -1 })
-        .populate("applicantId", "name rollno") // Populate student details
+        .populate("applicantId", "name rollno studentType") // Populate student details
         .populate({
             path: "classId",
             select: "year section department tutorIds", // Populate class details
@@ -77,7 +78,7 @@ export const getApprovedFormsByTutor = async (tutorId, status) => {
 export const getFormsByDepartment = async (department, status) => {
     const classes = await ClassModel.find({ department }).select("_id");
     const classIds = classes.map((cls) => cls._id);
-    
+
     return await FormModel.find({
         classId: { $in: classIds },
         status: status,
@@ -95,6 +96,7 @@ export const getFormsByDepartment = async (department, status) => {
 };
 
 export const updateLeaveFormStatus = async (formId, status) => {
+<<<<<<< HEAD
     // return await FormModel.findByIdAndUpdate(formId, { status });
      return await FormModel.findByIdAndUpdate(
         formId,
@@ -103,6 +105,18 @@ export const updateLeaveFormStatus = async (formId, status) => {
     )
     .populate("applicantId", "name email rollno")
     .lean();
+=======
+    if (status === "Approved") {
+        const form = await FormModel.findById(formId).populate("applicantId", "rollno studentType")
+        const barCode = generateEncryptedBarcode(
+            form.applicantId.rollno,
+            form.startDate,
+            form.applicantId.studentType
+        );
+        await FormModel.findByIdAndUpdate(formId, { status , barCode });
+    }
+    else await FormModel.findByIdAndUpdate(formId, { status });
+>>>>>>> 36b40f830b156100837c6582d3eae095b8dce758
 };
 
 // Delete Forms by IDs

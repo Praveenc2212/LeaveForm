@@ -46,6 +46,7 @@ export const StudentLogin = async (req, res) => {
                 year: student.classId.year,
                 section: student.classId.section,
                 designation: "STUDENT",
+                studentType: student.studentType,
             },
         });
     } catch (err) {

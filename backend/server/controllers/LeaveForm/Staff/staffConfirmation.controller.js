@@ -1,5 +1,4 @@
-import { updateLeaveFormStatus } from "../../../services/form.service.js";
-
+import { updateLeaveFormStatus } from "../../../services/form.service.js"; 
 export const acceptLeaveByStaff = async (req, res) => {
     try {
         const { formId } = req.params;
@@ -12,12 +11,13 @@ export const acceptLeaveByStaff = async (req, res) => {
         }
 
         const data = await updateLeaveFormStatus(formId, "Reviewed");
-
         return res.status(200).json({
             success: true,
             message: "Leave form accepted successfully.",
             data,
         });
+
+
     } catch (error) {
         return res.status(500).json({
             success: false,

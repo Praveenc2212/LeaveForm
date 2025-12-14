@@ -10,7 +10,7 @@ export const acceptLeaveByHod = async (req, res) => {
                 message: "Invalid Form.",
             });
         }
-
+        // const form = await 
         const data = await updateLeaveFormStatus(formId, "Approved");
 
         return res.status(200).json({

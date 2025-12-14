@@ -95,7 +95,14 @@ export const getFormsByDepartment = async (department, status) => {
 };
 
 export const updateLeaveFormStatus = async (formId, status) => {
-    return await FormModel.findByIdAndUpdate(formId, { status });
+    // return await FormModel.findByIdAndUpdate(formId, { status });
+     return await FormModel.findByIdAndUpdate(
+        formId,
+        { status },
+        { new: true }
+    )
+    .populate("applicantId", "name email rollno")
+    .lean();
 };
 
 // Delete Forms by IDs

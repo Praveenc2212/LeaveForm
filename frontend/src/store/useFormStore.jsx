@@ -8,6 +8,9 @@ export const useFormStore = create((set) => ({
     isApplying: false,
     isFetching: false,
     isRequestingOutpass: false,
+    outpassData: null,
+    isLoadingOutpass: false,
+
     ApplyForm: async (form) => {
         set({ isApplying: true });
         try {
@@ -38,7 +41,6 @@ export const useFormStore = create((set) => ({
         } finally {
             set({ isFetching: false });
         }
-        // return data;
     },
     getStudentLeaveForms: async () => {
         set({ isFetching: true });
@@ -67,12 +69,21 @@ export const useFormStore = create((set) => ({
             set({ isFetching: false });
         }
     },
-    requestOutpass: async (formId) => {
+    requestOutpass: async (formId, outpassDetails) => {
         set({ isRequestingOutpass: true });
         try {
-            const response = await axiosInstence.post(`/api/form/student/request-outpass/${formId}`);
+            const response = await axiosInstence.post(`/api/form/student/request-outpass/${formId}`, {
+                outpassDetails: {
+                    hostelBlock: outpassDetails.hostelBlock,
+                    roomNumber: outpassDetails.roomNumber,
+                    place: outpassDetails.place,
+                    studentMobile: outpassDetails.studentMobile,
+                    parentMobile: outpassDetails.parentMobile,
+                }
+            });
+
             if (response.data.success) {
-                toast.success("Outpass request sent!  Waiting for warden approval.");
+                toast.success("Outpass request submitted successfully!");
                 return true;
             } else {
                 toast.error(response.data.message || "Failed to request outpass");
@@ -85,6 +96,27 @@ export const useFormStore = create((set) => ({
             return false;
         } finally {
             set({ isRequestingOutpass: false });
+        }
+    },
+
+    getOutpassData: async (formId) => {
+        set({ isLoadingOutpass: true });
+        try {
+            const response = await axiosInstence.get(`/api/form/student/outpass/${formId}`);
+
+            if (response.data.success) {
+                set({ outpassData: response.data.data });
+            } else {
+                toast.error(response.data.message || "Failed to fetch outpass data");
+                set({ outpassData: null });
+            }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "Failed to fetch outpass data";
+            console.error(errMsg);
+            toast.error(errMsg);
+            set({ outpassData: null });
+        } finally {
+            set({ isLoadingOutpass: false });
         }
     },
 }));

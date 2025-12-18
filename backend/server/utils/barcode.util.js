@@ -125,6 +125,7 @@ export const validateAndDecryptBarcode = (encryptedBarcode) => {
 
     // Decrypt
     const plainBarcode = decrypt(encryptedBarcode);
+    console.log(plainBarcode)
 
     // Parse parts
     const generatedDateStr = plainBarcode.slice(0, 6); // DDMMYY

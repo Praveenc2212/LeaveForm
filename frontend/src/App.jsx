@@ -35,6 +35,7 @@ const Addstudent = lazy(() => import("./components/Admin/addstudent"));
 const Addfaculty = lazy(() => import("./components/Admin/addfaculty"));
 const Addclass = lazy(() => import("./components/Admin/addclass"));
 const Addwarden = lazy(() => import("./components/Admin/addwarden"));
+const StudentOutpass = lazy(() => import("./components/Student/StudentOutpass"));
 
 // Direct imports for small/static pages
 import Contact from "./components/Contact";
@@ -128,6 +129,9 @@ function App() {
             <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />} />
             <Route path="/hod" element={userData ? <HODDashBoard /> : <Navigate to="/login" />} />
             <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
+
+            {/* Warden Routes */}
+            <Route path="/student/outpass/:formId" element={userData ? <StudentOutpass /> : <Navigate to="/login" />} />
 
             {/* Static Pages */}
             <Route path="/contact" element={<Contact />} />

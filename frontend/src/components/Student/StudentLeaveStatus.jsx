@@ -19,15 +19,22 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.jsx";
 import BarcodePopup from "./BarcodePopup.jsx";
+import OutpassRequestPopup from "./OutpassRequestPopup.jsx";
 
 // Status Card Component
-function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus, isRequesting, onViewBarcode }) {
+function LeaveStatusCard({
+	leaveData,
+	userData,
+	onRequestOutpass,
+	outpassStatus,
+	isRequesting,
+	onViewBarcode
+}) {
 	const navigate = useNavigate();
 
 	const { reason, startDate, endDate, status, appliedAt, wardenApproved } = leaveData;
 	const days = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
 
-	// Check if student is hosteller
 	const isHosteller = userData?.studentType === "HOSTELLER";
 
 	const formatDate = (dateString) => {
@@ -50,13 +57,13 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 			case "Pending":
 				return { icon: <Hourglass />, color: "bg-yellow-100 text-yellow-800", text: "Pending" };
 			case "Reviewed":
-				return { icon: <CheckCircle />, color:  "bg-blue-100 text-blue-800", text: "Reviewed" };
+				return { icon: <CheckCircle />, color: "bg-blue-100 text-blue-800", text: "Reviewed" };
 			case "Approved":
 				return { icon: <CheckCircle />, color: "bg-green-100 text-green-800", text: "Approved" };
 			case "Tutor Rejected":
-				return { icon: <XCircle />, color:  "bg-red-100 text-red-800", text:  "Tutor Rejected" };
+				return { icon: <XCircle />, color: "bg-red-100 text-red-800", text: "Tutor Rejected" };
 			case "HOD Rejected":
-				return { icon: <XCircle />, color:  "bg-red-100 text-red-800", text:  "HOD Rejected" };
+				return { icon: <XCircle />, color: "bg-red-100 text-red-800", text: "HOD Rejected" };
 			default:
 				return { icon: <Hourglass />, color: "bg-gray-100 text-gray-800", text: "Unknown" };
 		}
@@ -64,7 +71,6 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 
 	const statusInfo = getStatusInfo(status);
 
-	// Timeline Steps
 	const getTimelineSteps = () => {
 		const baseSteps = [
 			{ name: "Applied", completed: true, rejected: false },
@@ -74,18 +80,17 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 				rejected: status === "Tutor Rejected"
 			},
 			{
-				name:  "HOD",
+				name: "HOD",
 				completed: ["HOD Rejected", "Approved"].includes(status),
 				rejected: status === "HOD Rejected"
 			}
 		];
 
-		// Add Warden step for hostellers after HOD approval
 		if (isHosteller && status === "Approved") {
 			baseSteps.push({
-				name:  "Warden",
+				name: "Warden",
 				completed: wardenApproved === true,
-				rejected:  false,
+				rejected: false,
 				pending: outpassStatus === "pending"
 			});
 		}
@@ -95,35 +100,24 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 
 	const timelineSteps = getTimelineSteps();
 
-	// Handle Request Outpass
-	const handleRequestOutpass = () => {
-		onOutpassRequest(leaveData._id);
-	};
-
-	// Render Action Buttons
 	const renderActionButtons = () => {
-		// Not approved by HOD - no buttons
 		if (status !== "Approved") {
 			return null;
 		}
 
-		// HOD Approved - Show buttons
 		return (
 			<div className="space-y-3">
-				{/* View Barcode Button - Always visible after HOD approval */}
 				<button
 					onClick={onViewBarcode}
-					className="w-full flex items-center justify-center gap-2 bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+					className="w-full flex items-center justify-center gap-2 bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-600 hover:cursor-pointer transition-colors"
 				>
 					<ScanBarcode className="w-5 h-5" />
 					View Barcode
 				</button>
 
-				{/* Hosteller - Additional Outpass Button */}
 				{isHosteller && (
 					<>
-						{/* Already approved by warden */}
-						{wardenApproved ?  (
+						{wardenApproved ? (
 							<button
 								onClick={() => navigate(`/student/outpass/${leaveData._id}`)}
 								className="w-full flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-green-600 transition-colors"
@@ -132,32 +126,30 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 								View Outpass
 							</button>
 						) : outpassStatus === "pending" ? (
-							/* Outpass requested but pending */
 							<button
-								disabled
-								className="w-full flex items-center justify-center gap-2 bg-yellow-100 text-yellow-800 font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed"
+								onClick={() => navigate(`/student/outpass/${leaveData._id}`)}
+								className="w-full flex items-center justify-center gap-2 bg-yellow-100 text-yellow-800 font-semibold py-2.5 px-4 rounded-lg hover:bg-yellow-200 transition-colors"
 							>
-								<Hourglass className="w-5 h-5 animate-pulse" />
-								Outpass Pending - Waiting for Warden
+								<Hourglass className="w-5 h-5" />
+								View Outpass Status
 							</button>
 						) : (
-							/* Not requested yet */
 							<>
 								<div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
 									<p className="text-sm text-blue-800">
 										<span className="font-semibold">Note:  </span>
-										Required warden approval for Outpass. 
+										Required warden approval for Outpass.
 									</p>
 								</div>
 								<button
-									onClick={handleRequestOutpass}
+									onClick={onRequestOutpass}
 									disabled={isRequesting}
-									className="w-full flex items-center justify-center gap-2 bg-orange-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+									className="w-full flex items-center justify-center gap-2 bg-orange-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
 								>
 									{isRequesting ? (
 										<>
 											<Loader2 className="w-5 h-5 animate-spin" />
-											Requesting... 
+											Requesting...
 										</>
 									) : (
 										<>
@@ -176,7 +168,7 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 
 	return (
 		<div className="bg-white rounded-2xl shadow-lg border border-gray-100 w-full max-w-lg">
-			{/* Card Header */}
+			{/* Header */}
 			<div className="flex items-center justify-between p-5 border-b border-gray-200">
 				<div className="flex items-center gap-4">
 					<button
@@ -187,9 +179,7 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 					</button>
 					<h2 className="text-xl font-bold text-gray-800">Leave Status</h2>
 				</div>
-				<div
-					className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${statusInfo.color}`}
-				>
+				<div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${statusInfo.color}`}>
 					{React.cloneElement(statusInfo.icon, { className: "w-5 h-5" })}
 					<span>{statusInfo.text}</span>
 				</div>
@@ -198,11 +188,10 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 			<div className="p-6">
 				{/* Student Type Badge */}
 				<div className="mb-4 flex justify-center">
-					<div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
-						isHosteller
+					<div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${isHosteller
 							? "bg-purple-100 text-purple-800 border border-purple-200"
 							: "bg-teal-100 text-teal-800 border border-teal-200"
-					}`}>
+						}`}>
 						{isHosteller ? (
 							<>
 								<Building className="w-4 h-4" />
@@ -217,22 +206,21 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 					</div>
 				</div>
 
-				{/* Progress Timeline */}
+				{/* Timeline */}
 				<div className="mb-6">
 					<div className="flex items-center">
 						{timelineSteps.map((step, index) => (
 							<React.Fragment key={index}>
 								<div className="flex flex-col items-center">
 									<div
-										className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
-											step.pending
+										className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${step.pending
 												? "border-yellow-400 bg-yellow-100 text-yellow-600"
 												: step.completed
 													? "border-indigo-500 bg-indigo-100 text-indigo-500"
 													: "border-gray-300 bg-gray-100 text-gray-400"
-										} ${step.rejected ? "bg-red-100 text-red-600 border-red-400" : ""}`}
+											} ${step.rejected ? "bg-red-100 text-red-600 border-red-400" : ""}`}
 									>
-										{step.rejected ?  (
+										{step.rejected ? (
 											<XCircle className="w-6 h-6" />
 										) : step.pending ? (
 											<Hourglass className="w-5 h-5 animate-pulse" />
@@ -240,29 +228,23 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 											<CheckCircle className="w-6 h-6" />
 										)}
 									</div>
-									<p
-										className={`text-xs mt-2 font-semibold text-center max-w-16 ${
-											step.completed ?  "text-gray-700" : "text-gray-500"
-										}`}
-									>
+									<p className={`text-xs mt-2 font-semibold text-center max-w-16 ${step.completed ? "text-gray-700" : "text-gray-500"
+										}`}>
 										{step.name}
 									</p>
 								</div>
 								{index < timelineSteps.length - 1 && (
-									<div
-										className={`flex-1 h-1 mx-2 ${
-											timelineSteps[index + 1]?.completed || timelineSteps[index + 1]?.pending
-												? "bg-indigo-500"
-												: "bg-gray-300"
-										}`}
-									/>
+									<div className={`flex-1 h-1 mx-2 ${timelineSteps[index + 1]?.completed || timelineSteps[index + 1]?.pending
+											? "bg-indigo-500"
+											: "bg-gray-300"
+										}`} />
 								)}
 							</React.Fragment>
 						))}
 					</div>
 				</div>
 
-				{/* Leave Details Grid */}
+				{/* Leave Details */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-lg border">
 					<div className="flex items-center gap-3">
 						<User className="w-5 h-5 text-gray-500" />
@@ -306,19 +288,17 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 						</div>
 					</div>
 
-					{/* Warden Status - Only for hostellers after HOD approval */}
 					{isHosteller && status === "Approved" && (
 						<div className="flex items-center gap-3 md:col-span-2 pt-0 border-t border-gray-200">
 							<DoorOpen className="w-5 h-5 text-gray-500" />
 							<div>
 								<p className="text-sm text-gray-500">Outpass Status</p>
-								<p className={`font-semibold ${
-									wardenApproved
+								<p className={`font-semibold ${wardenApproved
 										? "text-green-600"
 										: outpassStatus === "pending"
 											? "text-yellow-600"
 											: "text-orange-600"
-								}`}>
+									}`}>
 									{wardenApproved
 										? "✅ Approved by Warden"
 										: outpassStatus === "pending"
@@ -332,7 +312,7 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 				</div>
 			</div>
 
-			{/* Footer Actions */}
+			{/* Footer */}
 			<div className="p-5 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
 				{renderActionButtons()}
 			</div>
@@ -340,19 +320,20 @@ function LeaveStatusCard({ leaveData, userData, onOutpassRequest, outpassStatus,
 	);
 }
 
-// Main Page Component
+// Main Component
 function StudentLeaveStatus() {
 	const { leaveStatus, getStudentLeaveStatus, requestOutpass, isRequestingOutpass } = useFormStore();
 	const { userData } = useAuthStore();
+	const navigate = useNavigate();
+
 	const [outpassStatus, setOutpassStatus] = useState("none");
 	const [showBarcodePopup, setShowBarcodePopup] = useState(false);
-	
-	// console.log(JSON.stringify(leaveStatus));
+	const [showOutpassPopup, setShowOutpassPopup] = useState(false);
+
 	useEffect(() => {
 		getStudentLeaveStatus();
 	}, [getStudentLeaveStatus]);
 
-	// Update outpass status when leave data changes
 	useEffect(() => {
 		if (leaveStatus?.wardenApproved) {
 			setOutpassStatus("approved");
@@ -363,23 +344,24 @@ function StudentLeaveStatus() {
 		}
 	}, [leaveStatus]);
 
-	// Handle outpass request
-	const handleOutpassRequest = async (formId) => {
-		const success = await requestOutpass(formId);
+	// Handle Request Outpass button click - show popup
+	const handleRequestOutpassClick = () => {
+		setShowOutpassPopup(true);
+	};
+
+	// Handle outpass form submit
+	const handleOutpassSubmit = async (formData) => {
+		const success = await requestOutpass(leaveStatus._id, formData);
 		if (success) {
-			setOutpassStatus("pending");
-			getStudentLeaveStatus(); // Refresh
+			setShowOutpassPopup(false);
+			// Navigate to outpass page
+			navigate(`/student/outpass/${leaveStatus._id}`);
 		}
 	};
 
 	// Handle view barcode
 	const handleViewBarcode = () => {
 		setShowBarcodePopup(true);
-	};
-
-	// Close barcode popup
-	const handleCloseBarcodePopup = () => {
-		setShowBarcodePopup(false);
 	};
 
 	return (
@@ -389,7 +371,7 @@ function StudentLeaveStatus() {
 					<LeaveStatusCard
 						leaveData={leaveStatus}
 						userData={userData}
-						onOutpassRequest={handleOutpassRequest}
+						onRequestOutpass={handleRequestOutpassClick}
 						outpassStatus={outpassStatus}
 						isRequesting={isRequestingOutpass}
 						onViewBarcode={handleViewBarcode}
@@ -398,10 +380,18 @@ function StudentLeaveStatus() {
 					{/* Barcode Popup */}
 					<BarcodePopup
 						isOpen={showBarcodePopup}
-						onClose={handleCloseBarcodePopup}
+						onClose={() => setShowBarcodePopup(false)}
 						barcodeData={leaveStatus?.barCode}
 						userData={userData}
 						leaveData={leaveStatus}
+					/>
+
+					{/* Outpass Request Popup */}
+					<OutpassRequestPopup
+						isOpen={showOutpassPopup}
+						onClose={() => setShowOutpassPopup(false)}
+						onSubmit={handleOutpassSubmit}
+						isLoading={isRequestingOutpass}
 					/>
 				</>
 			) : (

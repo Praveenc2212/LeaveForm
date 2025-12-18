@@ -16,7 +16,6 @@ export const studentLeaveStatus = async (req, res) => {
                 LeaveForm: null,
             });
         }
-        console.log("Student status : " , form)
         // Check status constraint
         if (form.status !== "Approved") {
             return res.status(200).json({

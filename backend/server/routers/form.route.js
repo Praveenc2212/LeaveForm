@@ -31,6 +31,8 @@ router.get("/student/leave-status", checkAuthentication, studentLeaveStatus);
 // Get all leave forms applied by the student
 router.get("/student/leave-forms", checkAuthentication, studentLeaveForms);
 
+// router.post("/student/request-outpass/:id", )
+
 //  STAFF Routes...
 // Get Pending LeaveForms For Staff
 router.get("/staff/leave-pending-forms", checkAuthentication, (req, res) => {
@@ -71,6 +73,7 @@ router.get("/hod/leave-approved-forms", checkAuthentication, (req, res) => {
 
 // router.post("/hod/discuss/:formId", discussLeaveByHOD);
 router.post("/hod/accept-all", checkAuthentication, acceptAllLeavesForms);
+
 
 
 export default router;

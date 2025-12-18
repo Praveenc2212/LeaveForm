@@ -97,15 +97,26 @@ export const getFormsByDepartment = async (department, status) => {
 
 export const updateLeaveFormStatus = async (formId, status) => {
     if (status === "Approved") {
-        const form = await FormModel.findById(formId).populate("applicantId", "rollno studentType")
+        const form = await FormModel.findById(formId).populate(
+            "applicantId",
+            "rollno studentType"
+        );
         const barCode = generateEncryptedBarcode(
             form.applicantId.rollno,
             form.startDate,
             form.applicantId.studentType
         );
-        await FormModel.findByIdAndUpdate(formId, { status , barCode });
-    }
-    else await FormModel.findByIdAndUpdate(formId, { status });
+        await FormModel.findByIdAndUpdate(
+            formId,
+            { status, barCode },
+            { new: true }
+        )
+            .populate("applicantId", "name email rollno")
+            .lean();
+    } else
+        await FormModel.findByIdAndUpdate(formId, { status })
+            .populate("applicantId", "name email rollno")
+            .lean();
 };
 
 // Delete Forms by IDs

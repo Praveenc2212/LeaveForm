@@ -14,6 +14,7 @@ import AuthRouter from "./server/routers/auth.route.js";
 import DB from "./server/connections/DB.connections.js";
 import FormRouter from "./server/routers/form.route.js";
 import AdminRouter from "./server/routers/admin.route.js";
+import EmailRouter from "./server/routers/mail.routes.js"
 
 // Configurations...
 configDotenv();
@@ -73,6 +74,9 @@ app.use("/api/form", FormRouter);
 
 // Admin Routes...
 app.use("/api/admin", AdminRouter);
+
+// Email Routes
+app.use("/api/email" , EmailRouter );
 
 // 404 Page Not Found...
 app.use((req, res) => {

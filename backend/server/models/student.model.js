@@ -29,6 +29,11 @@ const StudentSchema = new mongoose.Schema({
         ref: "Class",
         required: true,
     },
+    studentType: {
+        type: String,
+        required: true,
+        enum: ["HOSTELLER", "DAYSCHOLAR"],
+    },
 });
 
 export const StudentModel = mongoose.model("Student", StudentSchema);

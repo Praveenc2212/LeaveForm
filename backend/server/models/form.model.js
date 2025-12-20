@@ -25,6 +25,10 @@ const FormSchema = new mongoose.Schema({
             "HOD Rejected",
         ],
     },
+    barCode: {
+        type: String,
+        default: "",
+    },
     appliedAt: { type: Date, default: Date.now },
 });
 

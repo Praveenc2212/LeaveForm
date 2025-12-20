@@ -4,9 +4,13 @@ import toast from 'react-hot-toast';
 
 export const useFormStore = create((set) => ({
     leaveForms: [],
-    leaveStatus : null,
+    leaveStatus: null,
     isApplying: false,
     isFetching: false,
+    isRequestingOutpass: false,
+    outpassData: null,
+    isLoadingOutpass: false,
+
     ApplyForm: async (form) => {
         set({ isApplying: true });
         try {
@@ -28,8 +32,8 @@ export const useFormStore = create((set) => ({
         try {
             const apiRes = await axiosInstence.get('/api/form/student/leave-status');
             console.log("Status of the student", apiRes.data.LeaveForm.status);
-            
-             set({ leaveStatus :  apiRes.data.LeaveForm });
+
+            set({ leaveStatus: apiRes.data.LeaveForm });
         } catch (error) {
             let err = error.response ? error.response.data.message : "Server is Down, Please try again later";
             console.error(err);
@@ -37,7 +41,6 @@ export const useFormStore = create((set) => ({
         } finally {
             set({ isFetching: false });
         }
-        // return data;
     },
     getStudentLeaveForms: async () => {
         set({ isFetching: true });
@@ -64,6 +67,56 @@ export const useFormStore = create((set) => ({
             toast.error(err);
         } finally {
             set({ isFetching: false });
+        }
+    },
+    requestOutpass: async (formId, outpassDetails) => {
+        set({ isRequestingOutpass: true });
+        try {
+            const response = await axiosInstence.post(`/api/form/student/request-outpass/${formId}`, {
+                outpassDetails: {
+                    hostelBlock: outpassDetails.hostelBlock,
+                    roomNumber: outpassDetails.roomNumber,
+                    place: outpassDetails.place,
+                    studentMobile: outpassDetails.studentMobile,
+                    parentMobile: outpassDetails.parentMobile,
+                }
+            });
+
+            if (response.data.success) {
+                toast.success("Outpass request submitted successfully!");
+                return true;
+            } else {
+                toast.error(response.data.message || "Failed to request outpass");
+                return false;
+            }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "Failed to request outpass.  Please try again.";
+            console.error(errMsg);
+            toast.error(errMsg);
+            return false;
+        } finally {
+            set({ isRequestingOutpass: false });
+        }
+    },
+
+    getOutpassData: async (formId) => {
+        set({ isLoadingOutpass: true });
+        try {
+            const response = await axiosInstence.get(`/api/form/student/outpass/${formId}`);
+
+            if (response.data.success) {
+                set({ outpassData: response.data.data });
+            } else {
+                toast.error(response.data.message || "Failed to fetch outpass data");
+                set({ outpassData: null });
+            }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "Failed to fetch outpass data";
+            console.error(errMsg);
+            toast.error(errMsg);
+            set({ outpassData: null });
+        } finally {
+            set({ isLoadingOutpass: false });
         }
     },
 }));

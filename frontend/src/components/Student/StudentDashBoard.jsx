@@ -19,6 +19,19 @@ function StudentDashBoard() {
           <span className="text-sm text-black">Apply Leave</span>
         </button>
 
+        {/* On Duty */}
+        <button
+          className="w-full sm:max-w-[180px] max-w-[140px] aspect-square bg-orange-100 rounded-2xl shadow-lg hover:shadow-sm transition duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer shadow-black/20"
+          onClick={() => navigate("/student/OnDuty")}
+        >
+          <img
+            src="/icons/fill.svg"
+            alt="On Duty"
+            className="w-[70px] h-[70px]"
+          />
+          <span className="text-sm text-black">On Duty</span>
+        </button>
+
         {/* Status + History */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 w-full">
           <button

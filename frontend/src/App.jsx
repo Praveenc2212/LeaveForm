@@ -40,6 +40,7 @@ const Addwarden = lazy(() => import("./components/Admin/addwarden"));
 import Contact from "./components/Contact";
 import About from "./components/About";
 import Error404 from "./components/Error/Error404";
+import OnDuty from "./components/Student/OnDuty";
 
 function App() {
   const { userData, checkAuth, isCheckingAuth } = useAuthStore();
@@ -102,6 +103,7 @@ function App() {
             <Route path="/student/ApplyLeaveForm" element={userData ? <ApplyLeaveForm /> : <Navigate to="/login" />} />
             <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
             <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
+            <Route path="/student/OnDuty" element={<OnDuty />} />
 
             {/* Admin */}
             <Route path="/admin" element={<AdminDashBoard />} />

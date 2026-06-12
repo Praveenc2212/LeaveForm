@@ -1,0 +1,30 @@
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+  background-color:rgba(255,250,236,255);
+}
+
+.not-found-image {
+   max-width: 700px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+}
+
+.not-found-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.not-found-text {
+  color: #666;
+  margin-top: 0.5rem;
+  max-width: 500px;
+}

@@ -14,10 +14,6 @@ const FacultySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    facultySignature : {
-        type: String,
-        default : ""
-    },
     department: {
         type: String,
         required: true,
@@ -25,7 +21,7 @@ const FacultySchema = new mongoose.Schema({
     designation: {
         type: String,
         required: true,
-        enum: ["STAFF", "HOD", "ADMIN"],
+        enum: [ "TUTOR" ,"STAFF", "HOD", "ADMIN" , "PRINCIPLE" , "SECURITY"],
     },
 });
 

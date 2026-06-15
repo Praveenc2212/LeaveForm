@@ -1,6 +1,5 @@
 import { FacultyModel } from "../../models/faculty.model.js";
 import { StudentModel } from "../../models/student.model.js";
-import { WardenModel } from "../../models/warden.model.js";
 
 export const AuthenticatedData = async (req, res) => {
     const user = req.user;
@@ -54,6 +53,7 @@ export const AuthenticatedData = async (req, res) => {
                     id: hod._id,
                     name: hod.name,
                     email: hod.email,
+                    staffId: hod.staffId,
                     department: hod.department,
                     designation: hod.designation,
                 },
@@ -61,7 +61,7 @@ export const AuthenticatedData = async (req, res) => {
             break;
         }
         case "WARDEN": {
-            const warden = await WardenModel.findById(user.id);
+            const warden = await FacultyModel.findById(user.id);
             res.status(200).json({
                 success: true,
                 message: "Login successful.",
@@ -69,23 +69,9 @@ export const AuthenticatedData = async (req, res) => {
                     id: warden.id,
                     name: warden.name,
                     email: warden.email,
+                    staffId: warden.staffId,
+                    department: warden.department,
                     designation: warden.designation,
-                },
-            });
-            break;
-        }
-        case "ADMIN": {
-            const admin = await FacultyModel.findById(user.id);
-            res.status(200).json({
-                success: true,
-                message: "Login successful.",
-                userData: {
-                    id: admin._id,
-                    name: admin.name,
-                    email: admin.email,
-                    staffId: admin.staffId,
-                    department: admin.department, //CCF
-                    designation: admin.designation,
                 },
             });
             break;

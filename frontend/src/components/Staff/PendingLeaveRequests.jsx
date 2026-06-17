@@ -24,6 +24,21 @@ const calculateNumberOfDays = (startDateString, endDateString) => {
   return dayDiff + 1;
 };
 
+// Helper function to format roll numbers to college guidelines
+const formatRollNumber = (rollno) => {
+  if (!rollno) return '';
+  if (/^\d{2}P\d{3}$/.test(rollno)) {
+    return rollno;
+  }
+  const match = rollno.match(/^(\d{2})([A-Za-z]+)(\d{3})$/);
+  if (match) {
+    const num = match[3];
+    const newNum = num.startsWith("0") ? "1" + num.substring(1) : num;
+    return `23P${newNum}`;
+  }
+  return rollno;
+};
+
 function PendingLeaveRequests() {
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
@@ -54,19 +69,7 @@ function PendingLeaveRequests() {
         <Toaster position="top-center" reverseOrder={false} />
 
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-              <div className="relative">
-                <FileText className="w-10 h-10 text-orange-500" />
-                {pendingLeaves.length > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white"
-                  >
-                    {pendingLeaves.length}
-                  </motion.span>
-                )}
-              </div>
+          <div className="flex justify-end items-center mb-8">
             {pendingLeaves.length > 0 && (
               <button
                   onClick={() => setConfirmModalOpen(true)}
@@ -111,7 +114,7 @@ function PendingLeaveRequests() {
                           <CircleUserRound className="w-12 h-12 text-orange-500 flex-shrink-0" />
                           <div className="overflow-hidden">
                             <p className="font-bold text-gray-800 text-lg truncate" title={leave.applicantId.name}>{leave.applicantId.name}</p>
-                            <p className="text-sm text-gray-500">{leave.applicantId.rollno}</p>
+                            <p className="text-sm text-gray-500">{formatRollNumber(leave.applicantId.rollno)}</p>
                           </div>
                       </div>
                       

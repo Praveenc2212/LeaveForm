@@ -15,7 +15,7 @@ import {
 	Loader2,
 	Home,
 	Building,
-	ScanBarcode
+	Ticket
 } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.jsx";
 import BarcodePopup from "./BarcodePopup.jsx";
@@ -111,8 +111,8 @@ function LeaveStatusCard({
 					onClick={onViewBarcode}
 					className="w-full flex items-center justify-center gap-2 bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-indigo-600 hover:cursor-pointer transition-colors"
 				>
-					<ScanBarcode className="w-5 h-5" />
-					View Barcode
+					<Ticket className="w-5 h-5" />
+					View Pass
 				</button>
 
 				{isHosteller && (

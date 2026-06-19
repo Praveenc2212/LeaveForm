@@ -18,8 +18,14 @@ function Profile() {
   return (
     <>
       {/* Fullscreen Overlay to make sure modal is above header */}
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/20 z-[100]">
-        <div className="relative w-full max-w-xs md:max-w-3xl bg-white rounded-2xl shadow-xl shadow-black/15 p-8 pt-0 pb-4 px-2 md:px-12 text-center font-sans text-sm">
+      <div 
+        onClick={handleClose} 
+        className="fixed inset-0 flex flex-col items-center justify-center bg-black/20 z-[100]"
+      >
+        <div 
+          onClick={(e) => e.stopPropagation()} 
+          className="relative w-full max-w-xs md:max-w-3xl bg-white rounded-2xl shadow-xl shadow-black/15 p-8 pt-0 pb-4 px-2 md:px-12 text-center font-sans text-sm"
+        >
           
           {/* ❌ Close button */}
           <button

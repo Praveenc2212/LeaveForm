@@ -2,7 +2,7 @@ import React from "react";
 import { UserRound, LogOut } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
 
-function Profile() {
+function StaffProfile() {
   const { userData, Logout } = useAuthStore();
 
   const handleLogout = () => {
@@ -22,8 +22,7 @@ function Profile() {
           </div>
         </div>
 
-        <h2 className="text-xl font-bold text-gray-800 mb-1">HOD Profile</h2>
-        <p className="text-xs text-gray-400 mb-6">Head of Department profile details</p>
+        <h2 className="text-xl font-bold text-gray-800 mb-1">Staff Profile</h2><br></br>
 
         {/* Profile Details Grid */}
         <div className="bg-white rounded-xl text-left font-sans space-y-4">
@@ -37,7 +36,7 @@ function Profile() {
             <div className="sm:w-1/2">
               <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Designation</label>
               <div className="w-full mt-1.5 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 font-semibold shadow-inner">
-                Head of Department (HOD)
+                {userData.designation || "STAFF"}
               </div>
             </div>
           </div>
@@ -74,4 +73,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default StaffProfile;

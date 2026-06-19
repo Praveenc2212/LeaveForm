@@ -36,37 +36,7 @@ const formatRollNumber = (rollno) => {
   return rollno;
 };
 
-// SVG Barcode Component for a realistic ticket look
-const BarcodeSVG = ({ value }) => (
-  <div className="flex flex-col items-center justify-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 w-full">
-    <svg className="w-full h-10 text-gray-800" viewBox="0 0 100 30" preserveAspectRatio="none">
-      <rect x="2" width="2" height="30" fill="currentColor" />
-      <rect x="6" width="3" height="30" fill="currentColor" />
-      <rect x="11" width="1" height="30" fill="currentColor" />
-      <rect x="14" width="4" height="30" fill="currentColor" />
-      <rect x="20" width="1" height="30" fill="currentColor" />
-      <rect x="23" width="2" height="30" fill="currentColor" />
-      <rect x="27" width="3" height="30" fill="currentColor" />
-      <rect x="32" width="1" height="30" fill="currentColor" />
-      <rect x="35" width="2" height="30" fill="currentColor" />
-      <rect x="39" width="4" height="30" fill="currentColor" />
-      <rect x="45" width="1" height="30" fill="currentColor" />
-      <rect x="48" width="3" height="30" fill="currentColor" />
-      <rect x="53" width="2" height="30" fill="currentColor" />
-      <rect x="57" width="1" height="30" fill="currentColor" />
-      <rect x="60" width="4" height="30" fill="currentColor" />
-      <rect x="66" width="2" height="30" fill="currentColor" />
-      <rect x="70" width="1" height="30" fill="currentColor" />
-      <rect x="73" width="3" height="30" fill="currentColor" />
-      <rect x="78" width="2" height="30" fill="currentColor" />
-      <rect x="82" width="4" height="30" fill="currentColor" />
-      <rect x="88" width="1" height="30" fill="currentColor" />
-      <rect x="91" width="3" height="30" fill="currentColor" />
-      <rect x="96" width="2" height="30" fill="currentColor" />
-    </svg>
-    <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 mt-1 uppercase">{value}</span>
-  </div>
-);
+
 
 const INITIAL_MOCK_OUTPASSES = [
   {
@@ -205,12 +175,12 @@ function StaffOutpassRequests() {
 
                   {/* Card Header (Student Details & Status Badge) */}
                   <div className="px-5 pt-5 pb-3 flex items-center justify-between gap-4 border-b border-slate-100/80">
-                    <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="flex items-center gap-3">
                       <div className="relative flex-shrink-0">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-slate-100 to-slate-200 flex items-center justify-center border-2 border-white shadow-md">
                           <CircleUserRound className="w-8 h-8 text-slate-500" />
                         </div>
-                        <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm animate-pulse">
+                        <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
                           H
                         </span>
                       </div>
@@ -231,7 +201,7 @@ function StaffOutpassRequests() {
                   </div>
 
                   {/* Trip Details Grid */}
-                  <div className="px-5 py-3.5 border-t border-slate-100/80 mt-2 grid grid-cols-2 gap-4">
+                  <div className="px-5 pt-1.5 pb-3 grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Destination</span>
                       <div className="flex items-center gap-1.5 text-slate-700">
@@ -300,17 +270,16 @@ function StaffOutpassRequests() {
                   {/* TICKET STUB FOOTER */}
                   <div className="px-5 pb-5 pt-3 bg-white flex-grow flex flex-col justify-end">
                     {isApproved ? (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="space-y-3"
-                      >
+                      <div className="space-y-3">
                         <div className="flex items-center justify-center gap-1.5 text-emerald-600 font-bold text-xs bg-emerald-50 border border-emerald-100 py-2 rounded-lg">
-                          <ShieldCheck className="w-4 h-4 animate-bounce" />
-                          <span>SECURE QR/BARCODE ISSUED</span>
+                          <ShieldCheck className="w-4 h-4" />
+                          <span>OUTPASS ACTIVE</span>
                         </div>
-                        <BarcodeSVG value={outpass._id} />
-                      </motion.div>
+                        <div className="flex flex-col items-center justify-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 w-full">
+                          <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">PASS ID</span>
+                          <span className="text-[10px] font-mono tracking-[0.2em] text-gray-700 font-bold mt-1 uppercase">{outpass._id}</span>
+                        </div>
+                      </div>
                     ) : (
                       <div className="space-y-3">
                         <div className="text-[10px] text-center text-slate-400 font-medium bg-amber-50/50 py-1.5 rounded border border-dashed border-amber-200">

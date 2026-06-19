@@ -16,7 +16,7 @@ import {
     Phone,
     Users,
     GraduationCap,
-    ScanBarcode,
+    Ticket,
     Loader2
 } from "lucide-react";
 import BarcodePopup from "./BarcodePopup.jsx";
@@ -297,10 +297,10 @@ function StudentOutpass() {
                     {wardenApproved ? (
                         <button
                             onClick={() => setShowBarcodePopup(true)}
-                            className="w-full flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors"
+                            className="w-full flex items-center justify-center gap-2 bg-green-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors hover:cursor-pointer"
                         >
-                            <ScanBarcode className="w-5 h-5" />
-                            View Outpass Barcode
+                            <Ticket className="w-5 h-5" />
+                            View Outpass Pass
                         </button>
                     ) : (
                         <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4 text-center">

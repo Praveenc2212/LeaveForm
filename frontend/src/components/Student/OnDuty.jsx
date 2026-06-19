@@ -302,8 +302,14 @@ function OnDuty() {
 
             {/* Class Selection Modal */}
             {modalOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="bg-white rounded-xl shadow-xl w-[420px] max-w-full p-6">
+              <div 
+                onClick={cancelClass}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+              >
+                <div 
+                  onClick={(e) => e.stopPropagation()}
+                  className="bg-white rounded-xl shadow-xl w-[420px] max-w-full p-6"
+                >
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h2 className="text-lg font-semibold">Select Class</h2>

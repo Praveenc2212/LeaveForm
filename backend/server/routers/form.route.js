@@ -18,6 +18,8 @@ import { RetrieveHodForms } from "../controllers/LeaveForm/Hod/RetrieveHodForms.
 // import {RetrieveStaffForms } from "../controllers/LeaveForm/Hod/RetrieveHodForms.controller.js"
 
 import { acceptAllLeavesForms } from "../controllers/LeaveForm/AcceptAllLeaveForms.controller.js";
+import { applyStaffOutpass, deleteStaffOutpass, getStaffOutpasses } from "../controllers/LeaveForm/Staff/staffOutpass.controller.js";
+import { getHodStaffOutpasses, confirmStaffOutpassByHod } from "../controllers/LeaveForm/Hod/hodStaffOutpass.controller.js";
 
 const router = express.Router();
 
@@ -74,6 +76,13 @@ router.get("/hod/leave-approved-forms", checkAuthentication, (req, res) => {
 // router.post("/hod/discuss/:formId", discussLeaveByHOD);
 router.post("/hod/accept-all", checkAuthentication, acceptAllLeavesForms);
 
+// STAFF Outpass Routes
+router.post("/staff/apply-outpass", checkAuthentication, applyStaffOutpass);
+router.get("/staff/my-outpasses", checkAuthentication, getStaffOutpasses);
+router.delete("/staff/delete-outpass/:id", checkAuthentication, deleteStaffOutpass);
 
+// HOD Staff Outpass Routes
+router.get("/hod/staff-outpasses", checkAuthentication, getHodStaffOutpasses);
+router.post("/hod/confirm-staff-outpass/:id", checkAuthentication, confirmStaffOutpassByHod);
 
 export default router;

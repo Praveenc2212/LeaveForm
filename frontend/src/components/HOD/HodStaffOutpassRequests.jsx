@@ -18,6 +18,8 @@ import { useStaffOutpassStore } from "../../store/useStaffOutpassStore";
 function HodStaffOutpassRequests() {
   const [activeTab, setActiveTab] = useState("pending"); // "pending" or "authorized"
   const [searchQuery, setSearchQuery] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
 
   const {
     hodPendingOutpasses,
@@ -58,6 +60,16 @@ function HodStaffOutpassRequests() {
 
   const requests = activeTab === "pending" ? hodPendingOutpasses : hodReviewedOutpasses;
 
+  const getLocalDateString = (dateObj) => {
+    if (!dateObj) return "";
+    const d = new Date(dateObj);
+    if (isNaN(d.getTime())) return "";
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   // Filter requests by search query
   const filteredRequests = requests.filter((req) => {
     const matchesSearch = 
@@ -65,7 +77,18 @@ function HodStaffOutpassRequests() {
       req.place?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       req.staffDepartment?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesSearch;
+    let matchesDateRange = true;
+    if (activeTab === "authorized") {
+      const outpassLocalDate = getLocalDateString(req.startDate);
+      if (startDateFilter && outpassLocalDate < startDateFilter) {
+        matchesDateRange = false;
+      }
+      if (endDateFilter && outpassLocalDate > endDateFilter) {
+        matchesDateRange = false;
+      }
+    }
+
+    return matchesSearch && matchesDateRange;
   });
 
   const pendingCount = hodPendingOutpasses.length;
@@ -114,6 +137,47 @@ function HodStaffOutpassRequests() {
           />
         </div>
       </div>
+
+      {/* Date Range Filter for Reviewed Requests (History) */}
+      {activeTab === "authorized" && (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm transition-all duration-300">
+          <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+            <Calendar className="w-4 h-4 text-orange-500" />
+            <span>Filter by Date Range:</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-slate-400">From</span>
+              <input
+                type="date"
+                value={startDateFilter}
+                onChange={(e) => setStartDateFilter(e.target.value)}
+                className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition-all"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-slate-400">To</span>
+              <input
+                type="date"
+                value={endDateFilter}
+                onChange={(e) => setEndDateFilter(e.target.value)}
+                className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:bg-white transition-all"
+              />
+            </div>
+            {(startDateFilter || endDateFilter) && (
+              <button
+                onClick={() => {
+                  setStartDateFilter("");
+                  setEndDateFilter("");
+                }}
+                className="px-3 py-1.5 text-xs font-bold text-red-500 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 hover:border-red-500 rounded-lg transition-all cursor-pointer"
+              >
+                Clear Dates
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Empty State */}
       {filteredRequests.length === 0 && (

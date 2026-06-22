@@ -13,9 +13,9 @@ export default defineConfig({
       configureServer() {
         setTimeout(() => {
           console.log(" ");
-          console.log(chalk.greenBright('💻 Its From ' + chalk.white.bold("Dhanush!")))
+          console.log(chalk.greenBright('💻 Its From ' + chalk.white.bold("N Dhanush!")))
           console.log(chalk.gray('🎉 Special Thanks to The Team : '))
-          console.log(chalk.magentaBright.bold('✨ ' + chalk.underline('Praveen, Praveen Kumar, Harini, Shankar')))
+          console.log(chalk.magentaBright.bold('✨ ' + chalk.underline('Shankar S, Praveen Kumar R, Harini S, Praveen C, Jeeva S, Praveen M')))
           console.log(" ");
         }, 300)
       }

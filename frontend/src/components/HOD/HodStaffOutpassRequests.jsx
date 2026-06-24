@@ -13,44 +13,26 @@ import {
   Search
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useStaffOutpassStore } from "../../store/useStaffOutpassStore";
 
 function HodStaffOutpassRequests() {
-  const [requests, setRequests] = useState([]);
   const [activeTab, setActiveTab] = useState("pending"); // "pending" or "authorized"
   const [searchQuery, setSearchQuery] = useState("");
 
-  const loadRequests = () => {
-    const stored = localStorage.getItem("all_staff_outpasses");
-    if (stored) {
-      setRequests(JSON.parse(stored));
-    } else {
-      setRequests([]);
-    }
-  };
+  const {
+    hodPendingOutpasses,
+    hodReviewedOutpasses,
+    getHodOutpasses,
+    handleHodOutpassAction
+  } = useStaffOutpassStore();
 
   useEffect(() => {
-    loadRequests();
-    // Listen for storage changes in case staff requests in another tab
-    window.addEventListener("storage", loadRequests);
-    return () => window.removeEventListener("storage", loadRequests);
-  }, []);
+    getHodOutpasses("pending");
+    getHodOutpasses("reviewed");
+  }, [getHodOutpasses]);
 
-  const handleAction = (id, action) => {
-    const updated = requests.map((req) => {
-      if (req.id === id) {
-        return { ...req, status: action === "approve" ? "Approved" : "Rejected" };
-      }
-      return req;
-    });
-
-    localStorage.setItem("all_staff_outpasses", JSON.stringify(updated));
-    setRequests(updated);
-
-    if (action === "approve") {
-      toast.success("Staff outpass authorized successfully!");
-    } else {
-      toast.error("Staff outpass request declined.");
-    }
+  const handleAction = async (id, action) => {
+    await handleHodOutpassAction(id, action);
   };
 
   const calculateDuration = (start, end) => {
@@ -74,21 +56,19 @@ function HodStaffOutpassRequests() {
     }) + " @ " + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  // Filter requests by tab & search query
-  const filteredRequests = requests.filter((req) => {
-    const matchesTab = activeTab === "pending" 
-      ? req.status === "Pending" 
-      : req.status === "Approved" || req.status === "Rejected";
+  const requests = activeTab === "pending" ? hodPendingOutpasses : hodReviewedOutpasses;
 
+  // Filter requests by search query
+  const filteredRequests = requests.filter((req) => {
     const matchesSearch = 
       req.staffName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       req.place?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       req.staffDepartment?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesTab && matchesSearch;
+    return matchesSearch;
   });
 
-  const pendingCount = requests.filter(req => req.status === "Pending").length;
+  const pendingCount = hodPendingOutpasses.length;
 
   return (
     <div className="space-y-6">

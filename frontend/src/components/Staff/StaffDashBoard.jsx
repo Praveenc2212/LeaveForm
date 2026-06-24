@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useStaffFormStore } from "../../store/useStaffFormStore";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useStaffOutpassStore } from "../../store/useStaffOutpassStore";
 import { toast, Toaster } from "react-hot-toast";
 
 import PendingLeaveRequests from "./PendingLeaveRequests";
@@ -37,95 +38,27 @@ function StaffDashBoard() {
 
   const { userData } = useAuthStore();
   const { pendingLeaves, getFacultypending } = useStaffFormStore();
-  const [myOutpasses, setMyOutpasses] = useState([]);
+  const { myOutpasses, getMyOutpasses, applyOutpass, deleteOutpass } = useStaffOutpassStore();
 
-  // Load outpasses for the logged-in staff member
   useEffect(() => {
     getFacultypending();
-  }, [getFacultypending]);
-
-  useEffect(() => {
     if (userData?.email) {
-      const key = "all_staff_outpasses";
-      const stored = localStorage.getItem(key);
-      if (stored) {
-        const allOps = JSON.parse(stored);
-        setMyOutpasses(allOps.filter(op => op.staffEmail === userData.email));
-      } else {
-        // Populate default mock data if empty
-        const mock = [
-          {
-            id: "stf-op-381",
-            place: "Karpagam Academy Admin Office",
-            startDate: new Date(Date.now() - 3600000 * 24).toISOString().slice(0, 16),
-            endDate: new Date(Date.now() - 3600000 * 20).toISOString().slice(0, 16),
-            mobile: "9442158903",
-            reason: "Deliver finalized semester assessment papers to exam division.",
-            status: "Approved",
-            appliedAt: new Date(Date.now() - 3600000 * 25).toISOString(),
-            staffName: userData.name,
-            staffEmail: userData.email,
-            staffDepartment: userData.department
-          },
-          {
-            id: "stf-op-942",
-            place: "Town Hall Central Bank",
-            startDate: new Date(Date.now() + 3600000 * 4).toISOString().slice(0, 16),
-            endDate: new Date(Date.now() + 3600000 * 7).toISOString().slice(0, 16),
-            mobile: "9442158903",
-            reason: "Withdraw institution scholarship funds for departmental distribution.",
-            status: "Pending",
-            appliedAt: new Date().toISOString(),
-            staffName: userData.name,
-            staffEmail: userData.email,
-            staffDepartment: userData.department
-          }
-        ];
-        localStorage.setItem(key, JSON.stringify(mock));
-        setMyOutpasses(mock.filter(op => op.staffEmail === userData.email));
-      }
+      getMyOutpasses();
     }
-  }, [userData]);
+  }, [getFacultypending, getMyOutpasses, userData]);
 
-  const handleCreateOutpass = (data) => {
+  const handleCreateOutpass = async (data) => {
     setIsSubmittingOutpass(true);
-    setTimeout(() => {
-      const newOutpass = {
-        id: `stf-op-${Math.floor(100000 + Math.random() * 900000)}`,
-        place: data.place,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        mobile: data.mobile,
-        reason: data.reason,
-        status: "Pending",
-        appliedAt: new Date().toISOString(),
-        staffName: userData?.name || "Anonymous Staff",
-        staffEmail: userData?.email || "anonymous",
-        staffDepartment: userData?.department || "CSE"
-      };
-
-      const key = "all_staff_outpasses";
-      const stored = localStorage.getItem(key);
-      const allOps = stored ? JSON.parse(stored) : [];
-      const updated = [newOutpass, ...allOps];
-      localStorage.setItem(key, JSON.stringify(updated));
-      setMyOutpasses(updated.filter(op => op.staffEmail === userData?.email));
-
-      setIsSubmittingOutpass(false);
+    const success = await applyOutpass(data);
+    setIsSubmittingOutpass(false);
+    if (success) {
       setIsOutpassPopupOpen(false);
-      toast.success("Outpass requested successfully! Sent to HOD for approval.");
-      setActiveSubTab("my-outpasses"); // Switch to my-outpasses tab to show the ticket
-    }, 800);
+      setActiveSubTab("my-outpasses");
+    }
   };
 
-  const handleDeleteOutpass = (id) => {
-    const key = "all_staff_outpasses";
-    const stored = localStorage.getItem(key);
-    const allOps = stored ? JSON.parse(stored) : [];
-    const updated = allOps.filter(op => op.id !== id);
-    localStorage.setItem(key, JSON.stringify(updated));
-    setMyOutpasses(updated.filter(op => op.staffEmail === userData?.email));
-    toast.success("Outpass request removed");
+  const handleDeleteOutpass = async (id) => {
+    await deleteOutpass(id);
   };
 
   const calculateDuration = (start, end) => {

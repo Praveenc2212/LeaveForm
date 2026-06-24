@@ -74,7 +74,7 @@ function App() {
   }, [checkAuth]);
 
   // 1. Splash screen until ready
-  if (!isReadyForApp) return <SplashScreen />;
+  // if (!isReadyForApp) return <SplashScreen />;
 
   // 2. Loader while checking auth
   if (isCheckingAuth && !userData) {

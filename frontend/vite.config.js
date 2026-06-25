@@ -12,11 +12,7 @@ export default defineConfig({
       name: 'custom-startup-message',
       configureServer() {
         setTimeout(() => {
-          console.log(" ");
-          console.log(chalk.greenBright('💻 Its From ' + chalk.white.bold("N Dhanush!")))
-          console.log(chalk.gray('🎉 Special Thanks to The Team : '))
-          console.log(chalk.magentaBright.bold('✨ ' + chalk.underline('Shankar S, Praveen Kumar R, Harini S, Praveen C, Jeeva S, Praveen M')))
-          console.log(" ");
+            console.log("client running....");
         }, 300)
       }
     }

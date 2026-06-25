@@ -4,6 +4,24 @@ import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
 
+// A generic protected route component that checks for authentication and allowed roles.
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { userData } = useAuthStore();
+  
+  if (!userData) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Convert designations to uppercase to avoid case-sensitivity issues
+  if (allowedRoles && !allowedRoles.map(r => r.toUpperCase()).includes(userData.designation.toUpperCase())) {
+    // If user's designation is not in allowed roles, redirect them to their home route
+    return <Navigate to={`/${userData.designation.toLowerCase()}`} replace />;
+  }
+
+  return children;
+};
+
+
 import SplashScreen from "./components/SplashScreen/SplashScreen";
 import Header from "./components/Header";
 import Footer from "./components/footer";
@@ -17,6 +35,7 @@ const ApplyLeaveForm = lazy(() => import("./components/Student/ApplyLeaveForm"))
 const StudentLeaveStatus = lazy(() => import("./components/Student/StudentLeaveStatus"));
 const StudentLeaveHistory = lazy(() => import("./components/Student/StudentLeaveHistory"));
 const HODDashBoard = lazy(() => import("./components/HOD/HODDashBoard"));
+const PrincipalDashBoard = lazy(() => import("./components/Principal/PrincipalDashBoard"));
 const Profile = lazy(() => import("./components/Profile"));
 const AdminDashBoard = lazy(() => import("./components/Admin/AdminDashBoard"));
 const Adminstudent = lazy(() => import("./components/Admin/adminstudent"));
@@ -49,7 +68,8 @@ function App() {
 
   useEffect(() => {
     // Minimum display time for splash screen (5000ms)
-    const minDisplayTime = new Promise(resolve => setTimeout(resolve, 5000));
+    // Temporarily disabled delay
+    const minDisplayTime = Promise.resolve();
 
     // Wait until backend is ready
     const backendReady = new Promise(resolve => {
@@ -73,8 +93,14 @@ function App() {
     });
   }, [checkAuth]);
 
-  // 1. Splash screen until ready
-  // if (!isReadyForApp) return <SplashScreen />;
+  // 1. Loader instead of Splash screen until ready
+  if (!isReadyForApp) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="animate-spin text-gray-700" size={50} />
+      </div>
+    );
+  }
 
   // 2. Loader while checking auth
   if (isCheckingAuth && !userData) {
@@ -100,40 +126,42 @@ function App() {
             <Route path="/signup" element={<Signup />} />
 
             {/* Student */}
-            <Route path="/student" element={userData ? <StudentDashBoard /> : <Navigate to="/login" />} />
-            <Route path="/student/ApplyLeaveForm" element={userData ? <ApplyLeaveForm /> : <Navigate to="/login" />} />
-            <Route path="/student/StudentLeaveStatus" element={userData ? <StudentLeaveStatus /> : <Navigate to="/login" />} />
-            <Route path="/student/StudentLeaveHistory" element={userData ? <StudentLeaveHistory /> : <Navigate to="/login" />} />
-            <Route path="/student/OnDuty" element={<OnDuty />} />
+            <Route path="/student" element={<ProtectedRoute allowedRoles={["STUDENT"]}><StudentDashBoard /></ProtectedRoute>} />
+            <Route path="/student/ApplyLeaveForm" element={<ProtectedRoute allowedRoles={["STUDENT"]}><ApplyLeaveForm /></ProtectedRoute>} />
+            <Route path="/student/StudentLeaveStatus" element={<ProtectedRoute allowedRoles={["STUDENT"]}><StudentLeaveStatus /></ProtectedRoute>} />
+            <Route path="/student/StudentLeaveHistory" element={<ProtectedRoute allowedRoles={["STUDENT"]}><StudentLeaveHistory /></ProtectedRoute>} />
+            <Route path="/student/OnDuty" element={<ProtectedRoute allowedRoles={["STUDENT"]}><OnDuty /></ProtectedRoute>} />
 
             {/* Admin */}
-            <Route path="/admin" element={<AdminDashBoard />} />
-            <Route path="/adminstudent" element={<Adminstudent />} />
-            <Route path="/adminfaculty" element={<Adminfaculty />} />
-            <Route path="/adminclass" element={<Adminclass />} />
-            <Route path="/adminwarden" element={<Adminwarden />} />
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashBoard /></ProtectedRoute>} />
+            <Route path="/adminstudent" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Adminstudent /></ProtectedRoute>} />
+            <Route path="/adminfaculty" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Adminfaculty /></ProtectedRoute>} />
+            <Route path="/adminclass" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Adminclass /></ProtectedRoute>} />
+            <Route path="/adminwarden" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Adminwarden /></ProtectedRoute>} />
 
             {/* Admin CRUD */}
-            <Route path="/student/addstudent" element={<Addstudent />} />
-            <Route path="/student/addfaculty" element={<Addfaculty />} />
-            <Route path="/student/addclass" element={<Addclass />} />
-            <Route path="/student/addwarden" element={<Addwarden />} />
-            <Route path="/student/updatestudent" element={<Updatestudent />} />
-            <Route path="/student/updatefaculty" element={<Updatefaculty />} />
-            <Route path="/student/updateclass" element={<Updateclass />} />
-            <Route path="/student/updatewarden" element={<Updatewarden />} />
-            <Route path="/student/deletestudent" element={<Deletestudent />} />
-            <Route path="/student/deletefaculty" element={<Deletefaculty />} />
-            <Route path="/student/deleteclass" element={<Deleteclass />} />
-            <Route path="/student/deletewarden" element={<Deletewarden />} />
+            <Route path="/student/addstudent" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Addstudent /></ProtectedRoute>} />
+            <Route path="/student/addfaculty" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Addfaculty /></ProtectedRoute>} />
+            <Route path="/student/addclass" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Addclass /></ProtectedRoute>} />
+            <Route path="/student/addwarden" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Addwarden /></ProtectedRoute>} />
+            <Route path="/student/updatestudent" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Updatestudent /></ProtectedRoute>} />
+            <Route path="/student/updatefaculty" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Updatefaculty /></ProtectedRoute>} />
+            <Route path="/student/updateclass" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Updateclass /></ProtectedRoute>} />
+            <Route path="/student/updatewarden" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Updatewarden /></ProtectedRoute>} />
+            <Route path="/student/deletestudent" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Deletestudent /></ProtectedRoute>} />
+            <Route path="/student/deletefaculty" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Deletefaculty /></ProtectedRoute>} />
+            <Route path="/student/deleteclass" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Deleteclass /></ProtectedRoute>} />
+            <Route path="/student/deletewarden" element={<ProtectedRoute allowedRoles={["ADMIN"]}><Deletewarden /></ProtectedRoute>} />
 
-            {/* Staff/HOD/Profile */}
-            <Route path="/staff" element={userData ? <StaffDashBoard /> : <Navigate to="/login" />} />
-            <Route path="/hod" element={userData ? <HODDashBoard /> : <Navigate to="/login" />} />
-            <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login" />} />
+            {/* Staff/HOD/Principal/Profile */}
+            <Route path="/staff" element={<ProtectedRoute allowedRoles={["STAFF"]}><StaffDashBoard /></ProtectedRoute>} />
+            <Route path="/hod" element={<ProtectedRoute allowedRoles={["HOD"]}><HODDashBoard /></ProtectedRoute>} />
+            <Route path="/principal" element={<ProtectedRoute allowedRoles={["PRINCIPAL", "PRINCIPLE"]}><PrincipalDashBoard /></ProtectedRoute>} />
+            <Route path="/principle" element={<Navigate to="/principal" replace />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             {/* Warden Routes */}
-            <Route path="/student/outpass/:formId" element={userData ? <StudentOutpass /> : <Navigate to="/login" />} />
+            <Route path="/student/outpass/:formId" element={<ProtectedRoute><StudentOutpass /></ProtectedRoute>} />
 
             {/* Static Pages */}
             <Route path="/contact" element={<Contact />} />

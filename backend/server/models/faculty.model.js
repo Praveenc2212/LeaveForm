@@ -25,7 +25,7 @@ const FacultySchema = new mongoose.Schema({
     designation: {
         type: String,
         required: true,
-        enum: ["STAFF", "HOD", "ADMIN"],
+        enum: ["STAFF", "HOD", "PRINCIPLE","TUTOR"],
     },
 });
 

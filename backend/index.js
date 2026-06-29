@@ -15,6 +15,7 @@ import DB from "./server/connections/DB.connections.js";
 import FormRouter from "./server/routers/form.route.js";
 import AdminRouter from "./server/routers/admin.route.js";
 import EmailRouter from "./server/routers/mail.routes.js"
+import SecurityRouter from "./server/routers/security.route.js";
 
 // Configurations...
 configDotenv();
@@ -23,7 +24,7 @@ configDotenv();
 DB.connect(process.env.MONGO_DB_URL);
 
 const app = express();
-const {NETWORK_IP, CLIENT_PORT, SERVER_PORT} = process.env;
+const { NETWORK_IP, CLIENT_PORT, SERVER_PORT } = process.env;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,7 +56,7 @@ app.use(
             process.env.STATUS === "development"
                 ? [`http://localhost:${CLIENT_PORT}`, `http://${NETWORK_IP}:${CLIENT_PORT}`]
                 : "https://example.app.com",
-        methods: ["GET", "POST", "PUT"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     })
 );
@@ -76,7 +77,10 @@ app.use("/api/form", FormRouter);
 app.use("/api/admin", AdminRouter);
 
 // Email Routes
-app.use("/api/email" , EmailRouter );
+app.use("/api/email", EmailRouter);
+
+// Security Routes
+app.use("/api/security", SecurityRouter);
 
 // 404 Page Not Found...
 app.use((req, res) => {
@@ -94,7 +98,7 @@ app.use((err, req, res) => {
     });
 });
 
-app.listen(SERVER_PORT, '0.0.0.0' , () => {
+app.listen(SERVER_PORT, '0.0.0.0', () => {
     console.log(`\n🚀 Server running at ${NETWORK_IP ? `http://${NETWORK_IP}:${SERVER_PORT}` : `http://localhost:${SERVER_PORT}`}`);
 });
 

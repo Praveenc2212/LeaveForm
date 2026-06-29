@@ -1,17 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { LayoutDashboard, User, Menu, X, Ticket } from "lucide-react";
+import { LayoutDashboard, User, Menu, X, Ticket, Activity } from "lucide-react";
 import HodPendingLeaveRequests from "./HodPendingLeaveRequests";
 import HodApprovedLeaveRequests from "./HodApprovedLeaveRequests";
 import HodStaffOutpassRequests from "./HodStaffOutpassRequests";
 import Profile from "./Profile";
-
+import TodaysHistoryTab from "../Security/TodaysHistoryTab";
+import MonitoringTab from "../Security/MonitoringTab";
+import { useAuthStore } from "../../store/useAuthStore";
+import { Clock } from "lucide-react";
 const TABS = [
     { title: "Pending", component: <HodPendingLeaveRequests /> },
     { title: "Approved", component: <HodApprovedLeaveRequests /> },
 ];
 
 function HODDashboard() {
+    const { userData } = useAuthStore();
     const [activeIdx, setActiveIdx] = useState(0);
     const [activeMainTab, setActiveMainTab] = useState("dashboard"); // "dashboard", "profile", or "staff-outpasses"
     const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -30,6 +34,10 @@ function HODDashboard() {
                         ? "HOD Dashboard" 
                         : activeMainTab === "staff-outpasses" 
                         ? "Staff Outpasses" 
+                        : activeMainTab === "monitoring"
+                        ? "Monitoring"
+                        : activeMainTab === "history"
+                        ? "History"
                         : "Profile"}
                 </span>
                 <button 
@@ -98,6 +106,41 @@ function HODDashboard() {
                         <span>Staff Outpasses</span>
                     </button>
 
+                    <button
+                        onClick={() => {
+                            setActiveMainTab("monitoring");
+                            setIsMobileOpen(false);
+                        }}
+                        className={`
+                            w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold 
+                            transition-all duration-200 group cursor-pointer
+                            ${activeMainTab === "monitoring" 
+                                ? "bg-orange-50 text-orange-600 shadow-sm shadow-orange-500/10" 
+                                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"}
+                        `}
+                    >
+                        <Activity className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${activeMainTab === "monitoring" ? "text-orange-500" : "text-gray-400"}`} />
+                        <span>Live Monitoring</span>
+                    </button>
+
+                    {/* Today's History Tab */}
+                    <button
+                        onClick={() => {
+                            setActiveMainTab("history");
+                            setIsMobileOpen(false);
+                        }}
+                        className={`
+                            w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold 
+                            transition-all duration-200 group cursor-pointer
+                            ${activeMainTab === "history" 
+                                ? "bg-orange-50 text-orange-600 shadow-sm shadow-orange-500/10" 
+                                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"}
+                        `}
+                    >
+                        <Clock className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${activeMainTab === "history" ? "text-orange-500" : "text-gray-400"}`} />
+                        <span>Today's History</span>
+                    </button>
+
                     {/* Main Profile tab */}
                     <button
                         onClick={() => {
@@ -143,6 +186,46 @@ function HODDashboard() {
                         >
                             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
                                 <HodStaffOutpassRequests />
+                            </div>
+                        </motion.div>
+                    ) : activeMainTab === "monitoring" ? (
+                        <motion.div
+                            key="monitoring"
+                            variants={contentVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            className="h-full"
+                        >
+                            <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4">
+                                    <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                        <Activity className="w-5 h-5 text-indigo-500" />
+                                        Department Monitoring
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mt-1">Viewing all staff and student active check-outs in {userData?.department} department</p>
+                                </div>
+                                <MonitoringTab filterDepartment={userData?.department} filterType="both" />
+                            </div>
+                        </motion.div>
+                    ) : activeMainTab === "history" ? (
+                        <motion.div
+                            key="history"
+                            variants={contentVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            className="h-full"
+                        >
+                            <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-4">
+                                    <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                        <Clock className="w-5 h-5 text-indigo-500" />
+                                        Today's History
+                                    </h2>
+                                    <p className="text-xs text-slate-500 mt-1">Viewing all outpasses used today in {userData?.department} department</p>
+                                </div>
+                                <TodaysHistoryTab filterDepartment={userData?.department} />
                             </div>
                         </motion.div>
                     ) : (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CircleUserRound, FileText, Loader, Calendar, MessageSquareQuote, Hash, ShieldCheck, Ticket, MapPin, Phone, Search, Landmark, Clock, ArrowRight } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
+import MonitoringTab from "../Security/MonitoringTab";
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Helper function to format dates
@@ -84,6 +85,7 @@ function StaffOutpassRequests() {
   const [outpasses, setOutpasses] = useState(INITIAL_MOCK_OUTPASSES);
   const [searchQuery, setSearchQuery] = useState("");
   const [processingId, setProcessingId] = useState(null);
+  const [activeTab, setActiveTab] = useState("requests");
 
   const handleApprove = (id, name) => {
     setProcessingId(id);
@@ -126,6 +128,22 @@ function StaffOutpassRequests() {
             </div>
           </div>
 
+          {/* Tabs */}
+          <div className="flex bg-slate-100 p-1 rounded-xl">
+            <button
+              onClick={() => setActiveTab("requests")}
+              className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === "requests" ? "bg-white text-orange-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+            >
+              Requests
+            </button>
+            <button
+              onClick={() => setActiveTab("monitoring")}
+              className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === "monitoring" ? "bg-white text-orange-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+            >
+              Monitoring
+            </button>
+          </div>
+
           {/* Premium Search input */}
           <div className="relative w-full md:w-80">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
@@ -139,6 +157,10 @@ function StaffOutpassRequests() {
           </div>
         </div>
 
+        {activeTab === "monitoring" ? (
+          <MonitoringTab filterType="student" />
+        ) : (
+          <>
         {/* Empty State */}
         {filteredOutpasses.length === 0 && (
           <div className="text-center py-16 px-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center">
@@ -305,6 +327,8 @@ function StaffOutpassRequests() {
             })}
           </AnimatePresence>
         </motion.div>
+          </>
+        )}
       </div>
     </div>
   );

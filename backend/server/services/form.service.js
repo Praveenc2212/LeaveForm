@@ -1,9 +1,11 @@
 import { ClassModel } from "../models/class.model.js";
 import { FormModel } from "../models/form.model.js";
 import { generateEncryptedBarcode } from "../utils/barcode.util.js";
+import { generateShortId } from "../utils/shortId.util.js";
 
 // Create a new Leave Form
 export const createLeaveForm = async (data) => {
+    data.shortId = generateShortId("S");
     const form = new FormModel(data);
     return await form.save();
 };

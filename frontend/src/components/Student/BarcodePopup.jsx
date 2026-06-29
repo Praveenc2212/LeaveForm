@@ -1,5 +1,6 @@
 import React from "react";
 import { X, Shield, Clock, User } from "lucide-react";
+import { QRCodeCanvas } from "qrcode.react";
 
 function BarcodePopup({ isOpen, onClose, barcodeData, userData, leaveData }) {
 	if (!isOpen) return null;
@@ -62,22 +63,32 @@ function BarcodePopup({ isOpen, onClose, barcodeData, userData, leaveData }) {
 							</span>
 						</div>
 
-						{/* Verification Badge */}
+						{/* Verification Badge & QR Code */}
 						<div className="flex flex-col items-center justify-center bg-emerald-50 py-4 px-6 rounded-xl border border-emerald-100 mb-4 shadow-inner">
-							<Shield className="w-12 h-12 text-emerald-500 mb-2 animate-bounce" style={{ animationDuration: "3s" }} />
-							<span className="text-xs font-bold text-emerald-700 uppercase tracking-wide">SECURE PASS ACTIVE</span>
+							<div className="p-2 bg-white rounded-xl shadow-sm border border-slate-200 mb-2">
+								<QRCodeCanvas 
+									value={JSON.stringify({ id: leaveData?.shortId || leaveData?._id, type: 'student' })} 
+									size={100} 
+									level="H" 
+									includeMargin={true}
+								/>
+							</div>
+							<div className="flex items-center gap-1.5 mt-2">
+								<Shield className="w-4 h-4 text-emerald-500 animate-bounce" style={{ animationDuration: "3s" }} />
+								<span className="text-xs font-bold text-emerald-700 uppercase tracking-wide">SECURE PASS ACTIVE</span>
+							</div>
 						</div>
 
 						{/* Pass ID */}
 						<div className="bg-gray-50 p-3 rounded-lg border text-center font-mono">
 							<p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Pass ID</p>
-							<p className="text-xs font-bold text-gray-700 tracking-wider uppercase">{barcodeData}</p>
+							<p className="text-sm font-bold text-gray-800 tracking-widest uppercase">{leaveData?.shortId || barcodeData}</p>
 						</div>
 
 						{/* Instructions */}
 						<div className="mt-6 bg-gray-50 rounded-lg p-3 border">
 							<p className="text-xs text-gray-600 text-center">
-								Show this pass to <span className="font-semibold">Security</span> at the gate. 
+								Show this QR code to <span className="font-semibold">Security</span> at the gate. 
 								<br />
 								Keep your <span className="font-semibold">ID Card</span> ready for verification.
 							</p>

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const FormSchema = new mongoose.Schema({
+    shortId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
     applicantId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
@@ -29,6 +34,14 @@ const FormSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    gateStatus: {
+        type: String,
+        default: "Pending",
+        enum: ["Pending", "Checked-Out", "Completed"],
+    },
+    checkOutTime: { type: Date, default: null },
+    checkInTime: { type: Date, default: null },
+    actualDuration: { type: String, default: "" },
     appliedAt: { type: Date, default: Date.now },
 });
 

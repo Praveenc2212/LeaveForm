@@ -1,8 +1,10 @@
 import { StaffOutpassModel } from "../models/staffOutpass.model.js";
 import { FacultyModel } from "../models/faculty.model.js";
+import { generateShortId } from "../utils/shortId.util.js";
 
 // Create a new Staff Outpass Form
 export const createStaffOutpass = async (data) => {
+    data.shortId = generateShortId("F");
     const outpass = new StaffOutpassModel(data);
     return await outpass.save();
 };

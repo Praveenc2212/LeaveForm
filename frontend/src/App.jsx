@@ -55,6 +55,7 @@ const Addfaculty = lazy(() => import("./components/Admin/addfaculty"));
 const Addclass = lazy(() => import("./components/Admin/addclass"));
 const Addwarden = lazy(() => import("./components/Admin/addwarden"));
 const StudentOutpass = lazy(() => import("./components/Student/StudentOutpass"));
+const SecurityDashBoard = lazy(() => import("./components/Security/SecurityDashBoard"));
 
 // Direct imports for small/static pages
 import Contact from "./components/Contact";
@@ -162,6 +163,9 @@ function App() {
 
             {/* Warden Routes */}
             <Route path="/student/outpass/:formId" element={<ProtectedRoute><StudentOutpass /></ProtectedRoute>} />
+
+            {/* Security Routes */}
+            <Route path="/security" element={<ProtectedRoute allowedRoles={["SECURITY"]}><SecurityDashBoard /></ProtectedRoute>} />
 
             {/* Static Pages */}
             <Route path="/contact" element={<Contact />} />

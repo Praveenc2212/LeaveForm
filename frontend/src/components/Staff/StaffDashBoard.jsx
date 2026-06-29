@@ -22,12 +22,14 @@ import { useStaffFormStore } from "../../store/useStaffFormStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useStaffOutpassStore } from "../../store/useStaffOutpassStore";
 import { toast, Toaster } from "react-hot-toast";
+import { QRCodeCanvas } from "qrcode.react";
 
 import PendingLeaveRequests from "./PendingLeaveRequests";
 import ReviewedLeaveRequests from "./ReviewedLeaveRequests";
 import ApprovedLeaveRequests from "./ApprovedLeaveRequests";
 import StaffProfile from "./StaffProfile";
 import StaffOutpassRequestPopup from "./StaffOutpassRequestPopup";
+import StaffOutpassRequests from "./StaffOutpassRequests";
 
 function StaffDashBoard() {
   const [activeMainTab, setActiveMainTab] = useState("dashboard"); // "dashboard" or "profile"
@@ -53,7 +55,7 @@ function StaffDashBoard() {
     setIsSubmittingOutpass(false);
     if (success) {
       setIsOutpassPopupOpen(false);
-      setActiveSubTab("my-outpasses");
+      setActiveMainTab("staff-outpass");
     }
   };
 
@@ -152,7 +154,47 @@ function StaffDashBoard() {
             <span>Dashboard</span>
           </button>
 
-          {/* Main Profile tab */}
+          {/* Staff Outpass tab */}
+          <button
+            onClick={() => {
+              setActiveMainTab("staff-outpass");
+              setIsMobileOpen(false);
+            }}
+            className={`
+              w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold 
+              transition-all duration-200 group cursor-pointer
+              ${activeMainTab === "staff-outpass"
+                ? "bg-orange-50 text-orange-600 shadow-sm shadow-orange-500/10"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"}
+            `}
+          >
+            <Ticket className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${activeMainTab === "staff-outpass" ? "text-orange-500" : "text-gray-400"}`} />
+            <span>Staff Outpass</span>
+          </button>
+
+          {/* Student Outpass tab */}
+          {userData?.designation === "TUTOR" && (
+            <button
+              onClick={() => {
+                setActiveMainTab("student-outpass");
+                setIsMobileOpen(false);
+              }}
+              className={`
+                w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold 
+                transition-all duration-200 group cursor-pointer
+                ${activeMainTab === "student-outpass"
+                  ? "bg-orange-50 text-orange-600 shadow-sm shadow-orange-500/10"
+                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"}
+              `}
+            >
+              <ClipboardCheck className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${activeMainTab === "student-outpass" ? "text-orange-500" : "text-gray-400"}`} />
+              <span>Student Outpass</span>
+            </button>
+          )}
+        </nav>
+
+        {/* Profile tab at bottom left */}
+        <div className="p-4 border-t border-gray-100">
           <button
             onClick={() => {
               setActiveMainTab("profile");
@@ -169,10 +211,10 @@ function StaffDashBoard() {
             <User className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${activeMainTab === "profile" ? "text-orange-500" : "text-gray-400"}`} />
             <span>Profile</span>
           </button>
-        </nav>
+        </div>
       </aside>
 
-      {/* Main Content Area */}
+            {/* Main Content Area */}
       <main className="flex-grow overflow-x-hidden">
         <AnimatePresence mode="wait">
           {activeMainTab === "profile" ? (
@@ -185,6 +227,196 @@ function StaffDashBoard() {
               className="h-full"
             >
               <StaffProfile />
+            </motion.div>
+          ) : activeMainTab === "student-outpass" ? (
+            <motion.div
+              key="student-outpass"
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="h-full"
+            >
+              <StaffOutpassRequests />
+            </motion.div>
+          ) : activeMainTab === "staff-outpass" ? (
+            <motion.div
+              key="staff-outpass"
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="h-full flex flex-col"
+            >
+              <div className="pt-4 sm:pt-6 lg:pt-8 px-4 sm:px-6 lg:px-8 pb-4 bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-200">
+                <div>
+                  <h1 className="text-xl font-bold text-gray-800 tracking-tight leading-tight">Staff Outpass</h1>
+                  <p className="text-xs text-gray-500 font-medium mt-0.5">Manage your outpasses</p>
+                </div>
+                <button
+                  onClick={() => setIsOutpassPopupOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white rounded-xl font-bold text-xs tracking-wider uppercase transition-all duration-200 shadow-md shadow-orange-500/20 active:scale-95 hover:cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  Request Staff Outpass
+                </button>
+              </div>
+              <div className="flex-grow">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  {myOutpasses.length === 0 ? (
+                    <div className="text-center py-16 px-6 bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm flex flex-col items-center max-w-2xl mx-auto mt-4">
+                      <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center text-orange-500 mb-4">
+                        <DoorOpen className="w-8 h-8" />
+                      </div>
+                      <h2 className="text-lg font-bold text-slate-700">No Outpass Requests</h2>
+                      <p className="text-slate-500 mt-1 max-w-sm text-sm">
+                        You haven't requested any gate passes. Click the "Request Staff Outpass" button at the top to apply for one.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                      {myOutpasses.map((outpass) => (
+                        <div key={outpass.id} className="relative bg-white rounded-2xl border border-slate-200/60 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group overflow-hidden">
+                          {/* Decorative Accent Strip */}
+                          <div className="h-2.5 w-full bg-gradient-to-r from-orange-500 to-amber-500" />
+
+                          {/* Card Header (Details & Status Badge) */}
+                          <div className="px-5 pt-5 pb-3 flex items-center justify-between gap-4 border-b border-slate-100/80">
+                            <div className="flex items-center gap-3">
+                              <div className="relative flex-shrink-0">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-orange-100 to-orange-200 flex items-center justify-center border-2 border-white shadow-md">
+                                  <CircleUserRound className="w-8 h-8 text-orange-600" />
+                                </div>
+                                <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
+                                  F
+                                </span>
+                              </div>
+                              <div className="overflow-hidden">
+                                <h3 className="font-bold text-slate-800 text-sm leading-tight truncate">
+                                  {userData?.name}
+                                </h3>
+                                <p className="text-xs font-semibold text-slate-400 tracking-wider mt-0.5">{userData?.department} Dept</p>
+                              </div>
+                            </div>
+
+                            {outpass.status === "Approved" ? (
+                              <div className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md tracking-wider flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                GATE-READY
+                              </div>
+                            ) : (
+                              <div className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md tracking-wider flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                                PENDING HOD
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Details Grid */}
+                          <div className="px-5 pt-1.5 pb-3 grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Destination</span>
+                              <div className="flex items-center gap-1.5 text-slate-700">
+                                <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                                <span className="text-sm font-semibold truncate" title={outpass.place}>{outpass.place}</span>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Duration</span>
+                              <div className="flex items-center gap-1.5 text-slate-700">
+                                <Clock className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                                <span className="text-sm font-semibold">{calculateDuration(outpass.startDate, outpass.endDate)}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Date Stub */}
+                          <div className="px-5 py-3 bg-slate-50 border-y border-slate-100 flex items-center justify-between text-xs font-medium text-slate-600">
+                            <div className="flex flex-col">
+                              <span className="text-[9px] font-bold text-slate-400 uppercase">Exit Time</span>
+                              <span className="font-bold text-slate-700">{formatDateTimeDisplay(outpass.startDate)}</span>
+                            </div>
+                            <ArrowRight className="w-4 h-4 text-slate-300" />
+                            <div className="flex flex-col text-right">
+                              <span className="text-[9px] font-bold text-slate-400 uppercase">Return Time</span>
+                              <span className="font-bold text-slate-700">{formatDateTimeDisplay(outpass.endDate)}</span>
+                            </div>
+                          </div>
+
+                          {/* Contact and Delete */}
+                          <div className="px-5 py-3 flex justify-between items-center gap-4 text-xs border-b border-slate-100/50">
+                            <div className="flex items-center gap-1 text-slate-500">
+                              <Phone className="w-3.5 h-3.5 text-slate-400" />
+                              <span>Mobile: <strong className="text-slate-700 font-semibold">{outpass.mobile}</strong></span>
+                            </div>
+                            <button
+                              onClick={() => handleDeleteOutpass(outpass.id)}
+                              className="flex items-center gap-1 text-red-500 hover:text-red-700 font-bold transition cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              Delete
+                            </button>
+                          </div>
+
+                          {/* Reason Statement */}
+                          <div className="px-5 pb-5 pt-3">
+                            <blockquote className="bg-slate-50 border-l-3 border-orange-500 p-2.5 rounded-r-lg">
+                              <div className="flex items-center mb-1">
+                                <MessageSquareQuote className="w-3.5 h-3.5 text-orange-500/70 mr-1" />
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Reason Statement</span>
+                              </div>
+                              <p className="text-xs italic text-slate-600 pl-4 leading-relaxed font-medium line-clamp-2" title={outpass.reason}>
+                                "{outpass.reason}"
+                              </p>
+                            </blockquote>
+                          </div>
+
+                          {/* Punch Holes */}
+                          <div className="relative py-1 flex items-center justify-center bg-white">
+                            <div className="border-t-2 border-dashed border-slate-200/80 w-full" />
+                            <div className="absolute -left-2.5 w-5 h-5 rounded-full bg-slate-50 border border-slate-200/60 shadow-[inset_-3px_0_4px_rgba(0,0,0,0.01)]" />
+                            <div className="absolute -right-2.5 w-5 h-5 rounded-full bg-slate-50 border border-slate-200/60 shadow-[inset_3px_0_4px_rgba(0,0,0,0.01)]" />
+                          </div>
+
+                          {/* QR Barcode Section */}
+                          <div className="px-5 pb-5 pt-3 bg-white flex-grow flex flex-col justify-end">
+                            {outpass.status === "Approved" ? (
+                              <div className="space-y-3">
+                                <div className="flex items-center justify-center gap-1.5 text-emerald-600 font-bold text-xs bg-emerald-50 border border-emerald-100 py-2 rounded-lg">
+                                  <ShieldCheck className="w-4 h-4" />
+                                  <span>OUTPASS ISSUED</span>
+                                </div>
+                                <div className="flex flex-col items-center justify-center py-2">
+                                    <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-200 mb-2">
+                                        <QRCodeCanvas 
+                                            value={JSON.stringify({ id: outpass.shortId || outpass.id || outpass._id, type: 'staff' })} 
+                                            size={90} 
+                                            level="H" 
+                                            includeMargin={true}
+                                        />
+                                    </div>
+                                    <span className="text-[9px] text-slate-400 font-medium uppercase tracking-wider">Scan at Gate</span>
+                                    {outpass.shortId && (
+                                        <span className="text-sm font-bold text-slate-800 tracking-widest mt-1">ID: {outpass.shortId}</span>
+                                    )}
+                                </div>
+                                <div className="flex flex-col items-center justify-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 w-full">
+                                  <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">PASS ID</span>
+                                  <span className="text-[10px] font-mono tracking-[0.2em] text-gray-700 font-bold mt-1 uppercase">{outpass.id}</span>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="text-[11px] text-center text-slate-400 font-bold bg-amber-50/50 py-3 rounded-lg border border-dashed border-amber-200">
+                                ⚠️ HOD Permission Pending
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -199,17 +431,7 @@ function StaffDashBoard() {
               <div className="pt-4 sm:pt-6 lg:pt-8 px-4 sm:px-6 lg:px-8 pb-2 bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-xl font-bold text-gray-800 tracking-tight leading-tight">Dashboard</h1>
-                  {/* <p className="text-xs text-gray-500 font-medium mt-0.5">Manage student permissions and request outpasses</p> */}
                 </div>
-
-                {/* Staff Outpass Request Button */}
-                <button
-                  onClick={() => setIsOutpassPopupOpen(true)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white rounded-xl font-bold text-xs tracking-wider uppercase transition-all duration-200 shadow-md shadow-orange-500/20 active:scale-95 hover:cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  Request Staff Outpass
-                </button>
               </div>
 
               {/* Sub Navigation Bar for Dashboard Sections */}
@@ -218,9 +440,7 @@ function StaffDashBoard() {
                   const Icon = subTab.icon;
                   const isActive = activeSubTab === subTab.id;
                   const isPendingTab = subTab.id === "pending";
-                  const isMyOutpassTab = subTab.id === "my-outpasses";
                   const showBadge = isPendingTab && pendingLeaves.length > 0;
-                  const count = isMyOutpassTab ? myOutpasses.length : 0;
 
                   return (
                     <button
@@ -241,11 +461,6 @@ function StaffDashBoard() {
                           {pendingLeaves.length}
                         </span>
                       )}
-                      {isMyOutpassTab && count > 0 && (
-                        <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white text-orange-600" : "bg-orange-100 text-orange-700"}`}>
-                          {count}
-                        </span>
-                      )}
                     </button>
                   );
                 })}
@@ -253,155 +468,13 @@ function StaffDashBoard() {
 
               {/* Render Selected Sub Tab */}
               <div className="flex-grow">
-                {activeSubTab === "my-outpasses" ? (
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    {myOutpasses.length === 0 ? (
-                      <div className="text-center py-16 px-6 bg-white rounded-2xl border border-dashed border-slate-200 shadow-sm flex flex-col items-center max-w-2xl mx-auto mt-4">
-                        <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center text-orange-500 mb-4">
-                          <DoorOpen className="w-8 h-8" />
-                        </div>
-                        <h2 className="text-lg font-bold text-slate-700">No Outpass Requests</h2>
-                        <p className="text-slate-500 mt-1 max-w-sm text-sm">
-                          You haven't requested any gate passes. Click the "Request Staff Outpass" button at the top to apply for one.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                        {myOutpasses.map((outpass) => (
-                          <div key={outpass.id} className="relative bg-white rounded-2xl border border-slate-200/60 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group overflow-hidden">
-                            {/* Decorative Accent Strip */}
-                            <div className="h-2.5 w-full bg-gradient-to-r from-orange-500 to-amber-500" />
-
-                            {/* Card Header (Details & Status Badge) */}
-                            <div className="px-5 pt-5 pb-3 flex items-center justify-between gap-4 border-b border-slate-100/80">
-                              <div className="flex items-center gap-3">
-                                <div className="relative flex-shrink-0">
-                                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-orange-100 to-orange-200 flex items-center justify-center border-2 border-white shadow-md">
-                                    <CircleUserRound className="w-8 h-8 text-orange-600" />
-                                  </div>
-                                  <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
-                                    F
-                                  </span>
-                                </div>
-                                <div className="overflow-hidden">
-                                  <h3 className="font-bold text-slate-800 text-sm leading-tight truncate">
-                                    {userData?.name}
-                                  </h3>
-                                  <p className="text-xs font-semibold text-slate-400 tracking-wider mt-0.5">{userData?.department} Dept</p>
-                                </div>
-                              </div>
-
-                              {outpass.status === "Approved" ? (
-                                <div className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md tracking-wider flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                  GATE-READY
-                                </div>
-                              ) : (
-                                <div className="text-xs font-extrabold uppercase px-2.5 py-1 rounded-md tracking-wider flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                  PENDING HOD
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Details Grid */}
-                            <div className="px-5 pt-1.5 pb-3 grid grid-cols-2 gap-4">
-                              <div className="space-y-1">
-                                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Destination</span>
-                                <div className="flex items-center gap-1.5 text-slate-700">
-                                  <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                                  <span className="text-sm font-semibold truncate" title={outpass.place}>{outpass.place}</span>
-                                </div>
-                              </div>
-                              <div className="space-y-1">
-                                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Duration</span>
-                                <div className="flex items-center gap-1.5 text-slate-700">
-                                  <Clock className="w-4 h-4 text-orange-500 flex-shrink-0" />
-                                  <span className="text-sm font-semibold">{calculateDuration(outpass.startDate, outpass.endDate)}</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Date Stub */}
-                            <div className="px-5 py-3 bg-slate-50 border-y border-slate-100 flex items-center justify-between text-xs font-medium text-slate-600">
-                              <div className="flex flex-col">
-                                <span className="text-[9px] font-bold text-slate-400 uppercase">Exit Time</span>
-                                <span className="font-bold text-slate-700">{formatDateTimeDisplay(outpass.startDate)}</span>
-                              </div>
-                              <ArrowRight className="w-4 h-4 text-slate-300" />
-                              <div className="flex flex-col text-right">
-                                <span className="text-[9px] font-bold text-slate-400 uppercase">Return Time</span>
-                                <span className="font-bold text-slate-700">{formatDateTimeDisplay(outpass.endDate)}</span>
-                              </div>
-                            </div>
-
-                            {/* Contact and Delete */}
-                            <div className="px-5 py-3 flex justify-between items-center gap-4 text-xs border-b border-slate-100/50">
-                              <div className="flex items-center gap-1 text-slate-500">
-                                <Phone className="w-3.5 h-3.5 text-slate-400" />
-                                <span>Mobile: <strong className="text-slate-700 font-semibold">{outpass.mobile}</strong></span>
-                              </div>
-                              <button
-                                onClick={() => handleDeleteOutpass(outpass.id)}
-                                className="flex items-center gap-1 text-red-500 hover:text-red-700 font-bold transition cursor-pointer"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                                Delete
-                              </button>
-                            </div>
-
-                            {/* Reason Statement */}
-                            <div className="px-5 pb-5 pt-3">
-                              <blockquote className="bg-slate-50 border-l-3 border-orange-500 p-2.5 rounded-r-lg">
-                                <div className="flex items-center mb-1">
-                                  <MessageSquareQuote className="w-3.5 h-3.5 text-orange-500/70 mr-1" />
-                                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Reason Statement</span>
-                                </div>
-                                <p className="text-xs italic text-slate-600 pl-4 leading-relaxed font-medium line-clamp-2" title={outpass.reason}>
-                                  "{outpass.reason}"
-                                </p>
-                              </blockquote>
-                            </div>
-
-                            {/* Punch Holes */}
-                            <div className="relative py-1 flex items-center justify-center bg-white">
-                              <div className="border-t-2 border-dashed border-slate-200/80 w-full" />
-                              <div className="absolute -left-2.5 w-5 h-5 rounded-full bg-slate-50 border border-slate-200/60 shadow-[inset_-3px_0_4px_rgba(0,0,0,0.01)]" />
-                              <div className="absolute -right-2.5 w-5 h-5 rounded-full bg-slate-50 border border-slate-200/60 shadow-[inset_3px_0_4px_rgba(0,0,0,0.01)]" />
-                            </div>
-
-                            {/* QR Barcode Section */}
-                            <div className="px-5 pb-5 pt-3 bg-white flex-grow flex flex-col justify-end">
-                              {outpass.status === "Approved" ? (
-                                <div className="space-y-3">
-                                  <div className="flex items-center justify-center gap-1.5 text-emerald-600 font-bold text-xs bg-emerald-50 border border-emerald-100 py-2 rounded-lg">
-                                    <ShieldCheck className="w-4 h-4" />
-                                    <span>OUTPASS ISSUED</span>
-                                  </div>
-                                  <div className="flex flex-col items-center justify-center bg-gray-50 p-2.5 rounded-lg border border-gray-100 w-full">
-                                    <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">PASS ID</span>
-                                    <span className="text-[10px] font-mono tracking-[0.2em] text-gray-700 font-bold mt-1 uppercase">{outpass.id}</span>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-[11px] text-center text-slate-400 font-bold bg-amber-50/50 py-3 rounded-lg border border-dashed border-amber-200">
-                                  ⚠️ HOD Permission Pending
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  SUB_TABS.find(tab => tab.id === activeSubTab)?.component
-                )}
+                {SUB_TABS.find(tab => tab.id === activeSubTab)?.component}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
+
 
       {/* Staff Outpass Request Modal */}
       <StaffOutpassRequestPopup

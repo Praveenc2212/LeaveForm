@@ -29,7 +29,12 @@ export const AuthenticatedData = async (req, res) => {
             });
             break;
         }
-        case "STAFF": {
+        case "STAFF":
+        case "TUTOR":
+        case "HOD":
+        case "PRINCIPAL":
+        case "PRINCIPLE":
+        case "SECURITY": {
             const faculty = await FacultyModel.findById(user.id);
             res.status(200).json({
                 success: true,
@@ -41,21 +46,6 @@ export const AuthenticatedData = async (req, res) => {
                     staffId: faculty.staffId,
                     department: faculty.department,
                     designation: faculty.designation,
-                },
-            });
-            break;
-        }
-        case "HOD": {
-            const hod = await FacultyModel.findById(user.id);
-            res.status(200).json({
-                success: true,
-                message: "Login successful.",
-                userData: {
-                    id: hod._id,
-                    name: hod.name,
-                    email: hod.email,
-                    department: hod.department,
-                    designation: hod.designation,
                 },
             });
             break;
